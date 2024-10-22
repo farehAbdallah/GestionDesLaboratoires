@@ -1,13 +1,11 @@
 pipeline {
-    agent any
-
-
+    agent any  // This ensures the pipeline can run on any available agent
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    credentialsId: 'GitHub-PAT',  // Use your GitHub Personal Access Token (PAT)
-                    url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git'  // Your repository URL
+                    credentialsId: 'GitHub-PAT',
+                    url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git'
             }
         }
 
@@ -15,9 +13,9 @@ pipeline {
             steps {
                 script {
                     docker.image('node:16-alpine').inside {
-                        dir('Frontend-GestionLaboratoires') {  // Directory containing your Angular app
-                            sh 'npm install'                   // Install dependencies
-                            sh 'npm run build --prod'          // Build Angular app for production
+                        dir('Frontend-GestionLaboratoires') {
+                            sh 'npm install'
+                            sh 'npm run build --prod'
                         }
                     }
                 }
@@ -28,8 +26,8 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.8.4-openjdk-17').inside {
-                        dir('Backend-GestionLaboratoires') {  // Directory containing your Spring Boot app
-                            sh './mvnw clean package'         // Maven build command
+                        dir('Backend-GestionLaboratoires') {
+                            sh './mvnw clean package'
                         }
                     }
                 }
@@ -39,10 +37,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    // Build the Docker image for the Angular frontend
                     docker.build('frontend-gestion-laboratoires-image', 'Frontend-GestionLaboratoires/')
-
-                    // Build the Docker image for the Spring Boot backend
                     docker.build('backend-gestion-laboratoires-image', 'Backend-GestionLaboratoires/')
                 }
             }
@@ -51,7 +46,7 @@ pipeline {
         stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    sh 'docker-compose up -d'  // Deploy using Docker Compose
+                    sh 'docker-compose up -d'
                 }
             }
         }
@@ -59,7 +54,7 @@ pipeline {
 
     post {
         always {
-            node {  // Surround cleanWs with a node block to provide the required context
+            node('any') {  // Ensure this node block has a label, use "any" for flexibility
                 cleanWs()  // Clean workspace after build
             }
         }
