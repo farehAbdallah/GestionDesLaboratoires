@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         NODEJS_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation' // Make sure this matches the NodeJS config in Jenkins
-        MAVEN_HOME = tool name: 'Maven', type: 'MavenInstallation'
+        MAVEN_HOME = tool name: 'Maven', type: 'MavenInstallation'    // Make sure this matches the Maven config in Jenkins
         PATH = "${NODEJS_HOME}/bin:${MAVEN_HOME}/bin:${env.PATH}"
     }
 
@@ -65,7 +65,7 @@ pipeline {
 
     post {
         always {
-            cleanWs()  // Clean workspace after build without node
+            cleanWs()  // Clean workspace after build
         }
     }
 }
