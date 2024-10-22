@@ -1,5 +1,6 @@
 pipeline {
     agent any  // This ensures the pipeline can run on any available agent
+
     stages {
         stage('Checkout') {
             steps {
