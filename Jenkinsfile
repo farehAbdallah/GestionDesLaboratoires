@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // This ensures the pipeline can run on any available agent
+    agent any  // Ensures the pipeline can run on any available agent
 
     stages {
         stage('Checkout') {
@@ -55,8 +55,8 @@ pipeline {
 
     post {
         always {
-            node('any') {  // Ensure this node block has a label, use "any" for flexibility
-                cleanWs()  // Clean workspace after build
+            node {
+                cleanWs()  // Ensure workspace is cleaned after the pipeline finishes
             }
         }
     }
