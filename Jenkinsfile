@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation'  // Name must match the one configured in Jenkins
-        MAVEN_HOME = tool name: 'Maven', type: 'MavenInstallation'     // Name must match the one configured in Jenkins
+        NODEJS_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation'
+        MAVEN_HOME = tool name: 'Maven', type: 'MavenInstallation'
         PATH = "${NODEJS_HOME}/bin:${MAVEN_HOME}/bin:${env.PATH}"
     }
 
