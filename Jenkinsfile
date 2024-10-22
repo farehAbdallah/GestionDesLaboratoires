@@ -13,8 +13,9 @@ pipeline {
         stage('Build Angular') {
             steps {
                 dir('Frontend-GestionLaboratoires') {
-                    sh 'npm install --verbose'  // Install the Node.js dependencies with verbose logging
-                    sh 'npm run build --prod'   // Run Angular production build
+                    // Use bat instead of sh for Windows
+                    bat 'npm install --verbose'  // Install the Node.js dependencies with verbose logging
+                    bat 'npm run build --prod'   // Run Angular production build
                 }
             }
         }
@@ -22,7 +23,8 @@ pipeline {
         stage('Build Spring Boot') {
             steps {
                 dir('Backend-GestionLaboratoires') {
-                    sh './mvnw clean package -X'  // Run Maven build with detailed logging
+                    // Use bat instead of sh for Windows
+                    bat './mvnw clean package -X'  // Run Maven build with detailed logging
                 }
             }
         }
