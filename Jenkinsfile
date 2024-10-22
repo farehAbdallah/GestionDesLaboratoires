@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation'
+        NODEJS_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation'  // Name must match the one in Global Tool Configuration
         MAVEN_HOME = tool name: 'Maven', type: 'MavenInstallation'
         PATH = "${NODEJS_HOME}/bin:${MAVEN_HOME}/bin:${env.PATH}"
     }
@@ -64,7 +64,9 @@ pipeline {
 
     post {
         always {
-            cleanWs()  // Clean the workspace after the build
+            node {  // Surround cleanWs with a node block to provide the required context
+                cleanWs()  // Clean workspace after build
+            }
         }
     }
 }
