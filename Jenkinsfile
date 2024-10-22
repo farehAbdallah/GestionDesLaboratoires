@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation' 
-        MAVEN_HOME = tool name: 'Maven', type: 'MavenInstallation'    
+        NODEJS_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation' // Ensure this name matches the NodeJS config in Jenkins
+        MAVEN_HOME = tool name: 'Maven', type: 'MavenInstallation'
         PATH = "${NODEJS_HOME}/bin:${MAVEN_HOME}/bin:${env.PATH}"
     }
 
@@ -65,7 +65,9 @@ pipeline {
 
     post {
         always {
-            cleanWs()  // Clean workspace after build
+            node {  // Add the node block around cleanWs
+                cleanWs()  // Clean workspace after build
+            }
         }
     }
 }
