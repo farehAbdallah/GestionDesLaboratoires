@@ -1,0 +1,53 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD:   # Add root password here
+      MYSQL_DATABASE: gestionlaboratoire
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"  # Access phpMyAdmin on localhost:8080
+    environment:
+      PMA_HOST: mysql  # Name of the MySQL service in Docker
+      PMA_PORT: 3306   # Port MySQL is exposed to in the container    
+
+  backend:
+    depends_on:
+      - mysql
+    build:
+      context: ./Backend-GestionLaboratoires
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "8000:8080"
+    environment:
+      SPRING_APPLICATION_JSON: |
+        {
+          "spring.datasource.url" : "jdbc:mysql://mysql:3306/gestionlaboratoire?useSSL=false",
+          "spring.datasource.username" : "root",
+          "spring.datasource.password" : "",
+          "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQLDialect",
+          "spring.jpa.hibernate.ddl-auto" : "update"
+        }
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+
+  frontend:
+    build:
+      context: ./Frontend-GestionLaboratoires  # Pointing to the frontend folder
+      dockerfile: Dockerfile
+    container_name: frontend_service
+    ports:
+      - "4200:4200"
