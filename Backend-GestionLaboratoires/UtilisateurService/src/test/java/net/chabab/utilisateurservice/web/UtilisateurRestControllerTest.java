@@ -20,10 +20,10 @@ import static org.mockito.Mockito.when;
 public class UtilisateurRestControllerTest {
 
     @Mock
-    private UtilisateurRepository utilisateurRepository;
+    public UtilisateurRepository utilisateurRepository;
 
     @InjectMocks
-    private UtilisateurRestController utilisateurRestController;
+    public UtilisateurRestController utilisateurRestController;
 
     @BeforeEach
     public void setUp() {
