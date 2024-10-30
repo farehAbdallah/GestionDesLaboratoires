@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = tool name: 'Maven'  // Assurez-vous que le nom correspond au Maven configuré dans Jenkins
+        MAVEN_HOME = tool name: 'Maven'  // Nom de l'outil Maven configuré dans Jenkins
     }
 
     stages {
@@ -15,28 +15,28 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Exécute la commande Maven clean install uniquement pour UtilisateurService
-                bat "${MAVEN_HOME}\\bin\\mvn clean install"
+                // Exécute la commande Maven depuis le pom.xml principal du projet multi-module
+                bat "${MAVEN_HOME}\\bin\\mvn -f Backend-GestionLaboratoires/pom.xml -pl UtilisateurService -am clean install"
             }
         }
 
         stage('Test') {
             steps {
-                // Exécute les tests pour UtilisateurService
-                bat "${MAVEN_HOME}\\bin\\mvn test"
+                // Exécute les tests pour UtilisateurService en utilisant le pom.xml principal
+                bat "${MAVEN_HOME}\\bin\\mvn -f Backend-GestionLaboratoires/pom.xml -pl UtilisateurService -am test"
             }
             post {
                 always {
                     // Publie les rapports de tests générés pour UtilisateurService
-                    junit 'target/surefire-reports/*.xml'
+                    junit 'UtilisateurService/target/surefire-reports/*.xml'
                 }
             }
         }
 
         stage('Package') {
             steps {
-                // Package l'application pour UtilisateurService
-                bat "${MAVEN_HOME}\\bin\\mvn package"
+                // Package l'application pour UtilisateurService en utilisant le pom.xml principal
+                bat "${MAVEN_HOME}\\bin\\mvn -f Backend-GestionLaboratoires/pom.xml -pl UtilisateurService -am package"
             }
         }
     }
