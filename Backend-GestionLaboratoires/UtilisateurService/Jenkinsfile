@@ -6,6 +6,11 @@ pipeline {
     }
 
     stages {
+        stage('Configure Git Buffer') {
+            steps {
+                bat 'git config --global http.postBuffer 524288000' // Commande adaptée pour Windows
+            }
+        }
         stage('Checkout') {
             steps {
                 // Cloner le repository depuis GitHub
