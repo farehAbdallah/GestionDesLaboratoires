@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest // Charge le contexte Spring complet
 @ActiveProfiles("test") // Active le profil de test
-class UtilisateurRestControllerTest {
+public class UtilisateurRestControllerTest {
 
     @Mock
     private UtilisateurRepository utilisateurRepository;
@@ -31,7 +31,7 @@ class UtilisateurRestControllerTest {
     }
 
     @Test
-    void testSaveAndFindById() {
+    public void testSaveAndFindById() {
         Utilisateur utilisateur = Utilisateur.builder()
                 .email("user@example.com")
                 .nomComplet("User Example")
