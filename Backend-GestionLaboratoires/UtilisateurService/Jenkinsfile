@@ -2,39 +2,34 @@ pipeline {
     agent any
 
     environment {
-        // Spécifiez ici le nom exact de l'installation Maven configurée dans Jenkins
-        MAVEN_HOME = tool name: 'Maven' 
+        MAVEN_HOME = tool name: 'Maven 3.8.4' 
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Cloner le code depuis le repository GitHub
+                // Cloner le code complet du repository multi-module
                 git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'main'
             }
         }
 
         stage('Build') {
             steps {
-                // Exécuter Maven pour construire UtilisateurService
+                // Exécuter Maven depuis la racine pour accéder au pom.xml principal
                 dir('UtilisateurService') {
-                    // Utilisez bat pour Windows
-                    bat "${MAVEN_HOME}\\bin\\mvn clean install"
+                    bat "${MAVEN_HOME}\\bin\\mvn -f ../pom.xml clean install"
                 }
             }
         }
 
         stage('Test') {
             steps {
-                // Exécuter les tests pour UtilisateurService
                 dir('UtilisateurService') {
-                    bat "${MAVEN_HOME}\\bin\\mvn test"
+                    bat "${MAVEN_HOME}\\bin\\mvn -f ../pom.xml test"
                 }
             }
-
             post {
                 always {
-                    // Publier les rapports de tests
                     junit 'UtilisateurService/target/surefire-reports/*.xml'
                 }
             }
@@ -42,9 +37,8 @@ pipeline {
 
         stage('Package') {
             steps {
-                // Packager l'application (si nécessaire)
                 dir('UtilisateurService') {
-                    bat "${MAVEN_HOME}\\bin\\mvn package"
+                    bat "${MAVEN_HOME}\\bin\\mvn -f ../pom.xml package"
                 }
             }
         }
