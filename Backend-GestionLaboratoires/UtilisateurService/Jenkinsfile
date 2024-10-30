@@ -25,12 +25,6 @@ pipeline {
                 // Exécute les tests pour UtilisateurService en utilisant le pom.xml principal
                 bat "${MAVEN_HOME}\\bin\\mvn -f Backend-GestionLaboratoires/pom.xml -pl UtilisateurService -am test"
             }
-            post {
-                always {
-                    // Publie les rapports de tests générés pour UtilisateurService
-                    junit 'UtilisateurService/target/surefire-reports/*.xml'
-                }
-            }
         }
 
         stage('Package') {
