@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Spécifiez ici le nom exact de l'installation Maven configurée dans Jenkins
-        MAVEN_HOME = tool name: 'Maven 3.8.4' 
+        MAVEN_HOME = tool name: 'Maven' 
     }
 
     stages {
