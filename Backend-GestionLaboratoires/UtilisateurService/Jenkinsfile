@@ -2,42 +2,32 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = tool name: 'Maven 3.8.4' // Remplacez par le nom de l'outil Maven configuré dans Jenkins
+        MAVEN_HOME = tool name: 'Maven'  // Nom de l'outil Maven configuré dans Jenkins
     }
 
     stages {
-        stage('Configure Git Buffer') {
-            steps {
-                bat 'git config --global http.postBuffer 524288000' // Commande adaptée pour Windows
-            }
-        }
         stage('Checkout') {
             steps {
-                // Cloner le repository depuis GitHub
-                git 'https://github.com/farehAbdallah/GestionDesLaboratoires.git' // Remplacez par l'URL de votre repository GitHub
+                // Clone le dépôt complet depuis GitHub
+                git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'main'
             }
         }
 
         stage('Build') {
             steps {
-                // Nettoyer et construire UtilisateurService avec Maven
-                dir('UtilisateurService') {
-                    sh "${MAVEN_HOME}/bin/mvn clean install"
-                }
+                // Exécute la commande Maven depuis le pom.xml principal du projet multi-module
+                bat "${MAVEN_HOME}\\bin\\mvn -f Backend-GestionLaboratoires/pom.xml -pl UtilisateurService -am clean install"
             }
         }
 
         stage('Test') {
             steps {
-                // Exécuter les tests pour UtilisateurService
-                dir('UtilisateurService') {
-                    sh "${MAVEN_HOME}/bin/mvn test"
-                }
+                // Exécute les tests pour UtilisateurService en utilisant le pom.xml principal
+                bat "${MAVEN_HOME}\\bin\\mvn -f Backend-GestionLaboratoires/pom.xml -pl UtilisateurService -am test"
             }
-
             post {
                 always {
-                    // Publier les rapports de tests
+                    // Publie les rapports de tests générés pour UtilisateurService
                     junit 'UtilisateurService/target/surefire-reports/*.xml'
                 }
             }
@@ -45,17 +35,15 @@ pipeline {
 
         stage('Package') {
             steps {
-                // Packager l'application (si nécessaire)
-                dir('UtilisateurService') {
-                    sh "${MAVEN_HOME}/bin/mvn package"
-                }
+                // Package l'application pour UtilisateurService en utilisant le pom.xml principal
+                bat "${MAVEN_HOME}\\bin\\mvn -f Backend-GestionLaboratoires/pom.xml -pl UtilisateurService -am package"
             }
         }
     }
 
     post {
         success {
-            echo 'Le pipeline a été exécuté avec succès pour UtilisateurService !'
+            echo 'Le pipeline pour UtilisateurService a été exécuté avec succès !'
         }
         failure {
             echo 'Le pipeline pour UtilisateurService a échoué.'
