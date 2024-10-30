@@ -2,27 +2,24 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = tool name: 'Maven 3.8.4' // Remplacez par le nom de l'outil Maven configuré dans Jenkins
+        // Spécifiez ici le nom exact de l'installation Maven configurée dans Jenkins
+        MAVEN_HOME = tool name: 'Maven 3.8.4' 
     }
 
     stages {
-        stage('Configure Git Buffer') {
-            steps {
-                bat 'git config --global http.postBuffer 524288000' // Commande adaptée pour Windows
-            }
-        }
         stage('Checkout') {
             steps {
-                // Cloner le repository depuis GitHub
-                git 'https://github.com/farehAbdallah/GestionDesLaboratoires.git' // Remplacez par l'URL de votre repository GitHub
+                // Cloner le code depuis le repository GitHub
+                git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'main'
             }
         }
 
         stage('Build') {
             steps {
-                // Nettoyer et construire UtilisateurService avec Maven
+                // Exécuter Maven pour construire UtilisateurService
                 dir('UtilisateurService') {
-                    sh "${MAVEN_HOME}/bin/mvn clean install"
+                    // Utilisez bat pour Windows
+                    bat "${MAVEN_HOME}\\bin\\mvn clean install"
                 }
             }
         }
@@ -31,7 +28,7 @@ pipeline {
             steps {
                 // Exécuter les tests pour UtilisateurService
                 dir('UtilisateurService') {
-                    sh "${MAVEN_HOME}/bin/mvn test"
+                    bat "${MAVEN_HOME}\\bin\\mvn test"
                 }
             }
 
@@ -47,7 +44,7 @@ pipeline {
             steps {
                 // Packager l'application (si nécessaire)
                 dir('UtilisateurService') {
-                    sh "${MAVEN_HOME}/bin/mvn package"
+                    bat "${MAVEN_HOME}\\bin\\mvn package"
                 }
             }
         }
@@ -55,7 +52,7 @@ pipeline {
 
     post {
         success {
-            echo 'Le pipeline a été exécuté avec succès pour UtilisateurService !'
+            echo 'Le pipeline pour UtilisateurService a été exécuté avec succès !'
         }
         failure {
             echo 'Le pipeline pour UtilisateurService a échoué.'
