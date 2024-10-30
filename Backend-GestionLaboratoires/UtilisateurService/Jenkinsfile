@@ -1,10 +1,8 @@
 pipeline {
     agent any
-
-    environment {
-        MAVEN_HOME = tool name: 'Maven'  // Nom de l'outil Maven configuré dans Jenkins
+    tools {
+        maven "maven-3.9.7"
     }
-
     stages {
         stage('Checkout') {
             steps {
@@ -13,34 +11,17 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build and Test utilisateur Service') {
             steps {
-                // Exécute la commande Maven depuis le pom.xml principal du projet multi-module
-                bat "${MAVEN_HOME}\\bin\\mvn -f Backend-GestionLaboratoires/pom.xml -pl UtilisateurService -am clean install"
+                dir('Backend-GestionLaboratoires/UtilisateurService') {
+                    // Run Maven build and tests
+                    bat 'mvn clean install -DskipTests=false'
+                }
             }
         }
 
-        stage('Test') {
-            steps {
-                // Exécute les tests pour UtilisateurService en utilisant le pom.xml principal
-                bat "${MAVEN_HOME}\\bin\\mvn -f Backend-GestionLaboratoires/pom.xml -pl UtilisateurService -am test"
-            }
-        }
 
-        stage('Package') {
-            steps {
-                // Package l'application pour UtilisateurService en utilisant le pom.xml principal
-                bat "${MAVEN_HOME}\\bin\\mvn -f Backend-GestionLaboratoires/pom.xml -pl UtilisateurService -am package"
-            }
-        }
-    }
 
-    post {
-        success {
-            echo 'Le pipeline pour UtilisateurService a été exécuté avec succès !'
-        }
-        failure {
-            echo 'Le pipeline pour UtilisateurService a échoué.'
-        }
+
     }
 }
