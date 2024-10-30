@@ -17,7 +17,7 @@
         <sonar.projectName>Backend Gestion Laboratoires</sonar.projectName>
         <sonar.projectVersion>1.0</sonar.projectVersion>
         <sonar.host.url>http://localhost:9000</sonar.host.url>
-        <sonar.login>sqa_e294c1371c8de7caa011f7155758985b47a18171</sonar.login>
+        <sonar.token>sqa_e294c1371c8de7caa011f7155758985b47a18171</sonar.token>
 
 
         <maven.compiler.source>17</maven.compiler.source>
@@ -104,6 +104,7 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
                 <version>1.5.12</version>
+                <scope>test</scope>
             </dependency>
 
 
