@@ -18,35 +18,35 @@ public class UtilisateurServiceApplication {
 
     }
 
-    @Bean
-    CommandLineRunner commandLineRunner(UtilisateurRepository utilisateurRepository){
-        return args -> {
-
-            List utilisateurList = List.of(
-                    Utilisateur.builder()
-                            .role("role1")
-                            .email("email1")
-                            .signature("signature1")
-                            .numTel("0762401781")
-                            .nomComplet("nom complet")
-                            .profession("profession")
-                            .fkIdLaboratoire(1L)
-                            .build(),
-                    Utilisateur.builder()
-                            .role("role2")
-                            .email("email2")
-                            .signature("signature2")
-                            .numTel("0762401781")
-                            .nomComplet("nom complet")
-                            .profession("profession2")
-                            .fkIdLaboratoire(1L)
-                            .build()
-            );
-
-            utilisateurRepository.saveAll(utilisateurList);
-
-        };
-    }
+//    @Bean
+//    CommandLineRunner commandLineRunner(UtilisateurRepository utilisateurRepository){
+//        return args -> {
+//
+//            List utilisateurList = List.of(
+//                    Utilisateur.builder()
+//                            .role("role1")
+//                            .email("email1")
+//                            .signature("signature1")
+//                            .numTel("0762401781")
+//                            .nomComplet("nom complet")
+//                            .profession("profession")
+//                            .fkIdLaboratoire(1L)
+//                            .build(),
+//                    Utilisateur.builder()
+//                            .role("role2")
+//                            .email("email2")
+//                            .signature("signature2")
+//                            .numTel("0762401781")
+//                            .nomComplet("nom complet")
+//                            .profession("profession2")
+//                            .fkIdLaboratoire(1L)
+//                            .build()
+//            );
+//
+//            utilisateurRepository.saveAll(utilisateurList);
+//
+//        };
+//    }
 
 
 
