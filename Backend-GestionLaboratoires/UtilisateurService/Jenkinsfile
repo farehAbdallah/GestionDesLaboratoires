@@ -2,34 +2,32 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = tool name: 'Maven' 
+        MAVEN_HOME = tool name: 'Maven'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Cloner le code complet du repository multi-module
+                // Clone le code complet du repository multi-module
                 git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'main'
             }
         }
 
         stage('Build') {
             steps {
-                // Exécuter Maven depuis la racine pour accéder au pom.xml principal
-                dir('UtilisateurService') {
-                    bat "${MAVEN_HOME}\\bin\\mvn -f ../pom.xml clean install"
-                }
+                // Exécute la commande Maven depuis la racine en ciblant le module UtilisateurService
+                bat "${MAVEN_HOME}\\bin\\mvn -pl UtilisateurService clean install"
             }
         }
 
         stage('Test') {
             steps {
-                dir('UtilisateurService') {
-                    bat "${MAVEN_HOME}\\bin\\mvn -f ../pom.xml test"
-                }
+                // Exécute les tests pour UtilisateurService depuis la racine
+                bat "${MAVEN_HOME}\\bin\\mvn -pl UtilisateurService test"
             }
             post {
                 always {
+                    // Publie les rapports de tests générés pour UtilisateurService
                     junit 'UtilisateurService/target/surefire-reports/*.xml'
                 }
             }
@@ -37,9 +35,8 @@ pipeline {
 
         stage('Package') {
             steps {
-                dir('UtilisateurService') {
-                    bat "${MAVEN_HOME}\\bin\\mvn -f ../pom.xml package"
-                }
+                // Package l'application pour UtilisateurService depuis la racine
+                bat "${MAVEN_HOME}\\bin\\mvn -pl UtilisateurService package"
             }
         }
     }
