@@ -2,41 +2,41 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = tool name: 'Maven'
+        MAVEN_HOME = tool name: 'Maven'  // Assurez-vous que le nom correspond au Maven configuré dans Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Clone le code complet du repository multi-module
+                // Clone le dépôt complet depuis GitHub
                 git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'main'
             }
         }
 
         stage('Build') {
             steps {
-                // Utilise -pl avec -am pour s'assurer que les dépendances sont construites
-                bat "${MAVEN_HOME}\\bin\\mvn -pl UtilisateurService -am clean install"
+                // Exécute la commande Maven clean install uniquement pour UtilisateurService
+                bat "${MAVEN_HOME}\\bin\\mvn clean install"
             }
         }
 
         stage('Test') {
             steps {
-                // Exécute les tests pour UtilisateurService depuis la racine
-                bat "${MAVEN_HOME}\\bin\\mvn -pl UtilisateurService -am test"
+                // Exécute les tests pour UtilisateurService
+                bat "${MAVEN_HOME}\\bin\\mvn test"
             }
             post {
                 always {
                     // Publie les rapports de tests générés pour UtilisateurService
-                    junit 'UtilisateurService/target/surefire-reports/*.xml'
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
 
         stage('Package') {
             steps {
-                // Package l'application pour UtilisateurService depuis la racine
-                bat "${MAVEN_HOME}\\bin\\mvn -pl UtilisateurService -am package"
+                // Package l'application pour UtilisateurService
+                bat "${MAVEN_HOME}\\bin\\mvn package"
             }
         }
     }
