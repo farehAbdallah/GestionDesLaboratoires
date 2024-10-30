@@ -9,12 +9,23 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+
+
+
     <properties>
+        <sonar.projectKey>Backend-GestionLaboratoires</sonar.projectKey>
+        <sonar.projectName>Backend Gestion Laboratoires</sonar.projectName>
+        <sonar.projectVersion>1.0</sonar.projectVersion>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.login>sqa_e294c1371c8de7caa011f7155758985b47a18171</sonar.login>
+
+
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-cloud.version>2023.0.3</spring-cloud.version>
-        <spring-boot.version>3.3.5</spring-boot.version> <!-- Add Spring Boot version -->
+        <spring-boot.version>3.3.5</spring-boot.version>
+        <sonar.version>4.0.0.4121</sonar.version>
     </properties>
 
     <dependencyManagement>
@@ -79,8 +90,70 @@
                 <version>8.0.30</version>
                 <scope>compile</scope>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.5.12</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>1.5.12</version>
+            </dependency>
+
+
+
         </dependencies>
     </dependencyManagement>
+
+
+    <build>
+        <plugins>
+            <!-- SonarQube Plugin -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar.version}</version>
+            </plugin>
+
+            <!-- JaCoCo for code coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Surefire Plugin for running tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M7</version>
+            </plugin>
+        </plugins>
+    </build>
+
+
+
+
 
     <modules>
         <module>UtilisateurService</module>
