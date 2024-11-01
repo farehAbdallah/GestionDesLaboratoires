@@ -17,7 +17,7 @@ public class LaboratoireServiceApplication {
 
 		SpringApplication.run(LaboratoireServiceApplication.class, args);
 	}
-	@Bean
+	/*@Bean
 	CommandLineRunner commandLineRunner(LaboratoireRepository laboratoireRepository){
 		return args -> {
 			Laboratoire labo1 = Laboratoire.builder()
@@ -38,6 +38,6 @@ public class LaboratoireServiceApplication {
 			laboratoireRepository.save(labo2);
 
         };
-	}
+	} */
 
 }
