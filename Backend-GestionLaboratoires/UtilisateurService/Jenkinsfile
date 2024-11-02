@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Clone le dépôt complet depuis GitHub
+                // Clone the full repository from GitHub
                 git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'Ahmed'
             }
         }
@@ -20,8 +20,24 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                dir('Backend-GestionLaboratoires/UtilisateurService') {
+                    // Build the Docker image with a specific tag
+                    bat 'docker build -t artistefx/utilisateur-service:latest .'
+                }
+            }
+        }
 
 
+    }
 
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
     }
 }
