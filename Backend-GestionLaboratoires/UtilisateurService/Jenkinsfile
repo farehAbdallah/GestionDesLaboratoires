@@ -29,6 +29,17 @@ pipeline {
             }
         }
 
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                        bat 'docker push musashi93/utilisateur-service:latest'
+                    }
+                }
+            }
+        }
+
+
 
     }
 
