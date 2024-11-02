@@ -24,7 +24,7 @@ pipeline {
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
                     // Build the Docker image with a specific tag
-                    bat 'docker build -t artistefx/utilisateur-service:latest .'
+                    bat 'docker build -t musashi93/utilisateur-service:latest .'
                 }
             }
         }
