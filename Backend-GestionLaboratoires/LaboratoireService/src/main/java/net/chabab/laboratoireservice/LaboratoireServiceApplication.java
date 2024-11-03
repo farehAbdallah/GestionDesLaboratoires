@@ -1,14 +1,9 @@
 package net.chabab.laboratoireservice;
 
-import net.chabab.laboratoireservice.entities.Laboratoire;
-import net.chabab.laboratoireservice.repository.LaboratoireRepository;
-import org.springframework.boot.CommandLineRunner;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDate;
-import java.util.UUID;
 
 @SpringBootApplication
 public class LaboratoireServiceApplication {
