@@ -2,12 +2,11 @@ package net.chabab.utilisateurservice.web;
 
 import net.chabab.utilisateurservice.entites.Utilisateur;
 import net.chabab.utilisateurservice.repository.UtilisateurRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -16,23 +15,23 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-//@DataJpaTest
-@SpringBootTest
-@ActiveProfiles("test")
-class UtilisateurRestControllerTest {
+@SpringBootTest // Charge le contexte Spring complet
+@ActiveProfiles("test") // Active le profil de test
+public class UtilisateurRestControllerTest {
 
     @Mock
-    private UtilisateurRepository utilisateurRepository;
+    public UtilisateurRepository utilisateurRepository;
 
     @InjectMocks
-    private UtilisateurRestController utilisateurRestController;
+    public UtilisateurRestController utilisateurRestController;
 
-    public UtilisateurRestControllerTest() {
-        MockitoAnnotations.openMocks(this);
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this); // Initialisation de Mockito
     }
 
     @Test
-    void testSaveAndFinfById() {
+    public void testSaveAndFindById() {
         Utilisateur utilisateur = Utilisateur.builder()
                 .email("user@example.com")
                 .nomComplet("User Example")
@@ -42,7 +41,6 @@ class UtilisateurRestControllerTest {
         when(utilisateurRepository.save(any(Utilisateur.class))).thenReturn(utilisateur);
         when(utilisateurRepository.findById(utilisateur.getIdUtilisateur())).thenReturn(java.util.Optional.of(utilisateur));
 
-
         Utilisateur savedUtilisateur = utilisateurRepository.save(utilisateur);
         Utilisateur foundUtilisateur = utilisateurRestController.utilisateurById(utilisateur.getIdUtilisateur());
 
@@ -51,7 +49,5 @@ class UtilisateurRestControllerTest {
 
         verify(utilisateurRepository).save(any(Utilisateur.class));
         verify(utilisateurRepository).findById(utilisateur.getIdUtilisateur());
-
-
-         }
+    }
 }
