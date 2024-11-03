@@ -17,7 +17,7 @@
         <sonar.projectName>Backend Gestion Laboratoires</sonar.projectName>
         <sonar.projectVersion>1.0</sonar.projectVersion>
         <sonar.host.url>http://localhost:9000</sonar.host.url>
-        <sonar.token>sqa_e294c1371c8de7caa011f7155758985b47a18171</sonar.token>
+        <sonar.token>sqa_c6894a91fd63aec11059933151b2b65197f0603a</sonar.token>
 
 
         <maven.compiler.source>17</maven.compiler.source>
