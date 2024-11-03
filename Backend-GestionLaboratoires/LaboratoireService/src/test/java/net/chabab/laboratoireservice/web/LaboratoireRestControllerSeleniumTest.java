@@ -7,14 +7,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.Duration;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("selenium")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class LaboratoireRestControllerSeleniumTest {
@@ -28,9 +31,28 @@ public class LaboratoireRestControllerSeleniumTest {
 
     @BeforeAll
     public void setup() {
-        // Start WebDriver and setup ChromeDriver path
-        System.setProperty("webdriver.chrome.driver", "C:\\selenium webdriver\\ChromeDriver\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
-        driver = new ChromeDriver();
+        // Specify the browser you want to use (can be parameterized)
+        String browser = System.getProperty("browser", "edge");
+
+        // Initialize WebDriver based on the selected browser
+        switch (browser.toLowerCase()) {
+            case "firefox":
+                // Manage the Firefox driver
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+                break;
+            case "edge":
+                // Manage the Edge driver
+                WebDriverManager.edgedriver().setup();
+                driver = new EdgeDriver();
+                break;
+            case "chrome":
+            default:
+                // Manage the Chrome driver
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
+                break;
+        }
 
         // Seed the database with test data
         labo1 = laboratoireRepository.save(Laboratoire.builder()
