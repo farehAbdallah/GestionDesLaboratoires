@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UtilisateurTest {
+class UtilisateurTest {
 
     @Test
-    public void testUtilisateurBuilder() {
+    void testUtilisateurBuilder() {
         Utilisateur utilisateur = Utilisateur.builder()
                 .email("test@example.com")
                 .fkIdLaboratoire(1L)

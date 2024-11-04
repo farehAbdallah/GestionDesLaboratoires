@@ -1,7 +1,7 @@
-package net.chabab.laboratoireservice.web;
+package net.chabab.gestionanalyse.web;
 
-import net.chabab.laboratoireservice.entities.Laboratoire;
-import net.chabab.laboratoireservice.repository.LaboratoireRepository;
+import net.chabab.gestionanalyse.entites.Analyse;
+import net.chabab.gestionanalyse.repository.AnalyseRepository;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,22 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("selenium")
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class LaboratoireRestControllerSeleniumTest {
+class AnalyseRestControllerSeleniumTest {
 
     @Autowired
-    private LaboratoireRepository laboratoireRepository;
+    private AnalyseRepository analyseRepository;
 
     private WebDriver driver;
-    private Laboratoire labo1;
-    private Laboratoire labo2;
+    private Analyse analyse1;
+    private Analyse analyse2;
 
     @BeforeAll
     void setup() {
@@ -39,42 +37,33 @@ class LaboratoireRestControllerSeleniumTest {
         // Initialize WebDriver based on the selected browser
         switch (browser.toLowerCase()) {
             case "firefox":
-                // Manage the Firefox driver
                 WebDriverManager.firefoxdriver().setup();
                 driver = new FirefoxDriver();
                 break;
             case "edge":
-                // Manage the Edge driver
                 WebDriverManager.edgedriver().setup();
                 driver = new EdgeDriver();
                 break;
             case "chrome":
             default:
-                // Manage the Chrome driver
                 WebDriverManager.chromedriver().setup();
                 driver = new ChromeDriver();
                 break;
         }
 
         // Seed the database with test data
-        labo1 = laboratoireRepository.save(Laboratoire.builder()
-                .nom("Micro Labo")
-                .logo("C:\\labo1.png")
-                .nrc("1234")
-                .active(true)
-                .dateActivation(LocalDate.now())
+        analyse1 = analyseRepository.save(Analyse.builder()
+                .nom("Analyse de Sang")
+                .description("Analyse pour vérifier les niveaux de glucose dans le sang.")
                 .build());
 
-        labo2 = laboratoireRepository.save(Laboratoire.builder()
-                .nom("Wild Labo")
-                .logo("C:\\labo2.png")
-                .nrc("12345")
-                .active(false)
-                .dateActivation(LocalDate.now())
+        analyse2 = analyseRepository.save(Analyse.builder()
+                .nom("Analyse Urinaire")
+                .description("Analyse pour vérifier les niveaux de créatinine dans l'urine.")
                 .build());
 
-        System.out.println("ID of Micro Labo: " + labo1.getId());
-        System.out.println("ID of Wild Labo: " + labo2.getId());
+        System.out.println("ID of Analyse de Sang: " + analyse1.getId());
+        System.out.println("ID of Analyse Urinaire: " + analyse2.getId());
     }
 
     @AfterAll
@@ -85,21 +74,21 @@ class LaboratoireRestControllerSeleniumTest {
     }
 
     @Test
-    void testGetAllLaboratoires() {
-        driver.get("http://localhost:8085/laboratoires");
+     void testGetAllAnalyses() {
+        driver.get("http://localhost:8086/analyses");
 
-        // Verify that seeded laboratory names appear on the page
+        // Verify that seeded analysis names appear on the page
         String pageSource = driver.getPageSource();
-        assertTrue(pageSource.contains("Micro Labo"));
-        assertTrue(pageSource.contains("Wild Labo"));
+        assertTrue(pageSource.contains("Analyse de Sang"), "Page should contain 'Analyse de Sang'");
+        assertTrue(pageSource.contains("Analyse Urinaire"), "Page should contain 'Analyse Urinaire'");
     }
 
     @Test
-    void testGetLaboratoireById() {
-        driver.get("http://localhost:8085/laboratoires/" + labo1.getId());
+    void testGetAnalyseById() {
+        driver.get("http://localhost:8086/analyses/" + analyse1.getId());
 
         WebElement body = driver.findElement(By.tagName("body"));
         String bodyText = body.getText();
-        assertTrue(bodyText.contains("Micro Labo"));  // Check for expected lab name
+        assertTrue(bodyText.contains("Analyse de Sang"), "Expected 'Analyse de Sang' not found in response body");
     }
 }

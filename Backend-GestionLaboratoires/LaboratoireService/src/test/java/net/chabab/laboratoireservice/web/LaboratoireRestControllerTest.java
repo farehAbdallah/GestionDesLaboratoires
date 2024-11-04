@@ -29,7 +29,7 @@ class LaboratoireRestControllerTest {
     private LaboratoireRestController laboratoireRestController;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 

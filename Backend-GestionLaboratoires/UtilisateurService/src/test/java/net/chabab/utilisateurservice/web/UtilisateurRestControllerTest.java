@@ -17,21 +17,21 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest // Charge le contexte Spring complet
 @ActiveProfiles("test") // Active le profil de test
-public class UtilisateurRestControllerTest {
+class UtilisateurRestControllerTest {
 
     @Mock
-    public UtilisateurRepository utilisateurRepository;
+    UtilisateurRepository utilisateurRepository;
 
     @InjectMocks
-    public UtilisateurRestController utilisateurRestController;
+    UtilisateurRestController utilisateurRestController;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this); // Initialisation de Mockito
     }
 
     @Test
-    public void testSaveAndFindById() {
+    void testSaveAndFindById() {
         Utilisateur utilisateur = Utilisateur.builder()
                 .email("user@example.com")
                 .nomComplet("User Example")
