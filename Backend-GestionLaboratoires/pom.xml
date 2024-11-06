@@ -9,15 +9,16 @@
     <packaging>pom</packaging>
 
     <properties>
-        <sonar.projectKey>Backend-GestionLaboratoires</sonar.projectKey>
-        <sonar.projectName>Backend Gestion Laboratoires</sonar.projectName>
-        <sonar.projectVersion>1.0</sonar.projectVersion>
-        <sonar.host.url>http://localhost:9000</sonar.host.url>
-        <sonar.token>${env.SONAR_TOKEN}</sonar.token> <!-- Use environment variable -->
-        <!-- Source and test directories -->
+        <!--      <sonar.projectKey>Backend-GestionLaboratoires</sonar.projectKey>
+              <sonar.projectName>Backend Gestion Laboratoires</sonar.projectName>
+              <sonar.projectVersion>1.0</sonar.projectVersion>
+              <sonar.host.url>http://localhost:9000</sonar.host.url>
+              <sonar.token>${env.SONAR_TOKEN}</sonar.token>
         <sonar.sources>src/main/java</sonar.sources>
+
         <sonar.tests>src/test/java</sonar.tests>
         <sonar.scm.provider>git</sonar.scm.provider>
+
 
 
 
