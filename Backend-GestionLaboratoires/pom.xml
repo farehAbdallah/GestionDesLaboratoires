@@ -17,6 +17,8 @@
         <!-- Source and test directories -->
         <sonar.sources>src/main/java</sonar.sources>
         <sonar.tests>src/test/java</sonar.tests>
+        <sonar.scm.provider>git</sonar.scm.provider>
+
 
 
         <maven.compiler.source>17</maven.compiler.source>
