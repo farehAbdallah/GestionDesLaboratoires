@@ -11,8 +11,9 @@ pipeline{
         }
         stage('Build and test GestionAnalyse'){
             steps{
-                dir('Backend-GestionLaboratoires/GestionAnalyse')
-                bat 'mvn clean install'
+                dir('Backend-GestionLaboratoires/GestionAnalyse') {
+                    bat 'mvn clean install'
+                }
             }
         }
     }
