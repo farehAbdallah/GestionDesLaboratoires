@@ -3,23 +3,23 @@ pipeline {
     tools {
         maven "Maven"
     }
-        stages {
-            stage('Check for Changes') {
-                steps {
-                    script {
-                        // Check if there are any changes in the specified folder
-                        def changes = bat(script: 'git diff --name-only HEAD~1 HEAD', returnStdout: true).trim()
-                        if (changes.contains("Backend-GestionLaboratoires/UtilisateurService")) {
-                            echo "Changes detected in Backend-GestionLaboratoires/UtilisateurService. Continuing with the build."
-                            currentBuild.description = "CHANGED"
-                        } else {
-                            echo "No changes detected in Backend-GestionLaboratoires/UtilisateurService. Marking build as successful without further action."
-                            currentBuild.result = 'SUCCESS'
-                        }
+    stages {
+        stage('Check for Changes') {
+            steps {
+                script {
+                    // Check if there are any changes in the specified folder
+                    def changes = bat(script: 'git diff --name-only HEAD~1 HEAD', returnStdout: true).trim()
+                    if (changes.contains("Backend-GestionLaboratoires/UtilisateurService")) {
+                        echo "Changes detected in Backend-GestionLaboratoires/UtilisateurService. Continuing with the build."
+                        currentBuild.description = "CHANGED"
+                    } else {
+                        echo "No changes detected in Backend-GestionLaboratoires/UtilisateurService. Marking build as successful without further action."
+                        currentBuild.result = 'SUCCESS'
                     }
                 }
             }
-    stages {
+        }
+
         stage('Checkout') {
             steps {
                 // Clone the full repository from GitHub
@@ -35,8 +35,6 @@ pipeline {
                 }
             }
         }
-
-        
 
         stage('Build Docker Image') {
             steps {
@@ -58,29 +56,25 @@ pipeline {
         }
 
         stage('Deploy to Minikube') {
+            when {
+                expression { currentBuild.description == "CHANGED" }
+            }
             steps {
-                when {
-                    expression { currentBuild.description == "CHANGED" }
-                }
                 withCredentials([string(credentialsId: 'kubeconfig-text', variable: 'KUBECONFIG_PATH')]) {
                     // Apply the Kubernetes deployment file to Minikube
                     bat "kubectl --kubeconfig=%KUBECONFIG_PATH% apply -f k8s/Service-Utilisateurs-Deployment.yaml"
                 }
             }
         }
-
-        post {
-            success {
-                script {
-                    if (currentBuild.description != "CHANGED") {
-                        echo 'No changes to build. Job marked as successful without build steps.'
-                    }
-                }
-            }
-
-
-
     }
 
-
+    post {
+        success {
+            script {
+                if (currentBuild.description != "CHANGED") {
+                    echo 'No changes to build. Job marked as successful without build steps.'
+                }
+            }
+        }
+    }
 }
