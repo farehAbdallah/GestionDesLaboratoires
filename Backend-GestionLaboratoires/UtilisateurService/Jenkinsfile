@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     // Check if there are any changes in the specified folder
-                    def changes = bat(script: 'git diff --name-only HEAD~1 HEAD', returnStdout: true).trim()
+                    def changes = bat(script: 'git fetch origin && git diff --name-only origin/Ahmed', returnStdout: true).trim()
                     if (changes.contains("Backend-GestionLaboratoires/UtilisateurService")) {
                         echo "Changes detected in Backend-GestionLaboratoires/UtilisateurService. Continuing with the build."
                         currentBuild.description = "CHANGED"
