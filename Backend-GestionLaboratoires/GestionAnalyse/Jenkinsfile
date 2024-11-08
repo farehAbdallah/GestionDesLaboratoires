@@ -23,5 +23,13 @@ pipeline{
                 }
             }
         }
+        stage('Push Docker Image to DockerHub'){
+            steps{
+                script{
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerHubToken') {
+                    bat 'docker push farehabdallah/gestionanalyse:latest'
+                }
+            }
+        }
     }
 }
