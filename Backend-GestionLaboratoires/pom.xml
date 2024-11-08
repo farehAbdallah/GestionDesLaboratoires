@@ -8,7 +8,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <properties>
         <!--      <sonar.projectKey>Backend-GestionLaboratoires</sonar.projectKey>
               <sonar.projectName>Backend Gestion Laboratoires</sonar.projectName>
               <sonar.projectVersion>1.0</sonar.projectVersion>
@@ -19,7 +18,9 @@
         <sonar.tests>src/test/java</sonar.tests>
         <sonar.scm.provider>git</sonar.scm.provider>
 
+            -->
 
+    <properties>
 
 
         <maven.compiler.source>17</maven.compiler.source>
@@ -32,7 +33,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Spring Boot Dependencies -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -102,11 +102,11 @@
     <build>
         <plugins>
             <!-- SonarQube Plugin -->
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>${sonar.version}</version>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.sonarsource.scanner.maven</groupId>-->
+<!--                <artifactId>sonar-maven-plugin</artifactId>-->
+<!--                <version>${sonar.version}</version>-->
+<!--            </plugin>-->
 
             <!-- JaCoCo for code coverage -->
             <plugin>
