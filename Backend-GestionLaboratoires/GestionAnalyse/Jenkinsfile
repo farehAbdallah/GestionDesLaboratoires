@@ -1,0 +1,19 @@
+pipeline{
+    agent any
+    tools {
+        maven "Maven"
+    }
+    stages{
+        stage('checkout'){
+            steps{
+                git url: 'git@github.com:farehAbdallah/GestionDesLaboratoires.git', branch: 'farehAbdallah'
+            }
+        }
+        stage('Build and test GestionAnalyse'){
+            steps{
+                dir('Backend-GestionLaboratoires/GestionAnalyse')
+                bat 'mvn clean install'
+            }
+        }
+    }
+}
