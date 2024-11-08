@@ -27,7 +27,8 @@ pipeline{
             steps{
                 script{
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerHubToken') {
-                    bat 'docker push farehabdallah/gestionanalyse:latest'
+                        bat 'docker push farehabdallah/gestionanalyse:latest'
+                    }
                 }
             }
         }
