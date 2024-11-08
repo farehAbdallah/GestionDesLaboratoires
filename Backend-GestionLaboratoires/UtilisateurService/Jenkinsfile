@@ -69,6 +69,15 @@ pipeline {
             }
         }
 
+        post {
+            success {
+                script {
+                    if (currentBuild.description != "CHANGED") {
+                        echo 'No changes to build. Job marked as successful without build steps.'
+                    }
+                }
+            }
+
 
 
     }
