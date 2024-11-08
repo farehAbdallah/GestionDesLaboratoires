@@ -42,9 +42,6 @@ pipeline {
         }
 
         stage('Deploy to Minikube') {
-            when {
-                expression { currentBuild.description == "CHANGED" }
-            }
             steps {
                 withCredentials([string(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG_PATH')]) {
                     // Apply the Kubernetes deployment file to Minikube
