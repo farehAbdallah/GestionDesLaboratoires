@@ -16,5 +16,12 @@ pipeline{
                 }
             }
         }
+        stage('build docker image'){
+            steps{
+                dir('Backend-GestionLaboratoires/GestionAnalyse') {
+                    bat 'docker build -t farehabdallah/GestionAnalyse:latest .'
+                }
+            }
+        }
     }
 }
