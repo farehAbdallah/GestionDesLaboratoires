@@ -41,6 +41,18 @@ pipeline {
             }
         }
 
+        stage('Deploy to Minikube') {
+            when {
+                expression { currentBuild.description == "CHANGED" }
+            }
+            steps {
+                withCredentials([string(credentialsId: 'kubeconf', variable: 'KUBECONFIG_PATH')]) {
+                    // Apply the Kubernetes deployment file to Minikube
+                    bat "kubectl --kubeconfig=%KUBECONFIG_PATH% apply -f k8s/Service-Utilisateurs-Deployment.yaml"
+                }
+            }
+        }
+
 
 
     }
