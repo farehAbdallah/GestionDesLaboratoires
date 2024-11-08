@@ -11,8 +11,25 @@ pipeline{
         }
         stage('Build and test GestionAnalyse'){
             steps{
-                dir('Backend-GestionLaboratoires/GestionAnalyse')
-                bat 'mvn clean install'
+                dir('Backend-GestionLaboratoires/GestionAnalyse') {
+                    bat 'mvn clean install'
+                }
+            }
+        }
+        stage('build docker image'){
+            steps{
+                dir('Backend-GestionLaboratoires/GestionAnalyse') {
+                    bat 'docker build -t farehabdallah/gestionanalyse:latest .'
+                }
+            }
+        }
+        stage('Push Docker Image to DockerHub'){
+            steps{
+                script{
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                        bat 'docker push farehabdallah/gestionanalyse:latest'
+                    }
+                }
             }
         }
     }
