@@ -43,7 +43,7 @@ pipeline {
 
         stage('Deploy to Minikube') {
             steps {
-                withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG_PATH')]) {
+                withCredentials([string(credentialsId: 'kubeconfig-text', variable: 'KUBECONFIG_PATH')]) {
                     // Apply the Kubernetes deployment file to Minikube
                     bat "kubectl --kubeconfig=%KUBECONFIG_PATH% apply -f k8s/Service-Utilisateurs-Deployment.yaml"
                 }
