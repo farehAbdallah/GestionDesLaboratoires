@@ -21,6 +21,9 @@ pipeline {
         }
 
         stage('Checkout') {
+            when {
+                expression { currentBuild.description == "CHANGED" }
+            }
             steps {
                 // Clone the full repository from GitHub
                 git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'Ahmed'
@@ -28,6 +31,9 @@ pipeline {
         }
 
         stage('Build and Test utilisateur Service') {
+            when {
+                expression { currentBuild.description == "CHANGED" }
+            }
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
                     // Run Maven build and tests
@@ -37,6 +43,9 @@ pipeline {
         }
 
         stage('Build Docker Image') {
+            when {
+                expression { currentBuild.description == "CHANGED" }
+            }
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
                     // Build the Docker image with a specific tag
@@ -46,6 +55,9 @@ pipeline {
         }
 
         stage('Push Docker Image') {
+            when {
+                expression { currentBuild.description == "CHANGED" }
+            }
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
