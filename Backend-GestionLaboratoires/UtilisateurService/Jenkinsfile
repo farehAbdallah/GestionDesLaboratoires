@@ -7,30 +7,21 @@ pipeline {
         stage('Check for Changes') {
             steps {
                 script {
-                    // Fetch updates from the remote branch
-                    bat 'git fetch origin'
-
-                    // Check for changes in the specified folder by comparing with the remote branch
-                    def changes = bat(script: 'git diff --name-only HEAD..origin/Ahmed', returnStdout: true).trim()
-
-                    // Look for changes specifically in the UtilisateurService directory
+                    // Check if there are any changes in the specified folder
+                    def changes = bat(script: 'git fetch origin && git diff --name-only origin/Ahmed', returnStdout: true).trim()
                     if (changes.contains("Backend-GestionLaboratoires/UtilisateurService")) {
                         echo "Changes detected in Backend-GestionLaboratoires/UtilisateurService. Continuing with the build."
                         currentBuild.description = "CHANGED"
                     } else {
                         echo "No changes detected in Backend-GestionLaboratoires/UtilisateurService. Marking build as successful without further action."
                         currentBuild.result = 'SUCCESS'
-                        error("No changes detected, aborting the rest of the pipeline.")
                     }
                 }
             }
         }
 
-
         stage('Checkout') {
-            when {
-                expression { currentBuild.description == "CHANGED" }
-            }
+
             steps {
                 // Clone the full repository from GitHub
                 git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'Ahmed'
@@ -38,9 +29,7 @@ pipeline {
         }
 
         stage('Build and Test utilisateur Service') {
-            when {
-                expression { currentBuild.description == "CHANGED" }
-            }
+
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
                     // Run Maven build and tests
@@ -49,9 +38,7 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-            when {
-                expression { currentBuild.description == "CHANGED" }
-            }
+
             steps {
                 script {
                     withSonarQubeEnv('SonarQube') {
@@ -65,9 +52,7 @@ pipeline {
         }
 
         stage('SonarQube Quality Gate') {
-            when {
-                expression { currentBuild.description == "CHANGED" }
-            }
+
             steps {
                 script {
                     timeout(time: 1, unit: 'MINUTES') {
@@ -83,9 +68,7 @@ pipeline {
 
 
         stage('Build Docker Image') {
-            when {
-                expression { currentBuild.description == "CHANGED" }
-            }
+
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
                     // Build the Docker image with a specific tag
@@ -95,9 +78,7 @@ pipeline {
         }
 
         stage('Push Docker Image') {
-            when {
-                expression { currentBuild.description == "CHANGED" }
-            }
+
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
@@ -108,9 +89,7 @@ pipeline {
         }
 
         stage('Deploy to Minikube') {
-            when {
-                expression { currentBuild.description == "CHANGED" }
-            }
+
             steps {
                 withCredentials([string(credentialsId: 'kubeconfig-text', variable: 'KUBECONFIG_PATH')]) {
                     // Apply the Kubernetes deployment file to Minikube
