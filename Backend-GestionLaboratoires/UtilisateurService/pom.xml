@@ -27,10 +27,22 @@
         <tag/>
         <url/>
     </scm>
+
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2023.0.3</spring-cloud.version>
+
+        <!-- SonarQube configuration for UtilisateurService -->
+        <sonar.projectKey>gestion-laboratoires-utilisateur</sonar.projectKey>
+        <sonar.projectName>GestionDesLaboratoires - UtilisateurService</sonar.projectName>
+        <sonar.projectVersion>1.0</sonar.projectVersion>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.tests>src/test/java</sonar.tests>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.login>sqa_a78f6a75809bbdecf68fecf6fb22110ba9a2a66a</sonar.login>
     </properties>
+
 
 
     <dependencies>
@@ -112,6 +124,11 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.0.0.4121</version>
             </plugin>
         </plugins>
     </build>
