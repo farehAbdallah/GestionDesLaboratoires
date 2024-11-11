@@ -43,11 +43,9 @@ pipeline {
         stage('SonarQube Analysis') {
 
             steps {
-                script {
                     withSonarQubeEnv('SonarQube') {
                         dir('Backend-GestionLaboratoires/UtilisateurService') {
                             bat 'mvn sonar:sonar'
-                        }
                     }
                 }
             }
