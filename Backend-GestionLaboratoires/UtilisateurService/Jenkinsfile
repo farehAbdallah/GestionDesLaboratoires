@@ -3,7 +3,11 @@ pipeline {
     tools {
         maven "Maven"
     }
-    stages {
+
+    environment {
+        SONARQUBE_TOKEN = credentials('sonarqube-token') // Replace 'sonarqube-token' with the actual credential ID
+    }
+ /*   stages {
         stage('Check for Changes') {
             steps {
                 script {
@@ -18,7 +22,7 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
 
         stage('Checkout') {
 

@@ -26,6 +26,8 @@
         <sonar.version>4.0.0.4121</sonar.version>
     </properties>
 
+
+
     <dependencyManagement>
         <dependencies>
             <!-- Spring Boot Dependencies -->
