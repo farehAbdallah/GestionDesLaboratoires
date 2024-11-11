@@ -8,14 +8,6 @@ pipeline {
     }
     stages {
 
-        stage('Checkout') {
-
-            steps {
-                // Clone the full repository from GitHub
-                git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'Ahmed'
-            }
-        }
-
         stage('Check for Changes') {
             steps {
                 script {
@@ -32,6 +24,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Checkout') {
+
+            steps {
+                // Clone the full repository from GitHub
+                git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'Ahmed'
+            }
+        }
+
+
 
        /* stage('Build and Test utilisateur Service') {
 
