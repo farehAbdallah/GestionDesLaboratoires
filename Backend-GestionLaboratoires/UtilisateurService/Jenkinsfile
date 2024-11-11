@@ -12,7 +12,7 @@ pipeline {
         stage('Check for Changes') {
             steps {
                 script {
-                    def changesDetected = sh(script: 'git fetch && git diff --quiet origin/Ahmed', returnStatus: true) != 0
+                    def changesDetected = bat(script: 'git fetch && git diff --quiet origin/Ahmed', returnStatus: true) != 0
                     if (!changesDetected) {
                         currentBuild.description = "NO_CHANGES"
                         echo 'No changes detected. Skipping the pipeline.'
