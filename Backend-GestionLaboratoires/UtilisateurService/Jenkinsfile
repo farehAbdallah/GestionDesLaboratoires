@@ -8,39 +8,6 @@ pipeline {
     }
     stages {
 
-
-stage('Check for Changes') {
-    steps {
-        script {
-            // Fetch the latest changes from the remote branch
-            bat 'git fetch origin Ahmed --prune'
-
-            // Get the latest commit SHA on the remote branch
-            def remoteCommit = bat(script: 'git rev-parse origin/Ahmed', returnStdout: true).trim()
-            // Get the latest commit SHA in the local branch (current checked-out commit)
-            def localCommit = bat(script: 'git rev-parse HEAD', returnStdout: true).trim()
-
-            // Output SHAs for debugging purposes
-            echo "Local Commit SHA: ${localCommit}"
-            echo "Remote Commit SHA: ${remoteCommit}"
-
-            // Compare the SHAs
-            if (localCommit == remoteCommit) {
-                currentBuild.description = "NO_CHANGES"
-                echo 'No changes detected. Skipping the pipeline.'
-                currentBuild.result = 'SUCCESS'
-                error('Skipping remaining stages due to no changes.')
-            } else {
-                currentBuild.description = "CHANGED"
-                echo 'Changes detected. Proceeding with the pipeline.'
-            }
-        }
-    }
-}
-
-
-
-
         stage('Checkout') {
 
             steps {
@@ -48,8 +15,6 @@ stage('Check for Changes') {
                 git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'Ahmed'
             }
         }
-
-
 
         stage('Build and Test utilisateur Service') {
 
@@ -71,7 +36,7 @@ stage('Check for Changes') {
             }
         }
 
-    /*    stage('Build Docker Image') {
+        stage('Build Docker Image') {
 
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
@@ -100,7 +65,7 @@ stage('Check for Changes') {
                     bat "kubectl --kubeconfig=%KUBECONFIG_PATH% apply -f k8s/Service-Utilisateurs-Deployment.yaml"
                 }
             }
-        }*/
+        }
     }
 
     post {
