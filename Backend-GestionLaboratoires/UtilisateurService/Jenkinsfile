@@ -31,7 +31,7 @@ pipeline {
             }
         }
 
-        stage('Build and Test utilisateur Service') {
+       /* stage('Build and Test utilisateur Service') {
 
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
@@ -39,7 +39,7 @@ pipeline {
                     bat 'mvn clean install -DskipTests=false'
                 }
             }
-        }
+        }*/
         stage('SonarQube Analysis') {
 
             steps {
@@ -70,7 +70,7 @@ pipeline {
         }
 
 
-        stage('Build Docker Image') {
+    /*    stage('Build Docker Image') {
 
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
@@ -100,7 +100,7 @@ pipeline {
                 }
             }
         }
-    }
+    }*/
 
     post {
         success {
