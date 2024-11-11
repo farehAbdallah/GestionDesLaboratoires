@@ -55,11 +55,8 @@ pipeline {
         stage('SonarQube Quality Gate') {
             steps {
                 script {
-                    // Increase timeout to allow SonarQube extra time for large projects or heavy loads
-                    timeout(time: 10, unit: 'MINUTES') {
-                        def qualityGate = waitForQualityGate()
-                        if (qualityGate.status != 'OK') {
-                            error "Pipeline aborted due to quality gate failure: ${qualityGate.status}"
+                    timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
                         }
                     }
                 }
