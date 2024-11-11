@@ -12,14 +12,17 @@ pipeline {
 stage('Check for Changes') {
     steps {
         script {
-            // Fetch the latest state with prune and reset to ensure alignment
+            // Fetch the latest changes from the remote branch
             bat 'git fetch origin Ahmed --prune'
-            bat 'git reset --hard origin/Ahmed'
 
-            // Get the latest commit SHA in the local branch
-            def localCommit = bat(script: 'git rev-parse HEAD', returnStdout: true).trim()
-            // Get the latest commit SHA in the remote branch
+            // Get the latest commit SHA on the remote branch
             def remoteCommit = bat(script: 'git rev-parse origin/Ahmed', returnStdout: true).trim()
+            // Get the latest commit SHA in the local branch (current checked-out commit)
+            def localCommit = bat(script: 'git rev-parse HEAD', returnStdout: true).trim()
+
+            // Output SHAs for debugging purposes
+            echo "Local Commit SHA: ${localCommit}"
+            echo "Remote Commit SHA: ${remoteCommit}"
 
             // Compare the SHAs
             if (localCommit == remoteCommit) {
@@ -34,6 +37,7 @@ stage('Check for Changes') {
         }
     }
 }
+
 
 
 
