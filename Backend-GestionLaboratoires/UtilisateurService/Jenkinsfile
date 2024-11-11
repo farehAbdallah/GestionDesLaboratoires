@@ -31,7 +31,7 @@ pipeline {
             }
         }
 
-       /* stage('Build and Test utilisateur Service') {
+       stage('Build and Test utilisateur Service') {
 
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
@@ -39,7 +39,7 @@ pipeline {
                     bat 'mvn clean install -DskipTests=false'
                 }
             }
-        }*/
+        }
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -55,13 +55,11 @@ pipeline {
         stage('SonarQube Quality Gate') {
             steps {
                 script {
-                    // Wait for SonarQube quality gate results with extended timeout
-                    timeout(time: 15, unit: 'MINUTES') {
+                    // Increase timeout to allow SonarQube extra time for large projects or heavy loads
+                    timeout(time: 10, unit: 'MINUTES') {
                         def qualityGate = waitForQualityGate()
                         if (qualityGate.status != 'OK') {
                             error "Pipeline aborted due to quality gate failure: ${qualityGate.status}"
-                        } else {
-                            echo "SonarQube Quality Gate passed with status: ${qualityGate.status}"
                         }
                     }
                 }
