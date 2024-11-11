@@ -9,22 +9,31 @@ pipeline {
     stages {
 
 
-        stage('Check for Changes') {
-            steps {
-                script {
-                    def changesDetected = bat(script: 'git fetch && git diff --quiet origin/Ahmed', returnStatus: true) != 0
-                    if (!changesDetected) {
-                        currentBuild.description = "NO_CHANGES"
-                        echo 'No changes detected. Skipping the pipeline.'
-                        currentBuild.result = 'SUCCESS'
-                        error('Skipping remaining stages due to no changes.')
-                    } else {
-                        currentBuild.description = "CHANGED"
-                        echo 'Changes detected. Proceeding with the pipeline.'
-                    }
-                }
+stage('Check for Changes') {
+    steps {
+        script {
+            // Fetch the latest commits for comparison
+            bat 'git fetch origin Ahmed'
+
+            // Get the latest commit SHA in the local branch
+            def localCommit = bat(script: 'git rev-parse HEAD', returnStdout: true).trim()
+            // Get the latest commit SHA in the remote branch
+            def remoteCommit = bat(script: 'git rev-parse origin/Ahmed', returnStdout: true).trim()
+
+            // Compare the SHAs
+            if (localCommit == remoteCommit) {
+                currentBuild.description = "NO_CHANGES"
+                echo 'No changes detected. Skipping the pipeline.'
+                currentBuild.result = 'SUCCESS'
+                error('Skipping remaining stages due to no changes.')
+            } else {
+                currentBuild.description = "CHANGED"
+                echo 'Changes detected. Proceeding with the pipeline.'
             }
         }
+    }
+}
+
 
         stage('Checkout') {
 
