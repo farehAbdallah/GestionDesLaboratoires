@@ -3,12 +3,11 @@ pipeline {
     tools {
         maven "Maven"
     }
-
     environment {
-        SONARQUBE_TOKEN = credentials('sonarqube-token') // Replace 'sonarqube-token' with the actual credential ID
+        SONARQUBE_TOKEN = credentials('sonarqube-token')
     }
- /*   stages {
-        stage('Check for Changes') {
+    stages {
+     /*   stage('Check for Changes') {
             steps {
                 script {
                     // Check if there are any changes in the specified folder
@@ -22,7 +21,7 @@ pipeline {
                     }
                 }
             }
-        } */
+        }*/
 
         stage('Checkout') {
 
