@@ -12,8 +12,9 @@ pipeline {
 stage('Check for Changes') {
     steps {
         script {
-            // Fetch the latest commits for comparison
-            bat 'git fetch origin Ahmed'
+            // Fetch the latest state with prune and reset to ensure alignment
+            bat 'git fetch origin Ahmed --prune'
+            bat 'git reset --hard origin/Ahmed'
 
             // Get the latest commit SHA in the local branch
             def localCommit = bat(script: 'git rev-parse HEAD', returnStdout: true).trim()
@@ -33,6 +34,7 @@ stage('Check for Changes') {
         }
     }
 }
+
 
 
         stage('Checkout') {
