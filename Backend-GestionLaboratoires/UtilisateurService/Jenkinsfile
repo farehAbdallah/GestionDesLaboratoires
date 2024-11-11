@@ -45,7 +45,8 @@ pipeline {
                 script {
                     withSonarQubeEnv('SonarQube') {
                         dir('Backend-GestionLaboratoires/UtilisateurService') {
-                                    bat 'mvn clean package sonar:sonar'                        }
+                            bat "mvn sonar:sonar -Dsonar.projectKey=gestion-laboratoires-utilisateur -Dsonar.projectVersion=${BUILD_ID} -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${SONARQUBE_TOKEN}"
+                        }
                     }
                 }
             }
@@ -54,9 +55,11 @@ pipeline {
         stage('SonarQube Quality Gate') {
             steps {
                 script {
-                    timeout(time: 5, unit: 'MINUTES') { // Extend timeout if needed
-                          waitForQualityGate abortPipeline: true
-
+                    // Increase timeout to allow SonarQube extra time for large projects or heavy loads
+                    timeout(time: 10, unit: 'MINUTES') {
+                        def qualityGate = waitForQualityGate()
+                        if (qualityGate.status != 'OK') {
+                            error "Pipeline aborted due to quality gate failure: ${qualityGate.status}"
                         }
                     }
                 }
