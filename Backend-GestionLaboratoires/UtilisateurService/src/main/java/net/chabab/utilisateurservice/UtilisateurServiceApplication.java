@@ -1,10 +1,6 @@
 package net.chabab.utilisateurservice;
-
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-
 @SpringBootApplication
 public class UtilisateurServiceApplication {
 
@@ -13,9 +9,5 @@ public class UtilisateurServiceApplication {
         SpringApplication.run(UtilisateurServiceApplication.class, args);
 
     }
-
-
-
-
 
 }
