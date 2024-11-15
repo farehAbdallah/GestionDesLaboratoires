@@ -16,6 +16,16 @@ pipeline{
                 }
             }
         }
+        stage('SonarQube Analysis') {
+
+            steps {
+                    withSonarQubeEnv('SonarQube') {
+                        dir('Backend-GestionLaboratoires/GestionAnalyse') {
+                            bat 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
         stage('build docker image'){
             steps{
                 dir('Backend-GestionLaboratoires/GestionAnalyse') {
