@@ -32,5 +32,16 @@ pipeline{
                 }
             }
         }
+        stage('Apply Kubernetes Configuration') {
+            steps {
+                dir('Backend-GestionLaboratoires/GestionAnalyse') {
+                    // Apply Kubernetes files using kubectl
+                    bat 'kubectl apply -f ../../k8s/GestionAnalyse/mysql-pvc.yaml'
+                    bat 'kubectl apply -f ../../k8s/GestionAnalyse/mysql-secret.yaml'
+                    bat 'kubectl apply -f ../../k8s/GestionAnalyse/mysql-gestionanalyse.yaml'
+                    bat 'kubectl apply -f ../../k8s/GestionAnalyse/gestionanalyse.yaml'
+                }
+            }
+        }
     }
 }

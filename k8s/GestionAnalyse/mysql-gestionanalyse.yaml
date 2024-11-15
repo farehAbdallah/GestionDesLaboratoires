@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-gestionanalyse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-gestionanalyse
+  template:
+    metadata:
+      labels:
+        app: mysql-gestionanalyse
+    spec:
+      containers:
+        - name: mysql-gestionanalyse
+          image: mysql:5.7
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-gestionanalyse-secret
+                  key: password
+            - name: MYSQL_DATABASE
+              value: "gestionlaboanalyseDB"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-gestionanalyse
+spec:
+  selector:
+    app: mysql-gestionanalyse
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
