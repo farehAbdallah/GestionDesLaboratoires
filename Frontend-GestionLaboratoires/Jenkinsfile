@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        NODE_VERSION = '20.11.1' // Adjust Node.js version to match your project requirements
+        NODE_HOME = "${tool 'NodeJS'}" // Adjust 'NodeJS-20' to match your Jenkins NodeJS tool configuration name
+        PATH = "${NODE_HOME}/bin:${env.PATH}" // Ensure Node.js is in the PATH
     }
 
     stages {
@@ -16,9 +17,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo "Installing dependencies..."
-                sh '''
-                    # Ensure Node.js is installed and available
-                    nvm use $NODE_VERSION || nvm install $NODE_VERSION
+                bat '''
                     node -v
                     npm install
                 '''
@@ -28,14 +27,14 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo "Running tests with Jest..."
-                sh 'npm run test -- --watch=false'
+                bat 'npm run test -- --watch=false'
             }
         }
 
         stage('Build Application') {
             steps {
                 echo "Building the Angular application..."
-                sh 'npm run build -- --configuration=production'
+                bat 'npm run build -- --configuration=production'
             }
         }
 
@@ -52,8 +51,8 @@ pipeline {
             }
             steps {
                 echo "Deploying the Angular application..."
-                // Replace with your actual deployment steps (e.g., FTP, AWS S3, etc.)
-                sh 'echo "Deployment step here"'
+                // Replace with your actual deployment steps
+                bat 'echo "Deployment step here"'
             }
         }
     }
