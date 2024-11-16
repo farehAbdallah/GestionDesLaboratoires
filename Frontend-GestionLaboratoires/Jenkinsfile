@@ -9,50 +9,63 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo "Cloning the repository..."
-                checkout scm
+                dir('Frontend-GestionLaboratoires'){    
+                    echo "Cloning the repository..."
+                    checkout scm
+                }
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo "Installing dependencies..."
-                bat '''
-                    node -v
-                    npm install
-                '''
+                dir('Frontend-GestionLaboratoires'){
+                    echo "Installing dependencies..."
+                    bat '''
+                        node -v
+                        npm install
+                    '''
+                }
             }
         }
 
         stage('Run Tests') {
             steps {
-                echo "Running tests with Jest..."
-                bat 'npm run test -- --watch=false'
+                dir('Frontend-GestionLaboratoires'){
+                    echo "Running tests with Jest..."
+                    bat 'npm run test -- --watch=false'
+                }
             }
         }
 
         stage('Build Application') {
             steps {
-                echo "Building the Angular application..."
-                bat 'npm run build -- --configuration=production'
+                dir('Frontend-GestionLaboratoires'){
+                    echo "Building the Angular application..."
+                    bat 'npm run build -- --configuration=production'
+                }
             }
         }
 
         stage('Archive Build') {
             steps {
-                echo "Archiving build artifacts..."
-                archiveArtifacts artifacts: 'dist/**', fingerprint: true
+                dir('Frontend-GestionLaboratoires'){
+                    echo "Archiving build artifacts..."
+                    archiveArtifacts artifacts: 'dist/**', fingerprint: true
+                    
+                }
             }
         }
 
         stage('Deploy') {
             when {
-                branch 'main' // Only deploy from the main branch
+                branch 'farehAbdallah' // Only deploy from the main branch
             }
             steps {
-                echo "Deploying the Angular application..."
-                // Replace with your actual deployment steps
-                bat 'echo "Deployment step here"'
+                dir('Frontend-GestionLaboratoires'){
+                    echo "Deploying the Angular application..."
+                    // Replace with your actual deployment steps
+                    bat 'echo "Deployment step here"'
+                }
             }
         }
     }
