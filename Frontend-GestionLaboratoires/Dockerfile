@@ -8,6 +8,9 @@ WORKDIR /app
 COPY Frontend-GestionLaboratoires/package*.json ./
 RUN npm install
 
+# Install Angular CLI globally
+RUN npm install -g @angular/cli
+
 # Copy the rest of the application code
 COPY Frontend-GestionLaboratoires/ .
 
