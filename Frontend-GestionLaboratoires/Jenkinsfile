@@ -62,7 +62,7 @@ pipeline {
 
         stage('Docker Push') {
             when {
-                branch 'farehAbdallah' // Only push to Docker registry from the main branch
+                branch 'farehAbdallah' // Only push to Docker registry from the farehAbdallah branch
             }
             steps {
                 script{
