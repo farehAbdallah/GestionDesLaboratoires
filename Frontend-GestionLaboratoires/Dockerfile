@@ -14,5 +14,5 @@ COPY Frontend-GestionLaboratoires/ .
 # Expose port 4200 to the host
 EXPOSE 4200
 
-# Command to run the Angular app
-CMD ["npm", "run", "start"]
+# Command to run the Angular app and allow external access
+CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200"]
