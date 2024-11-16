@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         NODE_HOME = "${tool 'NodeJS'}" // Adjust 'NodeJS-20' to match your Jenkins NodeJS tool configuration name
-        PATH = "${NODE_HOME}/bin:${env.PATH}" // Ensure Node.js is in the PATH
     }
 
     stages {
