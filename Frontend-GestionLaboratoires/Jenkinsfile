@@ -3,9 +3,6 @@ pipeline {
 
     environment {
         NODE_HOME = "${tool 'NodeJS'}" // Adjust 'NodeJS-20' to match your Jenkins NodeJS tool configuration name
-        DOCKER_IMAGE_NAME = 'frontend-gestion-laboratoires' // Define your Docker image name
-        DOCKER_REGISTRY = 'your-docker-registry' // Define your Docker registry URL (e.g., DockerHub, AWS ECR)
-        DOCKER_TAG = 'latest' // Define the Docker tag (you can use the Git commit hash or version here)
     }
 
     stages {
