@@ -1,6 +1,6 @@
 package net.chabab.gestionanalyse;
 
-import net.chabab.gestionanalyse.web.AnalyseRestController;
+import net.chabab.gestionanalyse.web.AnalyseController;
 import net.chabab.gestionanalyse.repository.AnalyseRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class GestionAnalyseApplicationTests {
 
     @Autowired
-    private AnalyseRestController analyseRestController;
+    private AnalyseController analyseRestController;
 
     @Autowired
     private AnalyseRepository analyseRepository;
