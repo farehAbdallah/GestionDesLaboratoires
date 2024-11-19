@@ -19,6 +19,8 @@ spec:
             - containerPort: 8080
           imagePullPolicy: Always
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "k8s"  # Activate the Kubernetes profile
             - name: SPRING_DATASOURCE_URL
               value: jdbc:mysql://mysql-gestionanalyse:3306/gestionlaboanalyseDB
             - name: SPRING_DATASOURCE_USERNAME
