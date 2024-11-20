@@ -7,14 +7,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -76,7 +77,6 @@ class LaboratoireRestControllerSeleniumTest {
         System.out.println("ID of Micro Labo: " + labo1.getId());
         System.out.println("ID of Wild Labo: " + labo2.getId());
     }
-
     @AfterAll
     void tearDown() {
         if (driver != null) {
@@ -85,10 +85,25 @@ class LaboratoireRestControllerSeleniumTest {
     }
 
     @Test
+    void testCreateLaboratoire() {
+        driver.get("http://localhost:8085/laboratoires/new");
+
+        WebElement nameField = driver.findElement(By.id("nom"));
+        WebElement nrcField = driver.findElement(By.id("nrc"));
+        WebElement submitButton = driver.findElement(By.id("submit"));
+
+        nameField.sendKeys("New Labo");
+        nrcField.sendKeys("6789");
+        submitButton.click();
+
+        String pageSource = driver.getPageSource();
+        assertTrue(pageSource.contains("New Labo"));
+    }
+
+    @Test
     void testGetAllLaboratoires() {
         driver.get("http://localhost:8085/laboratoires");
 
-        // Verify that seeded laboratory names appear on the page
         String pageSource = driver.getPageSource();
         assertTrue(pageSource.contains("Micro Labo"));
         assertTrue(pageSource.contains("Wild Labo"));
@@ -100,6 +115,31 @@ class LaboratoireRestControllerSeleniumTest {
 
         WebElement body = driver.findElement(By.tagName("body"));
         String bodyText = body.getText();
-        assertTrue(bodyText.contains("Micro Labo"));  // Check for expected lab name
+        assertTrue(bodyText.contains("Micro Labo"));
+    }
+
+    @Test
+    void testUpdateLaboratoire() {
+        driver.get("http://localhost:8085/laboratoires/edit/" + labo1.getId());
+
+        WebElement nameField = driver.findElement(By.id("nom"));
+        WebElement submitButton = driver.findElement(By.id("submit"));
+
+        nameField.clear();
+        nameField.sendKeys("Updated Labo");
+        submitButton.click();
+
+        driver.get("http://localhost:8085/laboratoires/" + labo1.getId());
+        String pageSource = driver.getPageSource();
+        assertTrue(pageSource.contains("Updated Labo"));
+    }
+
+    @Test
+    void testDeleteLaboratoire() {
+        driver.get("http://localhost:8085/laboratoires/delete/" + labo2.getId());
+
+        driver.get("http://localhost:8085/laboratoires");
+        String pageSource = driver.getPageSource();
+        assertTrue(!pageSource.contains("Wild Labo"));
     }
 }
