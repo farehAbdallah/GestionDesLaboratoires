@@ -3,7 +3,6 @@ package net.chabab.laboratoireservice.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -13,16 +12,16 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Laboratoire {
+public class Adresse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nom;
-    private String logo;
-    private String nrc;
-    private boolean active;
-    private LocalDate dateActivation;
+    private String numVoie;
+    private String nomVoie;
+    private String codePostal;
+    private String ville;
+    private String commune;
 
-    @OneToMany(mappedBy = "laboratoire", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "adresse", cascade = CascadeType.ALL)
     private List<ContactLaboratoire> contacts;
 }
