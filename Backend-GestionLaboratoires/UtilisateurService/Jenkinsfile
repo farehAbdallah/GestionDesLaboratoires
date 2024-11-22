@@ -1,23 +1,23 @@
 pipeline {
     agent any
     tools {
-        maven "Maven"
+        maven "Maven" // Replace with your Maven installation name in Jenkins
     }
     environment {
-        SONARQUBE_TOKEN = credentials('sonarqube-token')
+        IMAGE_NAME = "musashi93/utilisateur-service"
+        VERSION = "${env.BUILD_NUMBER}" // Use Jenkins build number as the version
+        SONARQUBE_TOKEN = credentials('sonarqube-token') // SonarQube token stored in Jenkins credentials
     }
     stages {
 
         stage('Checkout') {
-
             steps {
-                // Clone the full repository from GitHub
+                // Clone the repository from GitHub
                 git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'Ahmed'
             }
         }
 
-        stage('Build and Test utilisateur Service') {
-
+        stage('Build and Test Utilisateur Service') {
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
                     // Run Maven build and tests
@@ -25,44 +25,51 @@ pipeline {
                 }
             }
         }
-        stage('SonarQube Analysis') {
 
+        stage('SonarQube Analysis') {
             steps {
-                    withSonarQubeEnv('SonarQube') {
-                        dir('Backend-GestionLaboratoires/UtilisateurService') {
-                            bat 'mvn sonar:sonar'
+                withSonarQubeEnv('SonarQube') {
+                    dir('Backend-GestionLaboratoires/UtilisateurService') {
+                        bat 'mvn sonar:sonar'
                     }
                 }
             }
         }
 
         stage('Build Docker Image') {
-
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
-                    // Build the Docker image with a specific tag
-                    bat 'docker build -t musashi93/utilisateur-service:1.0 .'
+                    // Build the Docker image with a versioned tag
+                    bat "docker build -t ${IMAGE_NAME}:${VERSION} ."
                 }
             }
         }
 
         stage('Push Docker Image') {
-
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
-                        bat 'docker push musashi93/utilisateur-service:1.0'
+                        // Push the Docker image to Docker Hub
+                        bat "docker push ${IMAGE_NAME}:${VERSION}"
                     }
                 }
             }
         }
 
-        stage('Deploy to Minikube') {
+        stage('Update Kubernetes Deployment') {
+            steps {
+                dir('Backend-GestionLaboratoires/UtilisateurService') {
+                    // Dynamically update the Kubernetes deployment YAML file with the new image tag
+                    bat "sed -i \"s|image: ${IMAGE_NAME}:.*|image: ${IMAGE_NAME}:${VERSION}|g\" ../../k8s/Service-Utilisateurs-Deployment.yaml"
+                }
+            }
+        }
 
+        stage('Deploy to Minikube') {
             steps {
                 withCredentials([string(credentialsId: 'kubeconfig-text', variable: 'KUBECONFIG_PATH')]) {
-                    // Apply the Kubernetes deployment file to Minikube
-                    bat "kubectl --kubeconfig=%KUBECONFIG_PATH% apply -f k8s/Service-Utilisateurs-Deployment.yaml"
+                    // Apply the updated Kubernetes deployment file to Minikube
+                    bat "kubectl --kubeconfig=%KUBECONFIG_PATH% apply -f Backend-GestionLaboratoires/k8s/Service-Utilisateurs-Deployment.yaml"
                 }
             }
         }
@@ -71,9 +78,12 @@ pipeline {
     post {
         success {
             script {
-                if (currentBuild.description != "CHANGED") {
-                    echo 'No changes to build. Job marked as successful without build steps.'
-                }
+                echo "Pipeline completed successfully. Docker image ${IMAGE_NAME}:${VERSION} has been deployed."
+            }
+        }
+        failure {
+            script {
+                echo "Pipeline failed. Check the logs for details."
             }
         }
     }
