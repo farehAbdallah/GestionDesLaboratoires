@@ -36,7 +36,26 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
 
+            steps {
+                dir('Backend-GestionLaboratoires/UtilisateurService') {
+                    // Build the Docker image with a specific tag
+                    bat 'docker build -t musashi93/utilisateur-service:latest .'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                        bat 'docker push musashi93/utilisateur-service:latest'
+                    }
+                }
+            }
+        }
 
         stage('Deploy to Minikube') {
 
