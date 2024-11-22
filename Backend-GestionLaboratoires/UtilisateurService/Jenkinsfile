@@ -59,11 +59,14 @@ pipeline {
         stage('Update Kubernetes Deployment') {
             steps {
                 dir('Backend-GestionLaboratoires/UtilisateurService') {
-                    // Dynamically update the Kubernetes deployment YAML file with the new image tag
-                    bat "sed -i \"s|image: ${IMAGE_NAME}:.*|image: ${IMAGE_NAME}:${VERSION}|g\" ../../k8s/Service-Utilisateurs-Deployment.yaml"
+                    // Use PowerShell to dynamically update the image tag in the YAML file
+                    powershell """
+                    (Get-Content ../../k8s/Service-Utilisateurs-Deployment.yaml) -replace 'image: musashi93/utilisateur-service:.*', 'image: musashi93/utilisateur-service:${VERSION}' | Set-Content ../../k8s/Service-Utilisateurs-Deployment.yaml
+                    """
                 }
             }
         }
+
 
         stage('Deploy to Minikube') {
             steps {
