@@ -19,6 +19,16 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public UtilisateurDTO createUtilisateur(UtilisateurDTO utilisateurDTO) {
+        if (utilisateurDTO == null) {
+            throw new IllegalArgumentException("UtilisateurDTO cannot be null");
+        }
+        if (utilisateurDTO.getEmail() == null || utilisateurDTO.getEmail().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+        if (utilisateurRepository.findByEmail(utilisateurDTO.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
+        }
+
         Utilisateur utilisateur = UtilisateurMapper.INSTANCE.toEntity(utilisateurDTO);
         Utilisateur savedUtilisateur = utilisateurRepository.save(utilisateur);
         return UtilisateurMapper.INSTANCE.toDto(savedUtilisateur);
@@ -26,6 +36,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public UtilisateurDTO getUtilisateurById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
         Utilisateur utilisateur = utilisateurRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         return UtilisateurMapper.INSTANCE.toDto(utilisateur);
@@ -41,6 +54,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public UtilisateurDTO updateUtilisateur(Long id, UtilisateurDTO utilisateurDTO) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        if (utilisateurDTO == null || utilisateurDTO.getEmail() == null || utilisateurDTO.getEmail().isEmpty()) {
+            throw new IllegalArgumentException("UtilisateurDTO or email cannot be null or empty");
+        }
+
         Utilisateur utilisateur = utilisateurRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
@@ -58,6 +78,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public void deleteUtilisateur(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid ID");
+        }
         if (!utilisateurRepository.existsById(id)) {
             throw new RuntimeException("Utilisateur non trouvé");
         }

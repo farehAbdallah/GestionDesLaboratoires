@@ -1,8 +1,10 @@
 package net.chabab.utilisateurservice.dtos;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class UtilisateurDTO {
     private Long idUtilisateur;
     private String email;
