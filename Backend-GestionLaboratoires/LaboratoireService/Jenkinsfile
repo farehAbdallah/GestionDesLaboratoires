@@ -1,0 +1,47 @@
+pipeline{
+    agent any
+    tools {
+        maven "Maven"
+    }
+    stages{
+        stage('checkout'){
+            steps{
+                git url: 'https://github.com/farehAbdallah/GestionDesLaboratoires.git', branch: 'tissirAyman'
+            }
+        }
+        stage('Build and test GestionLaboratoire'){
+            steps{
+                dir('Backend-GestionLaboratoires/LaboratoireService') {
+                    bat 'mvn clean install'
+                }
+            }
+        }
+        stage('SonarQube Analysis') {
+
+            steps {
+                    withSonarQubeEnv('SonarQube') {
+                        dir('Backend-GestionLaboratoires/LaboratoireService') {
+                            bat 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
+        stage('build docker image'){
+            steps{
+                dir('Backend-GestionLaboratoires/LaboratoireService') {
+                    bat 'docker build -t ayman104/gestionlaboratoire:latest .'
+                }
+            }
+        }
+        stage('Push Docker Image to DockerHub'){
+            steps{
+                script{
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                        bat 'docker push ayman104/gestionlaboratoire:latest'
+                    }
+                }
+            }
+        }
+
+    }
+}
