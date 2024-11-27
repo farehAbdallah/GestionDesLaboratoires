@@ -10,4 +10,5 @@ public interface UtilisateurService {
     List<UtilisateurDTO> getAllUtilisateurs();
     UtilisateurDTO updateUtilisateur(Long id, UtilisateurDTO utilisateurDTO);
     void deleteUtilisateur(Long id);
+    boolean isEmailValid(String email);
 }

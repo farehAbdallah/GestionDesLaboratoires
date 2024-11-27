@@ -38,4 +38,9 @@ public class UtilisateurController {
     public void deleteUtilisateur(@PathVariable Long id) {
         utilisateurService.deleteUtilisateur(id);
     }
+
+    @GetMapping("/validate-email")
+    public boolean isEmailValid(@RequestParam String email) {
+        return utilisateurService.isEmailValid(email); // Delegate to the service layer
+    }
 }
