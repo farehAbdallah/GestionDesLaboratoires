@@ -1,0 +1,57 @@
+pipeline{
+    agent any
+    tools {
+        maven "Maven"
+    }
+    stages{
+        stage('checkout'){
+            steps{
+                git url: 'git@github.com:farehAbdallah/GestionDesLaboratoires.git', branch: 'farehAbdallah'
+            }
+        }
+        stage('Build and test GestionAnalyse'){
+            steps{
+                dir('Backend-GestionLaboratoires/GestionAnalyse') {
+                    bat 'mvn clean install'
+                }
+            }
+        }
+        stage('SonarQube Analysis') {
+
+            steps {
+                    withSonarQubeEnv('SonarQube') {
+                        dir('Backend-GestionLaboratoires/GestionAnalyse') {
+                            bat 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
+        stage('build docker image'){
+            steps{
+                dir('Backend-GestionLaboratoires/GestionAnalyse') {
+                    bat 'docker build -t farehabdallah/gestionanalyse:latest .'
+                }
+            }
+        }
+        stage('Push Docker Image to DockerHub'){
+            steps{
+                script{
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                        bat 'docker push farehabdallah/gestionanalyse:latest'
+                    }
+                }
+            }
+        }
+        stage('Apply Kubernetes Configuration') {
+            steps {
+                dir('Backend-GestionLaboratoires/GestionAnalyse') {
+                    // Apply Kubernetes files using kubectl
+                    bat 'kubectl apply -f ../../k8s/GestionAnalyse/mysql-pvc.yaml'
+                    bat 'kubectl apply -f ../../k8s/GestionAnalyse/mysql-secret.yaml'
+                    bat 'kubectl apply -f ../../k8s/GestionAnalyse/mysql-gestionanalyse.yaml'
+                    bat 'kubectl apply -f ../../k8s/GestionAnalyse/gestionanalyse.yaml'
+                }
+            }
+        }
+    }
+}

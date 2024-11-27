@@ -1,6 +1,5 @@
-package net.chabab.laboratoireservice.entities;
+package net.chabab.laboratoireservice.dtos;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -12,17 +11,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-public class Laboratoire {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class LaboratoireDTO {
     private Long id;
     private String nom;
     private String logo;
     private String nrc;
     private boolean active;
     private LocalDate dateActivation;
-
-    @OneToMany(mappedBy = "laboratoire", cascade = CascadeType.ALL)
-    private List<ContactLaboratoire> contacts;
+    private List<ContactLaboratoireDTO> contacts;
 }

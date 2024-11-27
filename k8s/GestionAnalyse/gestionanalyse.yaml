@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gestionanalyse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gestionanalyse
+  template:
+    metadata:
+      labels:
+        app: gestionanalyse
+    spec:
+      containers:
+        - name: gestionanalyse
+          image: farehabdallah/gestionanalyse:latest
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "k8s"  # Activate the Kubernetes profile
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql-gestionanalyse:3306/gestionlaboanalyseDB
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-gestionanalyse-secret
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-gestionanalyse-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gestionanalyse
+spec:
+  selector:
+    app: gestionanalyse
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      name: http
+  type: ClusterIP

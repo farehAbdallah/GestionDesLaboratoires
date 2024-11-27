@@ -1,12 +1,16 @@
 package net.chabab.gestionanalyse.entites;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
-@NoArgsConstructor @AllArgsConstructor @Getter @Setter @ToString @Builder
+import java.util.List;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@Builder
 @Entity
 public class Analyse {
     @Id
@@ -14,4 +18,8 @@ public class Analyse {
     private Long id;
     private String nom;
     private String description;
+
+    @OneToMany(mappedBy = "analyse", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude // Évite les boucles infinies lors de la génération de `toString`
+    private List<Epreuve> epreuves;
 }
