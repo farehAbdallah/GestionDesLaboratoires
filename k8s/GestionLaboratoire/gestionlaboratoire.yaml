@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gestionlaboratoire
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gestionlaboratoire
+  template:
+    metadata:
+      labels:
+        app: gestionlaboratoire
+    spec:
+      containers:
+        - name: gestionlaboratoire
+          image: ayman104/gestionlaboratoire:latest
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql-gestionlaboratoire:3306/gestionlabolaboratoireDB
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-gestionlaboratoire-secret
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-gestionlaboratoire-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gestionlaboratoire
+spec:
+  selector:
+    app: gestionlaboratoire
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      name: http
+  type: ClusterIP
