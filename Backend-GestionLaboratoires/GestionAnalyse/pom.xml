@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.chabab</groupId>
-    <artifactId>GesionAnalyse</artifactId>
+    <artifactId>GestionAnalyse</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>GesionAnalyse</name>
     <description>GesionAnalyse</description>
