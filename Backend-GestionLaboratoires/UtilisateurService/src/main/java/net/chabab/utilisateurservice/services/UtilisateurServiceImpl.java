@@ -87,4 +87,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateurRepository.deleteById(id);
     }
 
+    @Override
+    public boolean isEmailValid(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+        return utilisateurRepository.existsByEmail(email);
+    }
+
+
 }

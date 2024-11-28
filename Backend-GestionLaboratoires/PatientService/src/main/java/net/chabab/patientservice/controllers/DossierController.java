@@ -3,6 +3,7 @@ package net.chabab.patientservice.controllers;
 import net.chabab.patientservice.dtos.DossierDTO;
 import net.chabab.patientservice.services.DossierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class DossierController {
     private DossierService dossierService;
 
     @PostMapping
-    public DossierDTO createDossier(@RequestBody DossierDTO dossierDTO) {
+    public DossierDTO createDossier(@Validated @RequestBody DossierDTO dossierDTO) {
         return dossierService.createDossier(dossierDTO);
     }
 

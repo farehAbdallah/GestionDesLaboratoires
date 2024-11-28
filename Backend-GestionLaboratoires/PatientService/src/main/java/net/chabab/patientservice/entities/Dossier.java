@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -29,4 +30,8 @@ public class Dossier {
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date date; // Date associated with the Dossier
+
+    @OneToMany(mappedBy = "dossier", cascade = CascadeType.ALL)
+    private List<Examin> examins; // One dossier can have multiple examinations
+
 }
