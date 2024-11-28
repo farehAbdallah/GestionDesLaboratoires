@@ -25,7 +25,7 @@ public class DossierServiceImpl implements DossierService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String utilisateurServiceUrl = "http://utilisateur-service/api/utilisateurs/validate-email";
+    private final String utilisateurServiceUrl = "http://localhost:8081/api/utilisateurs/validate-email";
 
     @Override
     public DossierDTO createDossier(DossierDTO dossierDTO) {
