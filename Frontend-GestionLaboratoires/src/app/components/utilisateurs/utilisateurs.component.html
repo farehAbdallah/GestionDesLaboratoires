@@ -1,0 +1,126 @@
+<div nz-row nzJustify="space-between" nzAlign="middle">
+  <div nz-col>
+    <button nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
+      <span nz-icon nzType="plus"></span>
+      Ajouter
+    </button>
+  </div>
+  <div nz-col>
+    <div nz-row>
+      <div nz-col>
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input [(ngModel)]="searchName" (ngModelChange)="onSearchNameChange()" placeholder="Chercher par nom" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search"></span>
+        </ng-template>
+      </div>
+      <div nz-col style="margin-left: 10px">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input [(ngModel)]="searchAddresse" (ngModelChange)="onSearchAddresseChange()" placeholder="Chercher par addresse" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search"></span>
+        </ng-template>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+
+<br />
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Add New User" [nzOkLoading]="isOkLoading" (nzOnOk)="handleOk()" (nzOnCancel)="handleCancel()">
+  <form nz-form [formGroup]="addForm">
+    <nz-form-item>
+      <nz-form-label [nzFor]="'name'">Name</nz-form-label>
+      <nz-form-control [nzErrorTip]="'Please input the name!'">
+        <input nz-input formControlName="name" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzFor]="'age'">Age</nz-form-label>
+      <nz-form-control [nzErrorTip]="'Please input the age!'">
+        <input nz-input formControlName="age" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzFor]="'address'">Address</nz-form-label>
+      <nz-form-control [nzErrorTip]="'Please input the address!'">
+        <input nz-input formControlName="address" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+
+<nz-table #editRowTable nzBordered [nzData]="filteredData">
+  <thead>
+  <tr>
+    <th nzWidth="25%">Nom</th>
+    <th nzWidth="10%">Age</th>
+    <th nzWidth="40%">Address</th>
+    <th nzWidth="25%">Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of editRowTable.data;">
+    <td>
+      <div class="editable-cell" [hidden]="editId === data.id">
+        {{ data.name }}
+      </div>
+      <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.name" />
+    </td>
+
+    <td>
+      <div class="editable-cell" [hidden]="editId === data.id">
+        {{ data.age }}
+      </div>
+      <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.age" />
+    </td>
+
+    <td>
+      <div class="editable-cell" [hidden]="editId === data.id">
+        {{ data.address }}
+      </div>
+      <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.address" />
+    </td>
+
+    <td>
+      <div nz-row>
+        <div nz-col style="margin-right: 10px">
+          <button nz-button [hidden]="editId === data.id" (click)="startEdit(data.id)" nzType="primary">
+            <span nz-icon nzType="edit"></span>
+            Modifier
+          </button>
+        </div>
+        <div nz-col>
+          <button nz-button nzDanger nzType="primary" nz-popconfirm nzPopconfirmTitle="Sure to delete?" [hidden]="editId === data.id" (nzOnConfirm)="deleteRow(data.id)">
+            <span nz-icon nzType="delete"></span>
+            Supprimer
+          </button>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col style="margin-right: 10px">
+          <button nz-button [hidden]="editId !== data.id" (click)="saveEdit()" nzType="default">
+            <span nz-icon nzType="check"></span>
+            Enregistrer
+          </button>
+        </div>
+        <div nz-col>
+          <button nz-button nzDanger [hidden]="editId !== data.id" (click)="cancelEdit()" nzType="default">
+            <span nz-icon nzType="close"></span>
+            Annuler
+          </button>
+        </div>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
