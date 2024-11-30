@@ -1,0 +1,55 @@
+<div class="login-page-container">
+
+  <div class="login-left-content">
+    <div class="login-left-content-container">
+      <h1>Gestion avancée pour laboratoires modernes</h1>
+      <p><span nz-icon nzType="safety" nzTheme="outline"></span> Vos données protégées à tout moment.</p>
+      <p><span nz-icon nzType="profile" nzTheme="outline"></span> Simplifiez vos tâches quotidiennes.</p>
+      <p><span nz-icon nzType="team" nzTheme="outline"></span> Une équipe prête à vous accompagner.</p>
+
+    </div>
+  </div>
+  <div class="login-right-content">
+    <div class="login-right-content-container">
+      <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+        <div class="login-form-header">
+          <h1 class="primary-blue-color">Accédez à votre laboratoire</h1>
+          <p>Connectez-vous pour gérer vos analyses et optimiser vos tâches</p>
+        </div>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Veuillez saisir votre nom d'utilisateur !">
+            <nz-form-label>Nom d'utilisateur</nz-form-label>
+            <nz-input-group nzSize="large" nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="username" placeholder="Nom d'utilisateur" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Veuillez saisir votre mot de passe !">
+            <nz-form-label>Mot de passe</nz-form-label>
+            <nz-input-group nzSize="large" nzPrefixIcon="lock">
+              <input type="password" nz-input formControlName="password" placeholder="Mot de passe" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <div nz-row class="login-form-margin">
+          <div nz-col [nzSpan]="12">
+            <label nz-checkbox formControlName="remember">
+              <span>Se souvenir de moi</span>
+            </label>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <a class="login-form-forgot">Mot de passe oublié</a>
+          </div>
+        </div>
+        <div style="text-align: center">
+          <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" nzSize="large">Se connecter</button>
+          Vous n'avez pas de compte ?
+          <a>Inscrivez-vous maintenant !</a>
+        </div>
+      </form>
+
+    </div>
+
+  </div>
+</div>
