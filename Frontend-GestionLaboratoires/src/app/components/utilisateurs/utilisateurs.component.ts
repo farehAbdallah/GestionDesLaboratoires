@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -7,9 +13,9 @@ import { NzIconDirective, NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzRowDirective } from 'ng-zorro-antd/grid';
-import {NzModalComponent, NzModalContentDirective, NzModalService} from 'ng-zorro-antd/modal';
-import {NzFormControlComponent, NzFormLabelComponent} from 'ng-zorro-antd/form';
+import {NzColDirective, NzRowDirective} from 'ng-zorro-antd/grid';
+import {NzModalComponent, NzModalContentDirective, NzModalFooterDirective, NzModalService} from 'ng-zorro-antd/modal';
+import {NzFormControlComponent, NzFormDirective, NzFormLabelComponent} from 'ng-zorro-antd/form';
 
 interface ItemData {
   id: string;
@@ -34,7 +40,10 @@ interface ItemData {
     NzModalContentDirective,
     NzFormControlComponent,
     NzFormLabelComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NzColDirective,
+    NzFormDirective,
+    NzModalFooterDirective
   ],
   providers: [NzModalService],
   templateUrl: './utilisateurs.component.html',
@@ -55,20 +64,47 @@ export class UtilisateursComponent implements OnInit {
   filteredData: ItemData[] = [];
 
   // Form for adding new data
-  addForm: FormGroup;
+  validateForm: FormGroup;
 
-  constructor(private modalService: NzModalService, private fb: FormBuilder) {
-    this.addForm = this.fb.group({
-      name: ['', [Validators.required]],
-      age: ['', [Validators.required]],
-      address: ['', [Validators.required]]
+  constructor(private modalService: NzModalService, private fb: NonNullableFormBuilder) {
+    this.validateForm = this.fb.group({
+      name: this.fb.control('', [Validators.required]),
+      address: this.fb.control('', [Validators.required]),
+      age: this.fb.control(0)
     });
   }
+
 
 
   ngOnInit(): void {
     this.addRow();
     this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+    this.addRow();
+
     this.filteredData = [...this.listOfData]; // Initialize filtered data
   }
 
@@ -94,6 +130,7 @@ export class UtilisateursComponent implements OnInit {
     }
     this.editId = null;
     this.originalData = null;
+    this.filterData();
   }
 
   addRow(): void {
@@ -152,26 +189,48 @@ export class UtilisateursComponent implements OnInit {
     this.isVisible = true;
   }
 
-  // Handle form submission
-  handleOk(): void {
-    if (this.addForm.valid) {
-      const { name, age, address } = this.addForm.value;
-      const newRow: ItemData = {
+  handleCancel(): void {
+    this.isVisible = false;
+    this.validateForm.reset();
+  }
+
+
+
+
+
+
+
+  submitForm(): void {
+    if (this.validateForm.valid) {
+      this.isOkLoading = true
+      console.log('submit', this.validateForm.value);
+      const newRow = {
         id: `${this.i}`,
-        name,
-        age,
-        address
+        ...this.validateForm.value
       };
       this.listOfData = [...this.listOfData, newRow];
+      setTimeout(() => {
+        this.isOkLoading = false
+        this.isVisible = false
+        this.filterData();
+      }, 3000);
       this.i++;
-      this.isVisible = false; // Close modal
-      this.addForm.reset(); // Reset form
+
+
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
   }
 
-  // Handle modal cancel
-  handleCancel(): void {
-    this.isVisible = false;
-    this.addForm.reset(); // Reset form on cancel
+
+  handleOk() {
+    this.submitForm()
+
+
   }
 }

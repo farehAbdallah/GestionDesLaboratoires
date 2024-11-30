@@ -33,32 +33,36 @@
 
 <br />
 
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Add New User" [nzOkLoading]="isOkLoading" (nzOnOk)="handleOk()" (nzOnCancel)="handleCancel()">
-  <form nz-form [formGroup]="addForm">
-    <nz-form-item>
-      <nz-form-label [nzFor]="'name'">Name</nz-form-label>
-      <nz-form-control [nzErrorTip]="'Please input the name!'">
-        <input nz-input formControlName="name" />
-      </nz-form-control>
-    </nz-form-item>
-
-    <nz-form-item>
-      <nz-form-label [nzFor]="'age'">Age</nz-form-label>
-      <nz-form-control [nzErrorTip]="'Please input the age!'">
-        <input nz-input formControlName="age" />
-      </nz-form-control>
-    </nz-form-item>
-
-    <nz-form-item>
-      <nz-form-label [nzFor]="'address'">Address</nz-form-label>
-      <nz-form-control [nzErrorTip]="'Please input the address!'">
-        <input nz-input formControlName="address" />
-      </nz-form-control>
-    </nz-form-item>
-  </form>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Ajouter Utilisateur"  (nzOnCancel)="handleCancel()">
+  <ng-container *nzModalContent>
+    <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" class="login-form">
+      <nz-form-item class="form-control-margin">
+        <nz-form-label >Nom</nz-form-label>
+        <nz-form-control nzErrorTip="Veuillez entrez votre nom!">
+          <input type="text" nz-input formControlName="name" placeholder="Username" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="form-control-margin">
+        <nz-form-label>Addresse</nz-form-label>
+        <nz-form-control nzErrorTip="Veuillez entrez votre addresse!">
+          <input type="text" nz-input formControlName="address" placeholder="Addresse" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="form-control-margin">
+        <nz-form-label>Age</nz-form-label>
+        <nz-form-control nzErrorTip="Veuillez entrez votre age!">
+          <input type="number" nz-input formControlName="age" placeholder="Age" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">Annuler</button>
+    <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isOkLoading">Enregistrer</button>
+  </div>
 </nz-modal>
 
-<nz-table #editRowTable nzBordered [nzData]="filteredData">
+<nz-table #editRowTable #headerTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '600px' }" nzBordered [nzData]="filteredData">
   <thead>
   <tr>
     <th nzWidth="25%">Nom</th>

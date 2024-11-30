@@ -4,6 +4,6 @@ import {UtilisateursComponent} from './components/utilisateurs/utilisateurs.comp
 
 export const routes: Routes = [
   {path: '', redirectTo: 'accueil', pathMatch: 'full' },
-  {path: 'accueil', component: AccueilComponent},
-  {path: 'utilisateurs', component: UtilisateursComponent}
+  {path: 'accueil', component: AccueilComponent, data: { title: 'Accueil' },},
+  {path: 'utilisateurs', component: UtilisateursComponent, data: { title: 'Gestion des Utilisateurs' },}
 ];
