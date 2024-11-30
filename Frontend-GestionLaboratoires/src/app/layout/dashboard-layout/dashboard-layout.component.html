@@ -43,7 +43,7 @@
       <nz-dropdown-menu #menu2="nzDropdownMenu">
         <ul nz-menu>
           <li nz-menu-item><span style="margin-right: 5px" nz-icon nzType="setting" nzTheme="outline"></span>Parametres</li>
-          <li nz-menu-item nzDanger><span style="margin-right: 5px" nz-icon nzType="logout" nzTheme="outline"></span>Se deconnecter</li>
+          <li [routerLink]="'/login'" nz-menu-item nzDanger><span style="margin-right: 5px" nz-icon nzType="logout" nzTheme="outline" ></span>Se deconnecter</li>
         </ul>
       </nz-dropdown-menu>
     </nz-header>
