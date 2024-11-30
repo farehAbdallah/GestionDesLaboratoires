@@ -1,25 +1,51 @@
 <nz-layout style="height: 100vh;">
   <nz-sider [nzWidth]="300" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
-    <div class="logo"></div>
+    <div [hidden]="isCollapsed" class="logo">Laboratoire-Chabab</div>
+    <div [hidden]="!isCollapsed" class="logo">LB</div>
     <ul nz-menu nzTheme="dark" nzMode="inline" >
-      <li nz-menu-item [routerLink]="'/accueil'" [nzSelected]="true">
+      <li
+        nz-menu-item
+        [routerLink]="'/accueil'"
+        routerLinkActive="active-menu-item"
+        [nzSelected]="isRouteActive('/accueil')"
+      >
         <span nz-icon nzType="home"></span>
         <span>Accueil</span>
       </li>
-      <li nz-menu-item [routerLink]="'/utilisateurs'">
-        <span nz-icon nzType="user"></span>
+      <li
+        nz-menu-item
+        [routerLink]="'/utilisateurs'"
+        routerLinkActive="active-menu-item"
+        [nzSelected]="isRouteActive('/utilisateurs')"
+      >
+        <span nz-icon nzType="usergroup-add"></span>
         <span>Utilisateurs</span>
       </li>
     </ul>
   </nz-sider>
   <nz-layout>
-    <nz-header>
-      <span
-        class="trigger"
-        nz-icon
-        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-        (click)="isCollapsed = !isCollapsed"
-      ></span>
+    <nz-header nz-row nzAlign="middle" nzJustify="space-between">
+      <div nz-col>
+        <span
+          class="trigger"
+          nz-icon
+          [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          (click)="isCollapsed = !isCollapsed"
+        ></span>
+        <span class="trigger-title" style="font-weight: bolder;">{{ pageTitle }}</span>
+      </div>
+      <div nz-col class="avatar">
+        <span class="avatar-user-name">NomUser</span>
+        <button nz-button nzShape="circle" nz-dropdown [nzDropdownMenu]="menu2">
+          <span nz-icon nzType="user"></span>
+        </button>
+      </div>
+      <nz-dropdown-menu #menu2="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item><span style="margin-right: 5px" nz-icon nzType="setting" nzTheme="outline"></span>Parametres</li>
+          <li nz-menu-item nzDanger><span style="margin-right: 5px" nz-icon nzType="logout" nzTheme="outline"></span>Se deconnecter</li>
+        </ul>
+      </nz-dropdown-menu>
     </nz-header>
     <nz-content>
       <div class="inner-content">
@@ -27,6 +53,9 @@
         <router-outlet></router-outlet>
       </div>
     </nz-content>
-    <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    <nz-footer class="footer">
+      Copyright &copy; Tous les droits sont réservés
+      <span class="highlight" >Baba-Tissir-Fareh.</span> 2024
+    </nz-footer>
   </nz-layout>
 </nz-layout>
