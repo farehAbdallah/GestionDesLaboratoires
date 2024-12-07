@@ -16,6 +16,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import {NzColDirective, NzRowDirective} from 'ng-zorro-antd/grid';
 import {NzModalComponent, NzModalContentDirective, NzModalFooterDirective, NzModalService} from 'ng-zorro-antd/modal';
 import {NzFormControlComponent, NzFormDirective, NzFormLabelComponent} from 'ng-zorro-antd/form';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 interface ItemData {
   id: string;
@@ -66,7 +67,7 @@ export class UtilisateursComponent implements OnInit {
   // Form for adding new data
   validateForm: FormGroup;
 
-  constructor(private modalService: NzModalService, private fb: NonNullableFormBuilder) {
+  constructor(private modalService: NzModalService, private fb: NonNullableFormBuilder, private message: NzMessageService) {
     this.validateForm = this.fb.group({
       name: this.fb.control('', [Validators.required]),
       address: this.fb.control('', [Validators.required]),
@@ -119,6 +120,7 @@ export class UtilisateursComponent implements OnInit {
   saveEdit(): void {
     this.editId = null;
     this.originalData = null;
+    this.message.success('Utilisateur modifie avec suuces')
   }
 
   cancelEdit(): void {
@@ -148,6 +150,7 @@ export class UtilisateursComponent implements OnInit {
   deleteRow(id: string): void {
     this.listOfData = this.listOfData.filter(d => d.id !== id);
     this.filterData();  // Filter the data after deleting a row
+    this.message.success('Utilisateur Supprimer avec succes');
   }
 
   filterData(): void{
@@ -186,6 +189,7 @@ export class UtilisateursComponent implements OnInit {
   }
 
   showModal(): void {
+    this.validateForm.reset();
     this.isVisible = true;
   }
 
@@ -213,7 +217,9 @@ export class UtilisateursComponent implements OnInit {
         this.isOkLoading = false
         this.isVisible = false
         this.filterData();
-      }, 3000);
+        this.message.success('Utilisateur Ajoute avec succes')
+
+      }, 2000);
       this.i++;
 
 
