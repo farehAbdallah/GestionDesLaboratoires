@@ -53,12 +53,7 @@ nz-breadcrumb {
   margin: 16px 0;
 }
 
-.inner-content {
-  padding: 24px;
-  background: #fff;
-  flex: 1;
-  overflow: auto;
-}
+
 
 nz-footer {
   text-align: center;
