@@ -1,14 +1,15 @@
-package net.chabab.patientservice.services.impl;
+package net.chabab.patientservice.services;
 
 import net.chabab.patientservice.dtos.DossierDTO;
+import net.chabab.patientservice.feign.UtilisateurFeignClient;
 import net.chabab.patientservice.entities.Dossier;
+import net.chabab.patientservice.entities.Patient;
 import net.chabab.patientservice.mappers.DossierMapper;
 import net.chabab.patientservice.repositories.DossierRepository;
 import net.chabab.patientservice.repositories.PatientRepository;
 import net.chabab.patientservice.services.DossierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,40 +24,27 @@ public class DossierServiceImpl implements DossierService {
     private PatientRepository patientRepository;
 
     @Autowired
-    private RestTemplate restTemplate;
-
-    private final String utilisateurServiceUrl = "http://localhost:8081/api/utilisateurs/validate-email";
+    private UtilisateurFeignClient utilisateurFeignClient;
 
     @Override
     public DossierDTO createDossier(DossierDTO dossierDTO) {
-        // Validate Patient
+        // Valider que l'email utilisateur correspond au patient
+        validatePatientAndEmail(dossierDTO.getPatientId(), dossierDTO.getFkEmailUtilisateur());
+
+        // Valider que le patient existe
         Dossier dossier = DossierMapper.INSTANCE.toEntity(dossierDTO);
         dossier.setPatient(patientRepository.findById(dossierDTO.getPatientId())
-                .orElseThrow(() -> new RuntimeException("Patient with ID " + dossierDTO.getPatientId() + " not found")));
+                .orElseThrow(() -> new RuntimeException("Patient avec ID " + dossierDTO.getPatientId() + " non trouvé")));
 
-        // Validate Utilisateur Email
-        if (!isEmailValid(dossierDTO.getFkEmailUtilisateur())) {
-            throw new RuntimeException("Invalid utilisateur email: " + dossierDTO.getFkEmailUtilisateur());
-        }
-
-        // Save and Return
+        // Sauvegarder le dossier
         Dossier savedDossier = dossierRepository.save(dossier);
         return DossierMapper.INSTANCE.toDto(savedDossier);
-    }
-
-    private boolean isEmailValid(String email) {
-        String url = utilisateurServiceUrl + "?email=" + email;
-        try {
-            return restTemplate.getForObject(url, Boolean.class);
-        } catch (Exception e) {
-            throw new RuntimeException("Error validating email: " + email, e);
-        }
     }
 
     @Override
     public DossierDTO getDossierById(Long id) {
         Dossier dossier = dossierRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Dossier with ID " + id + " not found"));
+                .orElseThrow(() -> new RuntimeException("Dossier avec ID " + id + " non trouvé"));
         return DossierMapper.INSTANCE.toDto(dossier);
     }
 
@@ -71,17 +59,15 @@ public class DossierServiceImpl implements DossierService {
     @Override
     public DossierDTO updateDossier(Long id, DossierDTO dossierDTO) {
         Dossier dossier = dossierRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Dossier with ID " + id + " not found"));
+                .orElseThrow(() -> new RuntimeException("Dossier avec ID " + id + " non trouvé"));
 
-        dossier.setPatient(patientRepository.findById(dossierDTO.getPatientId())
-                .orElseThrow(() -> new RuntimeException("Patient with ID " + dossierDTO.getPatientId() + " not found")));
-
-        if (!isEmailValid(dossierDTO.getFkEmailUtilisateur())) {
-            throw new RuntimeException("Invalid utilisateur email: " + dossierDTO.getFkEmailUtilisateur());
-        }
+        // Valider que l'email utilisateur correspond au patient
+        validatePatientAndEmail(dossierDTO.getPatientId(), dossierDTO.getFkEmailUtilisateur());
 
         dossier.setFkEmailUtilisateur(dossierDTO.getFkEmailUtilisateur());
         dossier.setDate(dossierDTO.getDate());
+        dossier.setPatient(patientRepository.findById(dossierDTO.getPatientId())
+                .orElseThrow(() -> new RuntimeException("Patient avec ID " + dossierDTO.getPatientId() + " non trouvé")));
 
         Dossier updatedDossier = dossierRepository.save(dossier);
         return DossierMapper.INSTANCE.toDto(updatedDossier);
@@ -90,8 +76,23 @@ public class DossierServiceImpl implements DossierService {
     @Override
     public void deleteDossier(Long id) {
         if (!dossierRepository.existsById(id)) {
-            throw new RuntimeException("Dossier with ID " + id + " not found");
+            throw new RuntimeException("Dossier avec ID " + id + " non trouvé");
         }
         dossierRepository.deleteById(id);
+    }
+
+    private void validatePatientAndEmail(Long patientId, String email) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient avec ID " + patientId + " non trouvé"));
+
+        // Vérifier si l'email utilisateur correspond à l'email du patient
+        if (!patient.getEmail().equals(email)) {
+            throw new RuntimeException("L'email utilisateur " + email + " ne correspond pas au patient avec ID " + patientId);
+        }
+
+        // Vérifier si l'email utilisateur est valide dans UtilisateurService
+        if (!utilisateurFeignClient.isEmailValid(email)) {
+            throw new RuntimeException("L'email utilisateur fourni n'existe pas dans UtilisateurService : " + email);
+        }
     }
 }

@@ -43,4 +43,10 @@ public class UtilisateurController {
     public boolean isEmailValid(@RequestParam String email) {
         return utilisateurService.isEmailValid(email); // Delegate to the service layer
     }
+
+    // Nouveau endpoint pour récupérer un utilisateur par email
+    @GetMapping("/email/{email}")
+    public UtilisateurDTO getUtilisateurByEmail(@PathVariable String email) {
+        return utilisateurService.getUtilisateurByEmail(email); // Delegate to the service layer
+    }
 }

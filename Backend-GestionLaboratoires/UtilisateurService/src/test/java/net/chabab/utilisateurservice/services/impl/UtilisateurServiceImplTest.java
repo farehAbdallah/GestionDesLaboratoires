@@ -1,14 +1,13 @@
 package net.chabab.utilisateurservice.services.impl;
-
 import net.chabab.utilisateurservice.dtos.UtilisateurDTO;
 import net.chabab.utilisateurservice.entities.Utilisateur;
 import net.chabab.utilisateurservice.repositories.UtilisateurRepository;
+import net.chabab.utilisateurservice.services.UtilisateurServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import net.chabab.utilisateurservice.services.impl.UtilisateurServiceImpl;
 
 import java.util.Collections;
 import java.util.List;

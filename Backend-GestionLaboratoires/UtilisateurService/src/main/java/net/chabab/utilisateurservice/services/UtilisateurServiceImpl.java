@@ -1,10 +1,9 @@
-package net.chabab.utilisateurservice.services.impl;
+package net.chabab.utilisateurservice.services;
 
 import net.chabab.utilisateurservice.dtos.UtilisateurDTO;
 import net.chabab.utilisateurservice.entities.Utilisateur;
 import net.chabab.utilisateurservice.mappers.UtilisateurMapper;
 import net.chabab.utilisateurservice.repositories.UtilisateurRepository;
-import net.chabab.utilisateurservice.services.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -95,5 +94,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return utilisateurRepository.existsByEmail(email);
     }
 
-
+    @Override
+    public UtilisateurDTO getUtilisateurByEmail(String email) {
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'email : " + email));
+        return UtilisateurMapper.INSTANCE.toDto(utilisateur);
+    }
 }
