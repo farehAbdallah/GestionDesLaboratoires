@@ -3,7 +3,7 @@ import { AccueilComponent } from './components/accueil/accueil.component';
 import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.component';
 import { LoginComponent } from './components/login/login.component';
 import {DashboardLayoutComponent} from './layout/dashboard-layout/dashboard-layout.component';
-import { LaboratoiresComponent } from './laboratoires/laboratoires.component';
+import { LaboratoiresComponent } from './components/laboratoires/laboratoires.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
