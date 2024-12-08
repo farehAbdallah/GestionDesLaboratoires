@@ -21,6 +21,15 @@
         <span nz-icon nzType="usergroup-add"></span>
         <span>Utilisateurs</span>
       </li>
+      <li
+      nz-menu-item
+      [routerLink]="'/laboratoires'"
+      routerLinkActive="active-menu-item"
+      [nzSelected]="isRouteActive('/laboratoires')"
+    >
+      <span nz-icon nzType="experiment" nzTheme="outline"></span>
+      <span>Laboratoires</span>
+    </li>
     </ul>
   </nz-sider>
   <nz-layout>
