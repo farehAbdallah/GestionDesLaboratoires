@@ -14,33 +14,28 @@ public class ContactLaboratoireController {
     @Autowired
     private ContactLaboratoireService contactLaboratoireService;
 
-    // Créer un nouveau contact
     @PostMapping
-    public ContactLaboratoireDTO create(@RequestBody ContactLaboratoireDTO contactLaboratoireDTO) {
-        return contactLaboratoireService.createContactLaboratoire(contactLaboratoireDTO);
+    public ContactLaboratoireDTO createContact(@RequestBody ContactLaboratoireDTO contactDTO) {
+        return contactLaboratoireService.createContact(contactDTO);
     }
 
-    // Récupérer un contact par son ID
     @GetMapping("/{id}")
-    public ContactLaboratoireDTO getById(@PathVariable Long id) {
-        return contactLaboratoireService.getContactLaboratoireById(id);
+    public ContactLaboratoireDTO getContactById(@PathVariable Long id) {
+        return contactLaboratoireService.getContactById(id);
     }
 
-    // Récupérer tous les contacts
     @GetMapping
-    public List<ContactLaboratoireDTO> getAll() {
-        return contactLaboratoireService.getAllContactsLaboratoire();
+    public List<ContactLaboratoireDTO> getAllContacts() {
+        return contactLaboratoireService.getAllContacts();
     }
 
-    // Mettre à jour un contact
     @PutMapping("/{id}")
-    public ContactLaboratoireDTO update(@PathVariable Long id, @RequestBody ContactLaboratoireDTO contactLaboratoireDTO) {
-        return contactLaboratoireService.updateContactLaboratoire(id, contactLaboratoireDTO);
+    public ContactLaboratoireDTO updateContact(@PathVariable Long id, @RequestBody ContactLaboratoireDTO contactDTO) {
+        return contactLaboratoireService.updateContact(id, contactDTO);
     }
 
-    // Supprimer un contact
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        contactLaboratoireService.deleteContactLaboratoire(id);
+    public boolean deleteContact(@PathVariable Long id) {
+        return contactLaboratoireService.deleteContact(id);
     }
 }

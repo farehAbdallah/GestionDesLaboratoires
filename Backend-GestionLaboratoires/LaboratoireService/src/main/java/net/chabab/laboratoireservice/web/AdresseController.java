@@ -14,33 +14,28 @@ public class AdresseController {
     @Autowired
     private AdresseService adresseService;
 
-    // Créer une nouvelle adresse
     @PostMapping
-    public AdresseDTO create(@RequestBody AdresseDTO adresseDTO) {
+    public AdresseDTO createAdresse(@RequestBody AdresseDTO adresseDTO) {
         return adresseService.createAdresse(adresseDTO);
     }
 
-    // Récupérer une adresse par son ID
     @GetMapping("/{id}")
-    public AdresseDTO getById(@PathVariable Long id) {
+    public AdresseDTO getAdresseById(@PathVariable Long id) {
         return adresseService.getAdresseById(id);
     }
 
-    // Récupérer toutes les adresses
     @GetMapping
-    public List<AdresseDTO> getAll() {
+    public List<AdresseDTO> getAllAdresses() {
         return adresseService.getAllAdresses();
     }
 
-    // Mettre à jour une adresse
     @PutMapping("/{id}")
-    public AdresseDTO update(@PathVariable Long id, @RequestBody AdresseDTO adresseDTO) {
+    public AdresseDTO updateAdresse(@PathVariable Long id, @RequestBody AdresseDTO adresseDTO) {
         return adresseService.updateAdresse(id, adresseDTO);
     }
 
-    // Supprimer une adresse
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        adresseService.deleteAdresse(id);
+    public boolean deleteAdresse(@PathVariable Long id) {
+        return adresseService.deleteAdresse(id);
     }
 }

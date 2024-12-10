@@ -1,28 +1,36 @@
 package net.chabab.laboratoireservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Entity
 public class Laboratoire {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String nrc; 
+
+    @Column(nullable = false)
     private String nom;
+
     private String logo;
-    private String nrc;
     private boolean active;
-    private LocalDate dateActivation;
+    private String dateActivation;
 
     @OneToMany(mappedBy = "laboratoire", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("laboratoire") // Empêche les boucles
     private List<ContactLaboratoire> contacts;
+
 }

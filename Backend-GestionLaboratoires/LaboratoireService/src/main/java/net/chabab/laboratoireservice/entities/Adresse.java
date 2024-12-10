@@ -1,5 +1,6 @@
 package net.chabab.laboratoireservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Builder
 @Entity
 public class Adresse {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,5 +25,6 @@ public class Adresse {
     private String commune;
 
     @OneToMany(mappedBy = "adresse", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("adresse")
     private List<ContactLaboratoire> contacts;
 }
