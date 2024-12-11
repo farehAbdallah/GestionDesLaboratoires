@@ -43,4 +43,6 @@ public class UtilisateurController {
     public boolean isEmailValid(@RequestParam String email) {
         return utilisateurService.isEmailValid(email); // Delegate to the service layer
     }
+
+
 }

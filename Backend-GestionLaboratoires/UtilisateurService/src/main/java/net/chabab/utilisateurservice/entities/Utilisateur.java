@@ -20,9 +20,11 @@ public class Utilisateur {
     private String email;
 
     private Long fkIdLaboratoire;
+
     private String nomComplet;
     private String profession;
     private String numTel;
     private String signature;
     private String role;
+
 }

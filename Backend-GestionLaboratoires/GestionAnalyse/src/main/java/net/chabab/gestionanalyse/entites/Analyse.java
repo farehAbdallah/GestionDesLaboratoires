@@ -18,6 +18,7 @@ public class Analyse {
     private Long id;
     private String nom;
     private String description;
+    private Long fkIdLaboratoire;
 
     @OneToMany(mappedBy = "analyse", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude // Évite les boucles infinies lors de la génération de `toString`

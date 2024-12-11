@@ -20,5 +20,7 @@ public class AnalyseDTO {
     @NotBlank(message = "Description is required")
     private String description;
 
+    private Long fkIdLaboratoire;
+
     private List<EpreuveDTO> epreuves;
 }
