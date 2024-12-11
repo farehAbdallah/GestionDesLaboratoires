@@ -8,7 +8,6 @@ import net.chabab.laboratoireservice.mapper.ContactLaboratoireMapper;
 import net.chabab.laboratoireservice.repository.AdresseRepository;
 import net.chabab.laboratoireservice.repository.ContactLaboratoireRepository;
 import net.chabab.laboratoireservice.repository.LaboratoireRepository;
-import net.chabab.laboratoireservice.service.ContactLaboratoireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

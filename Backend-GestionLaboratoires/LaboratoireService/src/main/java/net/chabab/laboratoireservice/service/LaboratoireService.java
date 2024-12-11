@@ -10,4 +10,6 @@ public interface LaboratoireService {
     List<LaboratoireDTO> getAllLaboratoires();
     LaboratoireDTO updateLaboratoire(Long id, LaboratoireDTO laboratoireDTO);
     boolean deleteLaboratoire(Long id);
+
+
 }

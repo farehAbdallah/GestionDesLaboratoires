@@ -4,7 +4,6 @@ import net.chabab.laboratoireservice.dtos.AdresseDTO;
 import net.chabab.laboratoireservice.entities.Adresse;
 import net.chabab.laboratoireservice.mapper.AdresseMapper;
 import net.chabab.laboratoireservice.repository.AdresseRepository;
-import net.chabab.laboratoireservice.service.AdresseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

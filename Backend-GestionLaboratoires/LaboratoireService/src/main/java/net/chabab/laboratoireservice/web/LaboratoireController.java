@@ -38,4 +38,5 @@ public class LaboratoireController {
     public boolean deleteLaboratoire(@PathVariable Long id) {
         return laboratoireService.deleteLaboratoire(id);
     }
+
 }

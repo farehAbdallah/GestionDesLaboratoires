@@ -4,7 +4,6 @@ import net.chabab.laboratoireservice.dtos.LaboratoireDTO;
 import net.chabab.laboratoireservice.entities.Laboratoire;
 import net.chabab.laboratoireservice.mapper.LaboratoireMapper;
 import net.chabab.laboratoireservice.repository.LaboratoireRepository;
-import net.chabab.laboratoireservice.service.LaboratoireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,4 +60,5 @@ public class LaboratoireServiceImpl implements LaboratoireService {
         laboratoireRepository.deleteById(id);
         return true;
     }
+
 }
