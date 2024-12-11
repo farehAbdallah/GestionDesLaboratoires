@@ -1,9 +1,11 @@
 package net.chabab.patientservice.services;
 
 import net.chabab.patientservice.dtos.PatientDTO;
+import net.chabab.patientservice.feign.UtilisateurFeignClient;
 import net.chabab.patientservice.entities.Patient;
 import net.chabab.patientservice.mappers.PatientMapper;
 import net.chabab.patientservice.repositories.PatientRepository;
+import net.chabab.patientservice.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,17 @@ public class PatientServiceImpl implements PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
+    @Autowired
+    private UtilisateurFeignClient utilisateurFeignClient;
+
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
-        if (patientDTO == null) {
-            throw new IllegalArgumentException("PatientDTO cannot be null");
+        // Valider l'email utilisateur avant d'ajouter un patient
+        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
+            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
         }
-        if (patientDTO.getNumPieceIdentite() == null || patientRepository.existsByNumPieceIdentite(patientDTO.getNumPieceIdentite())) {
-            throw new RuntimeException("Identity document number already exists");
-        }
+
+        // Ajouter le patient
         Patient patient = PatientMapper.INSTANCE.toEntity(patientDTO);
         Patient savedPatient = patientRepository.save(patient);
         return PatientMapper.INSTANCE.toDto(savedPatient);
@@ -32,7 +37,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDTO getPatientById(Long id) {
         Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
+                .orElseThrow(() -> new RuntimeException("Patient non trouvé avec l'ID : " + id));
         return PatientMapper.INSTANCE.toDto(patient);
     }
 
@@ -46,9 +51,15 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDTO updatePatient(Long id, PatientDTO patientDTO) {
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
+        // Valider l'email utilisateur avant de mettre à jour un patient
+        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
+            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
+        }
 
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Patient non trouvé avec l'ID : " + id));
+
+        // Mettre à jour les champs du patient
         patient.setNomComplet(patientDTO.getNomComplet());
         patient.setDateNaissance(patientDTO.getDateNaissance());
         patient.setLieuDeNaissance(patientDTO.getLieuDeNaissance());
@@ -67,7 +78,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void deletePatient(Long id) {
         if (!patientRepository.existsById(id)) {
-            throw new RuntimeException("Patient not found");
+            throw new RuntimeException("Patient non trouvé avec l'ID : " + id);
         }
         patientRepository.deleteById(id);
     }

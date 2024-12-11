@@ -85,6 +85,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Utilisateur utilisateur = utilisateurRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
+        if (utilisateurDTO.getFkIdLaboratoire() != null) {
+            // Vérification de l'existence du laboratoire
+            LaboratoireDTO laboratoire = laboratoireClient.getLaboratoireById(utilisateurDTO.getFkIdLaboratoire());
+            if (laboratoire == null) {
+                throw new RuntimeException("Laboratory with ID " + utilisateurDTO.getFkIdLaboratoire() + " does not exist");
+            }
+        }
+
         utilisateur.setEmail(utilisateurDTO.getEmail());
         utilisateur.setFkIdLaboratoire(utilisateurDTO.getFkIdLaboratoire());
         utilisateur.setNomComplet(utilisateurDTO.getNomComplet());

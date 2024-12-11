@@ -14,21 +14,25 @@ public class ExaminController {
     @Autowired
     private ExaminService examinService;
 
+    // Create Examin
     @PostMapping
     public ExaminDTO createExamin(@RequestBody ExaminDTO examinDTO) {
         return examinService.createExamin(examinDTO);
     }
 
+    // Get Examin by ID
     @GetMapping("/{id}")
     public ExaminDTO getExaminById(@PathVariable Long id) {
         return examinService.getExaminById(id);
     }
 
+    // Get All Examins
     @GetMapping
     public List<ExaminDTO> getAllExamins() {
         return examinService.getAllExamins();
     }
 
+    // Delete Examin by ID
     @DeleteMapping("/{id}")
     public void deleteExamin(@PathVariable Long id) {
         examinService.deleteExamin(id);

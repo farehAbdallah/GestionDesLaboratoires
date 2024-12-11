@@ -1,10 +1,8 @@
 package net.chabab.patientservice.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import net.chabab.patientservice.dtos.UtilisateurDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -18,20 +16,22 @@ public class Dossier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long numDossier; // Primary key for Dossier
+    private Long numDossier;
+
+    @Transient
+    private UtilisateurDTO utilisateur; // Utilisateur récupéré via Feign
 
     @Column(nullable = false)
-    private String fkEmailUtilisateur; // References email in UtilisateurService
+    private String fkEmailUtilisateur; // Email de l'utilisateur gérant le dossier
 
     @OneToOne
     @JoinColumn(name = "fk_id_patient", nullable = false, unique = true)
-    private Patient patient; // Unique reference to a single Patient
+    private Patient patient;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date date; // Date associated with the Dossier
+    private Date date;
 
     @OneToMany(mappedBy = "dossier", cascade = CascadeType.ALL)
-    private List<Examin> examins; // One dossier can have multiple examinations
-
+    private List<Examin> examins;
 }
