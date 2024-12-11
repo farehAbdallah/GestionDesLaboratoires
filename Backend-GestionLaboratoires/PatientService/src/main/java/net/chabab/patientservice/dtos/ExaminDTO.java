@@ -15,4 +15,6 @@ public class ExaminDTO {
     private Long fkIdEpreuve; // Foreign key to Epreuve
     private Long fkIdTestAnalyse; // Foreign key to TestAnalyse
     private String resultat; // Result of the examination
+
+    private EpreuveDTO epreuve; // Ajout de l'EpreuveDTO
 }

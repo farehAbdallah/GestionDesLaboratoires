@@ -1,19 +1,18 @@
 package net.chabab.gestionanalyse.dtos;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 @Builder
 public class TestAnalyseDTO {
     private Long id;
     private String nomTest;
-    private Double valeurReference;
-    private String uniteDeReference;
+    private String sousEpreuve;
     private Double intervalMinDeReference;
     private Double intervalMaxDeReference;
+    private String uniteDeReference;
     private String details;
+    private Long fkIdAnalyse; // Reference to Analyse
+
 }
