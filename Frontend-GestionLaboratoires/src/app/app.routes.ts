@@ -9,6 +9,7 @@ import {roleGuard} from './guards/role.guard';
 import {AnalysesComponent} from './components/analyses/analyses.component';
 import {EpreuvesComponent} from './components/epreuves/epreuves.component';
 import {TestsComponent} from './components/tests/tests.component';
+import {LaboratoiresComponent} from './components/laboratoires/laboratoires.component';
 
 
 export const routes: Routes = [
@@ -31,6 +32,12 @@ export const routes: Routes = [
         path: 'utilisateurs',
         component: UtilisateursComponent,
         data: { title: 'Gestion des Utilisateurs', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
+        // canActivate: [roleGuard],
+      },
+      {
+        path: 'laboratoires',
+        component: LaboratoiresComponent,
+        data: { title: 'Gestion des Laboratoires', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],
       },
       {

@@ -141,6 +141,48 @@
       "email": "abdallahfareh1@gmail.com",
       "password": "dcdc",
       "role": "patient"
+    },
+    {
+      "id": "1734034829327",
+      "name": "CV FAREH ABDALLAH",
+      "email": "test@gmail.com",
+      "password": "1111",
+      "role": "employee"
+    },
+    {
+      "id": "1734034834864",
+      "name": "CV FAREH ABDALLAH",
+      "email": "test@gmail.com",
+      "password": "1111",
+      "role": "employee"
+    },
+    {
+      "id": "1734034842208",
+      "name": "CV FAREH ABDALLAH",
+      "email": "test@gmail.com",
+      "password": "111111",
+      "role": "employee"
+    },
+    {
+      "id": "1734034848656",
+      "name": "CV FAREH ABDALLAH",
+      "email": "test@gmail.com",
+      "password": "2222",
+      "role": "employee"
+    },
+    {
+      "id": "1734034872422",
+      "name": "CV FAREH ABDALLAH",
+      "email": "test@gmail.com",
+      "password": "sdvav",
+      "role": "employee"
+    },
+    {
+      "id": "1734034994980",
+      "name": "FAREH Abdallah",
+      "email": "abdallahfareh0@gmail.com",
+      "password": "ytrfsead",
+      "role": "employee"
     }
   ],
   "activities": [
