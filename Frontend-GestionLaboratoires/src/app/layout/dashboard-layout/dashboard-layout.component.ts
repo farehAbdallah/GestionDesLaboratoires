@@ -10,20 +10,27 @@ import {filter, map} from 'rxjs';
 import {NzAvatarComponent} from 'ng-zorro-antd/avatar';
 import {NzDropDownDirective, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
+import {LoginService} from '../../services/login.service';
 
 @Component({
   selector: 'app-dashboard-layout',
   standalone: true,
   imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterOutlet, RouterLink, NzRowDirective, NzAvatarComponent, NzDropDownDirective, NzDropdownMenuComponent, NzButtonComponent],
   templateUrl: './dashboard-layout.component.html',
-  styleUrls: ['./dashboard-layout.component.css']
+  styleUrls: ['./dashboard-layout.component.css'],
+
 })
 export class DashboardLayoutComponent {
   isCollapsed = false;
 
+  username: any;
+
   pageTitle: string = 'Gestion Des Laboratoires';
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private loginService: LoginService) {
+
+    this.loginService.getLoged().subscribe(user => { this.username = user.name; console.log("testing loged user", user)})
+  }
 
   ngOnInit(): void {
     this.router.events
@@ -40,9 +47,28 @@ export class DashboardLayoutComponent {
       .subscribe((title: string) => {
         this.pageTitle = title;
       });
+
   }
 
   isRouteActive(route: string): boolean {
     return this.router.url === route;
   }
+
+  logOut() {
+    this.loginService.logOut();
+    this.router.navigate(['login']);
+  }
+
+  isAdmin() {
+    return this.loginService.hasRole('administrateur');
+  }
+
+  isPatient() {
+    return this.loginService.hasRole('patient');
+  }
+
+  isEmploye() {
+    return this.loginService.hasRole('employee');
+  }
+
 }
