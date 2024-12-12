@@ -1,0 +1,38 @@
+.editable-cell {
+    position: relative;
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+  
+  .editable-row:hover .editable-cell {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 4px 11px;
+  }
+  
+  .form-control-margin{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+
+.form-control-margin nz-form-control {
+  width: 100%;  
+}
+
+nz-date-picker {
+  width: 100%;  
+}  
+
+::ng-deep .ant-upload {
+    width: 100% !important;
+  }
+  
+  ::ng-deep .ant-upload-btn {
+    width: 100% !important;
+  }
+  
+  
+  
+  
+  

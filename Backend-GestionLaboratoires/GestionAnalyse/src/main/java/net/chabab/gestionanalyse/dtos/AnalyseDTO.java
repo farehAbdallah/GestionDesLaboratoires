@@ -1,24 +1,18 @@
 package net.chabab.gestionanalyse.dtos;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 @Builder
 public class AnalyseDTO {
     private Long id;
-
-    @NotBlank(message = "Nom is required")
     private String nom;
-
-    @NotBlank(message = "Description is required")
     private String description;
-
     private List<EpreuveDTO> epreuves;
+
+    private Long fkIdLaboratoire;
+
 }

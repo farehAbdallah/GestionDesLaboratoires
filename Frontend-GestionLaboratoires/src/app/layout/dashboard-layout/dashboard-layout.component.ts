@@ -14,7 +14,7 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
 @Component({
   selector: 'app-dashboard-layout',
   standalone: true,
-  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterOutlet, RouterLink, NzRowDirective, NzAvatarComponent, NzDropDownDirective, NzDropdownMenuComponent, NzButtonComponent],
+  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterOutlet, RouterLink, NzRowDirective, NzDropDownDirective, NzDropdownMenuComponent, NzButtonComponent],
   templateUrl: './dashboard-layout.component.html',
   styleUrls: ['./dashboard-layout.component.css']
 })

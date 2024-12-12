@@ -1,5 +1,6 @@
 package net.chabab.laboratoireservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import lombok.*;
 @Builder
 @Entity
 public class ContactLaboratoire {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,9 +22,12 @@ public class ContactLaboratoire {
 
     @ManyToOne
     @JoinColumn(name = "laboratoire_id")
+    @JsonIgnoreProperties("contacts") // Ignorer la liste de contacts pour éviter des boucles
     private Laboratoire laboratoire;
 
     @ManyToOne
     @JoinColumn(name = "adresse_id")
+    @JsonIgnoreProperties("contacts") // Ignorer la liste de contacts pour éviter des boucles
     private Adresse adresse;
+
 }
