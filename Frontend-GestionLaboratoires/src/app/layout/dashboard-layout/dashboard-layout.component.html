@@ -21,6 +21,15 @@
         <span nz-icon nzType="team"></span>
         <span>Utilisateurs</span>
       </li>
+      <li
+        nz-menu-item
+        [routerLink]="'/labo/laboratoires'"
+        routerLinkActive="active-menu-item"
+        [nzSelected]="isRouteActive('/labo/laboratoires')"
+      >
+        <span nz-icon nzType="team"></span>
+        <span>Laboratoires</span>
+      </li>
       <li nz-submenu nzTitle="Gestion des analyses" nzIcon="reconciliation">
       <ul>
           <li
