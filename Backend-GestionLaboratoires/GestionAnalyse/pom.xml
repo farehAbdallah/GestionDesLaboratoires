@@ -93,6 +93,25 @@
             <artifactId>webdrivermanager</artifactId>
             <version>5.9.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.5.5.Final</version> <!-- Use the latest version -->
+        </dependency>
+
+        <!-- MapStruct Processor (for annotation processing) -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>1.5.5.Final</version> <!-- Use the same version as MapStruct -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <dependency>
 
             <groupId>org.junit.jupiter</groupId>
@@ -104,6 +123,10 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>3.0.2</version>
 
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
         </dependency>
 
 

@@ -1,26 +1,18 @@
 package net.chabab.gestionanalyse.mapper;
 
 import net.chabab.gestionanalyse.dtos.EpreuveDTO;
-import net.chabab.gestionanalyse.entites.Epreuve;
-import net.chabab.gestionanalyse.dtos.AnalyseDTO;
+import net.chabab.gestionanalyse.entities.Epreuve;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-public class EpreuveMapper {
+@Mapper
+public interface EpreuveMapper {
+    EpreuveMapper INSTANCE = Mappers.getMapper(EpreuveMapper.class);
 
-    // Convertir de l'entité Epreuve en DTO Epreuve
-    public static EpreuveDTO toEpreuveDTO(Epreuve epreuve) {
-        return EpreuveDTO.builder()
-                .id(epreuve.getId())
-                .nomEpreuve(epreuve.getNomEpreuve())  // Champ modifié ici
-                .analyse(AnalyseMapper.toAnalyseDTO(epreuve.getAnalyse()))  // Associe l'analyse correspondante
-                .build();
-    }
+    @Mapping(source = "analyse.id", target = "fkIdAnalyse")
+    EpreuveDTO toDto(Epreuve epreuve);
 
-    // Convertir de DTO Epreuve en Entité Epreuve
-    public static Epreuve toEpreuveEntity(EpreuveDTO epreuveDTO) {
-        return Epreuve.builder()
-                .id(epreuveDTO.getId())
-                .nomEpreuve(epreuveDTO.getNomEpreuve())  // Champ modifié ici
-                .analyse(AnalyseMapper.toAnalyseEntity(epreuveDTO.getAnalyse()))  // Associe l'entité analyse correspondante
-                .build();
-    }
+    @Mapping(source = "fkIdAnalyse", target = "analyse.id")
+    Epreuve toEntity(EpreuveDTO epreuveDTO);
 }

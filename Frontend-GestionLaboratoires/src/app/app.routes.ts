@@ -10,6 +10,7 @@ import {AnalysesComponent} from './components/analyses/analyses.component';
 import {EpreuvesComponent} from './components/epreuves/epreuves.component';
 import {TestsComponent} from './components/tests/tests.component';
 
+
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, data: { title: 'Log In' } },
@@ -18,6 +19,7 @@ export const routes: Routes = [
     component: DashboardLayoutComponent,
     canActivate: [loginGuard],  // Ensure user is logged in
     children: [
+
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
       {
         path: 'accueil',
@@ -49,6 +51,7 @@ export const routes: Routes = [
         data: { title: 'Gestion des Tests', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],
       },
+
     ],
   },
 ];

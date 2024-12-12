@@ -1,15 +1,13 @@
 package net.chabab.gestionanalyse.dtos;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 @Builder
 public class EpreuveDTO {
     private Long id;
-    private String nomEpreuve;  // Correspond au champ modifié dans l'entité
-    private AnalyseDTO analyse;  // DTO de l'entité Analyse
+    private String nom;
+    private Long fkIdAnalyse; // ID de l'analyse associée
+
 }

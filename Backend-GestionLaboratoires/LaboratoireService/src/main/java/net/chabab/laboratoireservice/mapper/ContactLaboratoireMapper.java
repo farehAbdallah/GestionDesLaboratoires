@@ -2,25 +2,19 @@ package net.chabab.laboratoireservice.mapper;
 
 import net.chabab.laboratoireservice.dtos.ContactLaboratoireDTO;
 import net.chabab.laboratoireservice.entities.ContactLaboratoire;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-public class ContactLaboratoireMapper {
+@Mapper(componentModel = "spring")
+public interface ContactLaboratoireMapper {
 
-    public static ContactLaboratoireDTO toContactLaboratoireDTO(ContactLaboratoire contactLaboratoire) {
-        return ContactLaboratoireDTO.builder()
-                .id(contactLaboratoire.getId())
-                .numTel(contactLaboratoire.getNumTel())
-                .fax(contactLaboratoire.getFax())
-                .email(contactLaboratoire.getEmail())
-                .build();
-    }
+    ContactLaboratoireMapper INSTANCE = Mappers.getMapper(ContactLaboratoireMapper.class);
+    @Mapping(target = "laboratoireId", source = "laboratoire.id")
+    @Mapping(target = "adresseId", source = "adresse.id")
+    ContactLaboratoireDTO toDto(ContactLaboratoire contact);
 
-    public static ContactLaboratoire toContactLaboratoireEntity(ContactLaboratoireDTO contactLaboratoireDTO) {
-        ContactLaboratoire contactLaboratoire = ContactLaboratoire.builder()
-                .id(contactLaboratoireDTO.getId())
-                .numTel(contactLaboratoireDTO.getNumTel())
-                .fax(contactLaboratoireDTO.getFax())
-                .email(contactLaboratoireDTO.getEmail())
-                .build();
-        return contactLaboratoire;
-    }
+    @Mapping(target = "laboratoire", ignore = true) // Ignoré pour être traité manuellement
+    @Mapping(target = "adresse", ignore = true)    // Ignoré pour être traité manuellement
+    ContactLaboratoire toEntity(ContactLaboratoireDTO contactDTO);
 }
