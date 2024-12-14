@@ -35,76 +35,68 @@
     <!-- Modal Ajouter un Laboratoire -->
     <nz-modal [(nzVisible)]="isVisible" nzTitle="Ajouter Laboratoire" (nzOnCancel)="handleCancel()">
         <ng-container *nzModalContent>
-            <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" class="login-form">
-          
-              <!-- Logo -->
-              <nz-form-item class="form-control-margin">
-                <nz-form-label>Logo</nz-form-label>
-                <nz-form-control nzErrorTip="Veuillez sélectionner un logo!">
-                  <nz-upload
-                    [nzListType]="'picture'"
-                    [nzShowUploadList]="false"
-                    [nzMultiple]="false"
-                    (nzChange)="handleFileInput($event)"
-                    [nzFileList]="fileList"
-                  >
-                    <button nz-button style="width: 100%">
-                      <span nz-icon nzType="upload"></span>
-                      Cliquez pour télécharger un logo
-                    </button>
-                  </nz-upload>
-                  <!-- Affichage du nom du fichier sélectionné -->
-                  <div *ngIf="logoFileName" style="margin-top: 10px;">
-                    <strong>Fichier sélectionné :</strong> {{ logoFileName }}
-                  </div>
-                </nz-form-control>
-              </nz-form-item>
-          
-              <!-- Nom et NRC dans la même ligne -->
-              <nz-form-item class="form-control-margin">
-                <div nz-row nzGutter="16">
-                  <!-- Nom -->
-                  <div nz-col [nzSpan]="12">
-                    <nz-form-label>Nom</nz-form-label>
-                    <nz-form-control nzErrorTip="Veuillez entrer le nom du laboratoire!">
-                      <input type="text" nz-input formControlName="name" placeholder="Nom du laboratoire" />
-                    </nz-form-control>
-                  </div>
-                  <!-- NRC -->
-                  <div nz-col [nzSpan]="12">
-                    <nz-form-label>NRC</nz-form-label>
-                    <nz-form-control nzErrorTip="Veuillez entrer le NRC!">
-                      <input type="text" nz-input formControlName="nrc" placeholder="NRC" />
-                    </nz-form-control>
-                  </div>
+          <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" class="login-form">
+
+            <!-- Logo -->
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Logo</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez sélectionner un logo!">
+                <nz-upload
+                  [nzListType]="'picture'"
+                  [nzShowUploadList]="false"
+                  [nzMultiple]="false"
+                  (nzChange)="handleFileInput($event)"
+                  [nzFileList]="fileList"
+                >
+                  <button nz-button style="width: 100%">
+                    <span nz-icon nzType="upload"></span>
+                    Cliquez pour télécharger un logo
+                  </button>
+                </nz-upload>
+                <!-- Affichage du nom du fichier sélectionné -->
+                <div *ngIf="logoFileName" style="margin-top: 10px;">
+                  <strong>Fichier sélectionné :</strong> {{ logoFileName }}
                 </div>
-              </nz-form-item>
+              </nz-form-control>
+            </nz-form-item>
           
-              <!-- Date d'activation et Actif dans la même ligne -->
-              <nz-form-item class="form-control-margin">
-                <div nz-row nzGutter="16">
-                  <!-- Date d'activation -->
-                  <div nz-col [nzSpan]="12">
-                    <nz-form-label>Date d'activation</nz-form-label>
-                    <nz-form-control nzErrorTip="Veuillez entrer une date valide!">
-                      <nz-date-picker nz-input formControlName="dateActivation" [nzFormat]="'yyyy-MM-dd'" nzPlaceHolder="Date d'activation"></nz-date-picker>
-                    </nz-form-control>
-                  </div>
-                  <!-- Actif -->
-                  <div nz-col [nzSpan]="12">
-                    <nz-form-label>Actif</nz-form-label>
-                    <nz-form-control>
-                        <nz-radio-group formControlName="isActive">
-                            <label nz-radio-button [nzValue]="true">Oui</label>
-                            <label nz-radio-button [nzValue]="false">Non</label>
-                          </nz-radio-group>
-                    </nz-form-control>
-                  </div>
-                  
-                </div>
-              </nz-form-item>
+            <!-- Nom -->
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Nom</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer le nom du laboratoire!">
+                <input type="text" nz-input formControlName="name" placeholder="Nom du laboratoire" />
+              </nz-form-control>
+            </nz-form-item>
           
-            </form>
+            <!-- NRC -->
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>NRC</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer le NRC!">
+                <input type="text" nz-input formControlName="nrc" placeholder="NRC" />
+              </nz-form-control>
+            </nz-form-item>
+          
+            <!-- Date d'activation -->
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Date d'activation</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer une date valide!">
+                <nz-date-picker nz-input formControlName="dateActivation" [nzFormat]="'yyyy-MM-dd'" nzPlaceHolder="Date d'activation"></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          
+            <!-- Actif -->
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Actif</nz-form-label>
+              <nz-form-control>
+                <nz-radio-group formControlName="isActive">
+                  <label nz-radio-button [nzValue]="true">Oui</label>
+                  <label nz-radio-button [nzValue]="false">Non</label>
+                </nz-radio-group>
+              </nz-form-control>
+            </nz-form-item>
+          
+          </form>
+          
           </ng-container>
           
       <div *nzModalFooter>
@@ -127,15 +119,24 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of editRowTable.data;">
-
-           <!-- Logo -->
-           <td>
+          <td>
             <div class="editable-cell" [hidden]="editId === data.id">
               <img *ngIf="data.logo" [src]="data.logo" alt="Logo" style="height: 50px;" />
             </div>
-            <input [hidden]="editId !== data.id" type="file" (change)="updateLogo(data, $event)" />
+            <div [hidden]="editId !== data.id">
+              <nz-upload
+                [nzShowUploadList]="false"
+                [nzMultiple]="false"
+                (nzChange)="handleUploadChange($event)"
+              >
+                <button nz-button style="width: 100%">
+                  <span nz-icon nzType="upload"></span>
+                  télécharger
+                </button>
+              </nz-upload>
+            </div>
           </td>
-
+          
           <!-- Nom -->
           <td>
             <div class="editable-cell" [hidden]="editId === data.id">
@@ -155,11 +156,15 @@
           <!-- Actif -->
           <td>
             <div class="editable-cell" [hidden]="editId === data.id">
-              {{ data.isActive ? 'Oui' : 'Non' }}
+              <nz-tag [nzColor]="data.isActive ? 'success' : 'error'">
+                {{ data.isActive ? 'Active' : 'Non Active' }}
+              </nz-tag>
+              
             </div>
-            <label [hidden]="editId !== data.id" nz-checkbox [(ngModel)]="data.isActive">
-              Actif
-            </label>
+              <nz-radio-group [hidden]="editId !== data.id" [(ngModel)]="data.isActive">
+                <label nz-radio-button [nzValue]="true">Oui</label>
+                <label nz-radio-button [nzValue]="false">Non</label>
+              </nz-radio-group>
           </td>
       
           <!-- Date d'activation -->

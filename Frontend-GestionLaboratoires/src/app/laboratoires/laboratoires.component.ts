@@ -19,8 +19,9 @@ import { NzModalComponent, NzModalContentDirective, NzModalFooterDirective, NzMo
 import { NzFormControlComponent, NzFormDirective, NzFormLabelComponent } from 'ng-zorro-antd/form';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 
 interface LaboratoryData {
@@ -54,7 +55,9 @@ interface LaboratoryData {
     NzFormDirective,
     NzModalFooterDirective,
     NzRadioModule,
-    NzUploadModule
+    NzUploadModule,
+    NzTagModule,
+    
   ],
   providers: [NzModalService],
   templateUrl: './laboratoires.component.html',
@@ -248,6 +251,14 @@ export class LaboratoiresComponent implements OnInit {
       reader.readAsDataURL(input.files[0]);
     }
   }
+
+  handleUploadChange(event: NzUploadChangeParam): void {
+    if (event.file && event.file.originFileObj) {
+      const input = { target: { files: [event.file.originFileObj] } } as unknown as Event;
+      this.updateLogo(this.editId ? this.listOfData.find(item => item.id === this.editId) : null, input);
+    }
+  }
+  
   
   
   
