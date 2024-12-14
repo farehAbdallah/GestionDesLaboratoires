@@ -66,7 +66,7 @@
         <nz-form-item class="form-control-margin">
           <nz-form-label>Rôle</nz-form-label>
           <nz-form-control nzErrorTip="Veuillez sélectionner un rôle!">
-            <nz-select formControlName="role" placeholder="Sélectionner un rôle">
+            <nz-select formControlName="role" nzPlaceHolder="Sélectionner un rôle">
               <nz-option nzValue="employee" nzLabel="Employé"></nz-option>
               <nz-option nzValue="administrateur" nzLabel="Administrateur"></nz-option>
               <nz-option nzValue="patient" nzLabel="Patient"></nz-option>
@@ -82,7 +82,7 @@
   </nz-modal>
 
   <!-- Table des utilisateurs -->
-  <nz-table #editRowTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60vh' }" nzBordered [nzData]="filteredData">
+  <nz-table #editRowTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60VH' }" nzBordered [nzData]="filteredData">
     <thead>
     <tr>
       <th nzWidth="25%">Nom</th>

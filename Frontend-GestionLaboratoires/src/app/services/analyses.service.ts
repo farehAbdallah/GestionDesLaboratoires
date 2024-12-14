@@ -70,6 +70,8 @@ export class AnalyseService {
     return this.http.delete<any>(`${this.baseUrl}/tests/${id}`);
   }
 
+
+
   getLaboratoires(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/laboratoires`);
   }

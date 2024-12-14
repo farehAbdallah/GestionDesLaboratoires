@@ -1,0 +1,228 @@
+<div class="inner-content-no-dashboard">
+  <div nz-row nzJustify="space-between" nzAlign="middle">
+    <div nz-col>
+      <button nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
+        <span nz-icon nzType="plus"></span>
+        Ajouter
+      </button>
+    </div>
+    <div nz-col>
+      <div nz-row>
+        <div nz-col>
+          <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input [(ngModel)]="searchNumDossier" (ngModelChange)="onSearchNumDossierChange()" placeholder="Chercher par numéro de dossier" />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </div>
+        <div nz-col style="margin-left: 10px">
+          <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input [(ngModel)]="searchTestAnalyse" (ngModelChange)="onSearchTestAnalyseChange()" placeholder="Chercher par test d'analyse" />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </div>
+        <div nz-col style="margin-left: 10px">
+          <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input [(ngModel)]="searchEpreuve" (ngModelChange)="onSearchEpreuveChange()" placeholder="Chercher par epreuve" />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br />
+
+  <!-- Modal pour ajouter un examen -->
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Ajouter Examen" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+      <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" class="login-form">
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Numéro Dossier</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un numéro de dossier valide!">
+            <nz-select nzShowSearch formControlName="fkNumDossier" nzPlaceHolder="Dossier">
+              <nz-option *ngFor="let dossier of listofDossiers" [nzValue]="dossier.numDossier" [nzLabel]="dossier.numDossier"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Épreuve</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer une épreuve valide!">
+            <nz-select nzShowSearch formControlName="fkIdEpreuve" nzPlaceHolder="Épreuve">
+              <nz-option *ngFor="let epreuve of listOfEpreuves" [nzValue]="epreuve.id" [nzLabel]="epreuve.nom"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Test Analyse</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un test d'analyse valide!">
+            <nz-select nzShowSearch formControlName="fkIdTestAnalyse" nzPlaceHolder="Test Analyse">
+              <nz-option *ngFor="let test of listOfTests" [nzValue]="test.id" [nzLabel]="test.nomTest"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Résultat</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un résultat valide!">
+            <input type="text" nz-input formControlName="resultat" placeholder="Résultat" />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancel()">Annuler</button>
+      <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isOkLoading">Enregistrer</button>
+    </div>
+  </nz-modal>
+
+  <!-- Table des examens -->
+  <nz-table
+    #editRowTable
+    [nzShowPagination]="false"
+    [nzPageSize]="10000000"
+    [nzScroll]="{ y: '60VH' }"
+    nzBordered
+    [nzData]="filteredData"
+  >
+    <thead>
+    <tr>
+      <th nzWidth="20%">Numéro Dossier</th>
+      <th nzWidth="20%">Épreuve</th>
+      <th nzWidth="20%">Test Analyse</th>
+      <th nzWidth="20%">Résultat</th>
+      <th nzWidth="20%">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of editRowTable.data;">
+      <!-- Numéro Dossier -->
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.fkNumDossier }}
+        </div>
+        <nz-select
+          style="width: 100%;"
+          [hidden]="editId !== data.id"
+          [(ngModel)]="data.fkNumDossier"
+        >
+          <nz-option
+            *ngFor="let dossier of listofDossiers"
+            [nzValue]="dossier.numDossier"
+            [nzLabel]="dossier.numDossier"
+          ></nz-option>
+        </nz-select>
+      </td>
+
+      <!-- Épreuve -->
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ getNomEpreuve(data.fkIdEpreuve) }}
+        </div>
+        <nz-select
+          style="width: 100%;"
+          [hidden]="editId !== data.id"
+          [(ngModel)]="data.fkIdEpreuve"
+        >
+          <nz-option
+            *ngFor="let epreuve of listOfEpreuves"
+            [nzValue]="epreuve.id"
+            [nzLabel]="epreuve.nom"
+          ></nz-option>
+        </nz-select>
+      </td>
+
+      <!-- Test Analyse -->
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ getNomTest(data.fkIdTestAnalyse) }}
+        </div>
+        <nz-select
+          style="width: 100%;"
+          [hidden]="editId !== data.id"
+          [(ngModel)]="data.fkIdTestAnalyse"
+        >
+          <nz-option
+            *ngFor="let test of listOfTests"
+            [nzValue]="test.id"
+            [nzLabel]="test.nomTest"
+          ></nz-option>
+        </nz-select>
+      </td>
+
+      <!-- Résultat -->
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.resultat }}
+        </div>
+        <input
+          [hidden]="editId !== data.id"
+          type="text"
+          nz-input
+          [(ngModel)]="data.resultat"
+        />
+      </td>
+
+      <!-- Actions -->
+      <td>
+        <div nz-row>
+          <div nz-col style="margin-right: 10px">
+            <button
+              nz-button
+              [hidden]="editId === data.id"
+              (click)="startEdit(data.id)"
+              nzType="primary"
+            >
+              <span nz-icon nzType="edit"></span>
+              Modifier
+            </button>
+          </div>
+          <div nz-col>
+            <button
+              nz-button
+              nzDanger
+              nzType="primary"
+              nz-popconfirm
+              nzPopconfirmTitle="Êtes-vous sûr ?"
+              [hidden]="editId === data.id"
+              (nzOnConfirm)="deleteRow(data.id)"
+            >
+              <span nz-icon nzType="delete"></span>
+              Supprimer
+            </button>
+          </div>
+        </div>
+        <div nz-row>
+          <div nz-col style="margin-right: 10px">
+            <button
+              nz-button
+              [hidden]="editId !== data.id"
+              (click)="saveEdit()"
+              nzType="default"
+            >
+              <span nz-icon nzType="check"></span>
+              Enregistrer
+            </button>
+          </div>
+          <div nz-col>
+            <button
+              nz-button
+              nzDanger
+              [hidden]="editId !== data.id"
+              (click)="cancelEdit()"
+              nzType="default"
+            >
+              <span nz-icon nzType="close"></span>
+              Annuler
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

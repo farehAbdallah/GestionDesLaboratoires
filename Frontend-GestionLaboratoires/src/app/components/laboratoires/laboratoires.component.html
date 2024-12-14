@@ -29,14 +29,14 @@
         </div>
       </div>
     </div>
-  
+
     <br />
-  
+
     <!-- Modal Ajouter un Laboratoire -->
     <nz-modal [(nzVisible)]="isVisible" nzTitle="Ajouter Laboratoire" (nzOnCancel)="handleCancel()">
         <ng-container *nzModalContent>
             <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" class="login-form">
-          
+
               <!-- Logo -->
               <nz-form-item class="form-control-margin">
                 <nz-form-label>Logo</nz-form-label>
@@ -59,7 +59,7 @@
                   </div>
                 </nz-form-control>
               </nz-form-item>
-          
+
               <!-- Nom et NRC dans la même ligne -->
               <nz-form-item class="form-control-margin">
                 <div nz-row nzGutter="16">
@@ -79,7 +79,7 @@
                   </div>
                 </div>
               </nz-form-item>
-          
+
               <!-- Date d'activation et Actif dans la même ligne -->
               <nz-form-item class="form-control-margin">
                 <div nz-row nzGutter="16">
@@ -100,21 +100,21 @@
                           </nz-radio-group>
                     </nz-form-control>
                   </div>
-                  
+
                 </div>
               </nz-form-item>
-          
+
             </form>
           </ng-container>
-          
+
       <div *nzModalFooter>
         <button nz-button nzType="default" (click)="handleCancel()">Annuler</button>
         <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isOkLoading">Enregistrer</button>
       </div>
     </nz-modal>
-  
+
     <!-- Table des Laboratoires -->
-    <nz-table #editRowTable #headerTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '600px' }" nzBordered [nzData]="filteredData">
+    <nz-table #editRowTable #headerTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60VH' }" nzBordered [nzData]="filteredData">
       <thead>
         <tr>
           <th nzWidth="10%">Logo</th>
@@ -143,7 +143,7 @@
             </div>
             <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.name" />
           </td>
-      
+
           <!-- NRC -->
           <td>
             <div class="editable-cell" [hidden]="editId === data.id">
@@ -151,7 +151,7 @@
             </div>
             <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.nrc" />
           </td>
-      
+
           <!-- Actif -->
           <td>
             <div class="editable-cell" [hidden]="editId === data.id">
@@ -161,7 +161,7 @@
               Actif
             </label>
           </td>
-      
+
           <!-- Date d'activation -->
           <td>
             <div class="editable-cell" [hidden]="editId === data.id">
@@ -174,7 +174,7 @@
               nzPlaceHolder="Date d'activation"
             ></nz-date-picker>
           </td>
-      
+
           <!-- Actions -->
           <td>
             <div nz-row>
@@ -199,7 +199,7 @@
                 </button>
               </div>
             </div>
-      
+
             <div nz-row>
               <div nz-col style="margin-right: 10px">
                 <button nz-button [hidden]="editId !== data.id" (click)="saveEdit()" nzType="default">
@@ -216,7 +216,6 @@
             </div>
           </td>
         </tr>
-      </tbody>      
+      </tbody>
     </nz-table>
   </div>
-  
