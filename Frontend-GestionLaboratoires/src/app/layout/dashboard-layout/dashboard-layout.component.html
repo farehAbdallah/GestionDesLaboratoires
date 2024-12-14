@@ -5,31 +5,53 @@
     <ul nz-menu nzTheme="dark" nzMode="inline" >
       <li
         nz-menu-item
-        [routerLink]="'/accueil'"
+        [routerLink]="'/labo/accueil'"
         routerLinkActive="active-menu-item"
-        [nzSelected]="isRouteActive('/accueil')"
+        [nzSelected]="isRouteActive('/labo/accueil')"
       >
         <span nz-icon nzType="home"></span>
         <span>Accueil</span>
       </li>
       <li
         nz-menu-item
-        [routerLink]="'/utilisateurs'"
+        [routerLink]="'/labo/utilisateurs'"
         routerLinkActive="active-menu-item"
-        [nzSelected]="isRouteActive('/utilisateurs')"
+        [nzSelected]="isRouteActive('/labo/utilisateurs')"
       >
-        <span nz-icon nzType="usergroup-add"></span>
+        <span nz-icon nzType="team"></span>
         <span>Utilisateurs</span>
       </li>
-      <li
-      nz-menu-item
-      [routerLink]="'/laboratoires'"
-      routerLinkActive="active-menu-item"
-      [nzSelected]="isRouteActive('/laboratoires')"
-    >
-      <span nz-icon nzType="experiment" nzTheme="outline"></span>
-      <span>Laboratoires</span>
-    </li>
+      <li nz-submenu nzTitle="Gestion des analyses" nzIcon="reconciliation">
+      <ul>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/analyses'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/analyses')"
+          >
+            <span>Analyses</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/epreuves'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/epreuves')"
+          >
+            <span>Epreuves</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/tests'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/tests')"
+          >
+            <span>Tests</span>
+          </li>
+
+        </ul>
+      </li>
+
+
     </ul>
   </nz-sider>
   <nz-layout>
@@ -44,7 +66,7 @@
         <span class="trigger-title" style="font-weight: bolder;">{{ pageTitle }}</span>
       </div>
       <div nz-col class="avatar">
-        <span class="avatar-user-name">NomUser</span>
+        <span class="avatar-user-name">{{username}}</span>
         <button nz-button nzShape="circle" nz-dropdown [nzDropdownMenu]="menu2">
           <span nz-icon nzType="user"></span>
         </button>
@@ -52,7 +74,7 @@
       <nz-dropdown-menu #menu2="nzDropdownMenu">
         <ul nz-menu>
           <li nz-menu-item><span style="margin-right: 5px" nz-icon nzType="setting" nzTheme="outline"></span>Parametres</li>
-          <li [routerLink]="'/login'" nz-menu-item nzDanger><span style="margin-right: 5px" nz-icon nzType="logout" nzTheme="outline" ></span>Se deconnecter</li>
+          <li (click)="logOut()" nz-menu-item nzDanger><span style="margin-right: 5px" nz-icon nzType="logout" nzTheme="outline" ></span>Se deconnecter</li>
         </ul>
       </nz-dropdown-menu>
     </nz-header>

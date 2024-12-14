@@ -1,6 +1,6 @@
 <div class="inner-content-no-dashboard">
 
-  <div nz-row nzJustify="space-between" nzAlign="middle">
+  <div nz-row nzJustify="space-between" nzAlign="middle" >
     <div nz-col>
       <button nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
         <span nz-icon nzType="plus"></span>
@@ -19,30 +19,28 @@
         </div>
         <div nz-col style="margin-left: 10px">
           <nz-input-group [nzSuffix]="suffixIconSearch">
-            <input type="text" nz-input [(ngModel)]="searchEmail" (ngModelChange)="onSearchEmailChange()" placeholder="Chercher par email" />
+            <input type="text" nz-input [(ngModel)]="searchDescription" (ngModelChange)="onSearchDescriptionChange()" placeholder="Chercher par description" />
           </nz-input-group>
           <ng-template #suffixIconSearch>
             <span nz-icon nzType="search"></span>
           </ng-template>
         </div>
-        <div nz-col style="margin-left: 10px">
-          <nz-input-group [nzSuffix]="suffixIconSearch">
-            <input type="text" nz-input [(ngModel)]="searchRole" (ngModelChange)="onSearchRoleChange()" placeholder="Chercher par role" />
-          </nz-input-group>
-          <ng-template #suffixIconSearch>
-            <span nz-icon nzType="search"></span>
-          </ng-template>
-        </div>
+<!--        <div nz-col style="margin-left: 10px">-->
+<!--          <nz-input-group [nzSuffix]="suffixIconSearch">-->
+<!--            <input type="text" nz-input [(ngModel)]="searchLaboratoire" (ngModelChange)="onSearchLaboratoireChange()" placeholder="Chercher par laboratoire" />-->
+<!--          </nz-input-group>-->
+<!--          <ng-template #suffixIconSearch>-->
+<!--            <span nz-icon nzType="search"></span>-->
+<!--          </ng-template>-->
+<!--        </div>-->
       </div>
-
-
     </div>
   </div>
 
   <br />
 
-  <!-- Modal pour ajouter un utilisateur -->
-  <nz-modal [(nzVisible)]="isVisible" nzTitle="Ajouter Utilisateur" (nzOnCancel)="handleCancel()">
+  <!-- Modal pour ajouter une analyse -->
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Ajouter Analyse" (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
       <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" class="login-form">
         <nz-form-item class="form-control-margin">
@@ -52,24 +50,16 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item class="form-control-margin">
-          <nz-form-label>Email</nz-form-label>
-          <nz-form-control nzErrorTip="Veuillez entrer un email valide!">
-            <input type="email" nz-input formControlName="email" placeholder="Email" />
+          <nz-form-label>Description</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer une description valide!">
+            <input type="text" nz-input formControlName="description" placeholder="Description" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item class="form-control-margin">
-          <nz-form-label>Mot de passe</nz-form-label>
-          <nz-form-control nzErrorTip="Veuillez entrer un mot de passe valide!">
-            <input type="password" nz-input formControlName="password" placeholder="Mot de passe" />
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item class="form-control-margin">
-          <nz-form-label>Rôle</nz-form-label>
-          <nz-form-control nzErrorTip="Veuillez sélectionner un rôle!">
-            <nz-select formControlName="role" placeholder="Sélectionner un rôle">
-              <nz-option nzValue="employee" nzLabel="Employé"></nz-option>
-              <nz-option nzValue="administrateur" nzLabel="Administrateur"></nz-option>
-              <nz-option nzValue="patient" nzLabel="Patient"></nz-option>
+          <nz-form-label>Laboratoire</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez sélectionner un laboratoire!">
+            <nz-select formControlName="laboratoireId" placeholder="Sélectionner un laboratoire">
+              <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
@@ -81,13 +71,13 @@
     </div>
   </nz-modal>
 
-  <!-- Table des utilisateurs -->
+  <!-- Table des analyses -->
   <nz-table #editRowTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60vh' }" nzBordered [nzData]="filteredData">
     <thead>
     <tr>
-      <th nzWidth="25%">Nom</th>
-      <th nzWidth="25%">Email</th>
-      <th nzWidth="25%">Rôle</th>
+      <th nzWidth="15%">Nom</th>
+      <th nzWidth="45%">Description</th>
+      <th nzWidth="15%">Laboratoire</th>
       <th nzWidth="25%">Actions</th>
     </tr>
     </thead>
@@ -102,26 +92,19 @@
 
       <td>
         <div class="editable-cell" [hidden]="editId === data.id">
-          {{ data.email }}
+          {{ data.description }}
         </div>
-        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.email" />
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.description" />
       </td>
 
       <td>
         <div class="editable-cell" [hidden]="editId === data.id">
-          <nz-tag [nzColor]="getRoleColor(data.role)">{{ data.role }}</nz-tag>
+          {{ this.getNomLaboratoire(data.laboratoireId) }}
         </div>
-        <nz-select
-          *ngIf="editId === data.id"
-          [(ngModel)]="data.role"
-          placeholder="Sélectionner un rôle"
-          style="width: 100%;">
-          <nz-option nzValue="employee" nzLabel="Employé"></nz-option>
-          <nz-option nzValue="administrateur" nzLabel="Administrateur"></nz-option>
-          <nz-option nzValue="patient" nzLabel="Patient"></nz-option>
+        <nz-select *ngIf="editId === data.id" [(ngModel)]="data.laboratoireId" placeholder="Sélectionner laboratoire" style="width: 100%;">
+          <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>
         </nz-select>
       </td>
-
 
       <td>
         <div nz-row>
@@ -138,7 +121,6 @@
             </button>
           </div>
         </div>
-
         <div nz-row>
           <div nz-col style="margin-right: 10px">
             <button nz-button [hidden]="editId !== data.id" (click)="saveEdit()" nzType="default">

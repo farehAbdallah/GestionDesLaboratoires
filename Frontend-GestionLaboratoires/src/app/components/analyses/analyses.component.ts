@@ -12,18 +12,17 @@ import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {NzFormControlComponent, NzFormDirective, NzFormLabelComponent} from 'ng-zorro-antd/form';
 import {NzTagComponent} from 'ng-zorro-antd/tag';
 import {NzOptionComponent, NzSelectComponent} from 'ng-zorro-antd/select';
-import {UserService} from '../../services/user.service';
+import {AnalyseService} from '../../services/analyses.service';
 
-interface ItemData {
+interface AnalyseData {
   id: string;
-  email: string;
-  password: string;
   name: string;
-  role: string;
+  description: string;
+  laboratoireId: string;
 }
 
 @Component({
-  selector: 'app-utilisateurs',
+  selector: 'app-analyses',
   standalone: true,
   imports: [
     CommonModule,
@@ -48,40 +47,46 @@ interface ItemData {
     NzOptionComponent
   ],
   providers: [NzModalService],
-  templateUrl: './utilisateurs.component.html',
-  styleUrls: ['./utilisateurs.component.css']
+  templateUrl: './analyses.component.html',
+  styleUrls: ['./analyses.component.css']
 })
-export class UtilisateursComponent implements OnInit {
+export class AnalysesComponent implements OnInit {
   i = 0;
   editId: string | null = null;
-  listOfData: ItemData[] = [];
-  originalData: ItemData | null = null;
+  listOfData: AnalyseData[] = [];
+  originalData: AnalyseData | null = null;
   isVisible = false;
   isOkLoading = false;
-  filteredData: ItemData[] = [];
+  filteredData: AnalyseData[] = [];
   validateForm: FormGroup;
   searchName: string = '';  // Property for search text
-  searchEmail: string = '';  // Property for search text
-  searchRole: string = ''; // Selected role for filtering
+  searchDescription: string = '';  // Property for search text
+  searchLaboratoire: string = ''; // Selected type for filtering
+  listOfLaboratoires: any[] = [];
 
-
-  constructor(private fb: NonNullableFormBuilder, private message: NzMessageService, private userService: UserService) {
+  constructor(private fb: NonNullableFormBuilder, private message: NzMessageService, private analyseService: AnalyseService) {
     this.validateForm = this.fb.group({
       name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      role: ['employee', [Validators.required]] // Default value set to "employee"
+      description: ['', [Validators.required]],
+      laboratoireId: ['', [Validators.required]] // Default value set to "biologique"
     });
-
   }
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.loadAnalyses();
+    this.loadLaboratoires();
   }
 
-  loadUsers(): void {
-    this.userService.getUsers().subscribe(users => {
-      this.listOfData = users;
+  loadLaboratoires(): void {
+    this.analyseService.getLaboratoires().subscribe((laboratoires: any) => {
+      this.listOfLaboratoires = laboratoires; // Charger la liste des laboratoires
+      console.log("list labo",this.listOfLaboratoires)
+    });
+  }
+
+  loadAnalyses(): void {
+    this.analyseService.getAnalyses().subscribe(analyses => {
+      this.listOfData = analyses;
       this.filteredData = [...this.listOfData]; // Initialize filtered data
     });
   }
@@ -97,13 +102,13 @@ export class UtilisateursComponent implements OnInit {
 
   saveEdit(): void {
     if (this.editId && this.originalData) {
-      const updatedUser = this.listOfData.find(item => item.id === this.editId);
-      // Update the user on the server
-      this.userService.updateUser(this.editId, updatedUser).subscribe(() => {
+      const updatedAnalyse = this.listOfData.find(item => item.id === this.editId);
+      // Update the analyse on the server
+      this.analyseService.updateAnalyse(this.editId, updatedAnalyse).subscribe(() => {
         this.editId = null;
         this.originalData = null;
-        this.loadUsers(); // Refresh the list after update
-        this.message.success('Utilisateur modifié avec succès');
+        this.loadAnalyses(); // Refresh the list after update
+        this.message.success('Analyse modifiée avec succès');
       });
     }
   }
@@ -118,14 +123,13 @@ export class UtilisateursComponent implements OnInit {
     }
     this.editId = null;
     this.originalData = null;
-    this.loadUsers(); // Refresh the list after update
+    this.loadAnalyses(); // Refresh the list after update
   }
 
-
   deleteRow(id: string): void {
-    this.userService.deleteUser(id).subscribe(() => {
-      this.loadUsers(); // Reload the users after deletion
-      this.message.success('Utilisateur supprimé avec succès');
+    this.analyseService.deleteAnalyse(id).subscribe(() => {
+      this.loadAnalyses(); // Reload the analyses after deletion
+      this.message.success('Analyse supprimée avec succès');
     });
   }
 
@@ -141,36 +145,21 @@ export class UtilisateursComponent implements OnInit {
 
   submitForm(): void {
     if (this.validateForm.valid) {
-      const newRow: ItemData = {
+      const newAnalyse: AnalyseData = {
         id: `${Date.now()}`,
         ...this.validateForm.value
       };
-      this.userService.addUser(newRow).subscribe(() => {
+      this.analyseService.addAnalyse(newAnalyse).subscribe(() => {
         this.isOkLoading = false;
         this.isVisible = false;
-        this.loadUsers(); // Reload users after adding
-        this.message.success('Utilisateur ajouté avec succès');
+        this.loadAnalyses(); // Reload analyses after adding
+        this.message.success('Analyse ajoutée avec succès');
       });
     }
   }
 
   handleOk(): void {
     this.submitForm();
-  }
-
-
-
-  getRoleColor(role: string): string {
-    switch (role) {
-      case 'administrateur':
-        return 'red'; // Color for "admin"
-      case 'employee':
-        return 'cyan'; // Color for "employee"
-      case 'patient':
-        return 'green'; // Color for "patient"
-      default:
-        return 'gray'; // Default color for undefined roles
-    }
   }
 
 
@@ -184,36 +173,40 @@ export class UtilisateursComponent implements OnInit {
     }
   }
 
-  // Filter data based on search by Addresse
-  filterDataByEmail(): void {
-    if (this.searchEmail) {
+  filterDataByDescription(): void {
+    if (this.searchDescription) {
       this.filteredData = this.listOfData.filter(item =>
-        item.email.toLowerCase().includes(this.searchEmail.toLowerCase())
+        item.description.toLowerCase().includes(this.searchDescription.toLowerCase())
       );
     } else {
       this.filteredData = [...this.listOfData]; // Show all data if no search text
     }
   }
 
-  filterDataByRole(): void {
-    if (this.searchRole) {
-      this.filteredData = this.listOfData.filter(item =>
-        item.role.toLowerCase().includes(this.searchRole.toLowerCase())
-      );
-    } else {
-      this.filteredData = [...this.listOfData]; // Show all data if no search text
-    }
-  }
+  // filterDataByLaboratoire(): void {
+  //   if (this.searchLaboratoire) {
+  //     this.filteredData = this.listOfData.filter(item =>
+  //       item.laboratoireId.toLowerCase().includes(this.searchLaboratoire.toLowerCase())
+  //     );
+  //   } else {
+  //     this.filteredData = [...this.listOfData]; // Show all data if no search text
+  //   }
+  // }
 
-  // Update search text and trigger filtering
-  onSearchEmailChange(): void {
-    this.filterDataByEmail();
+  onSearchDescriptionChange(): void {
+    this.filterDataByDescription();
   }
   onSearchNameChange(): void {
     this.filterDataByName();
   }
-  onSearchRoleChange(): void {
-    this.filterDataByRole();
+  // onSearchLaboratoireChange(): void {
+  //   this.filterDataByLaboratoire();
+  // }
+
+  getNomLaboratoire(id: string): string | undefined {
+    const laboratoire = this.listOfLaboratoires.find(labo => labo.id === id);
+    return laboratoire ? laboratoire.name : undefined;
   }
+
 
 }
