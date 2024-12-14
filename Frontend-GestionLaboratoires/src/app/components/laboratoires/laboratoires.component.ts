@@ -19,9 +19,8 @@ import { NzModalComponent, NzModalContentDirective, NzModalFooterDirective, NzMo
 import { NzFormControlComponent, NzFormDirective, NzFormLabelComponent } from 'ng-zorro-antd/form';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { NzTagModule } from 'ng-zorro-antd/tag';
 
 
 interface LaboratoryData {
@@ -55,9 +54,7 @@ interface LaboratoryData {
     NzFormDirective,
     NzModalFooterDirective,
     NzRadioModule,
-    NzUploadModule,
-    NzTagModule
-
+    NzUploadModule
   ],
   providers: [NzModalService],
   templateUrl: './laboratoires.component.html',
@@ -124,10 +121,10 @@ export class LaboratoiresComponent implements OnInit {
 
   addRow(): void {
     const newRow = {
-      id: ${this.i},
-      name: Laboratoire ${this.i},
-      nrc: NRC-${this.i},
-      logo: Logo-${this.i}.png,
+      id: `${this.i}`,
+      name: `Laboratoire ${this.i}`,
+      nrc: `NRC-${this.i}`,
+      logo: `Logo-${this.i}.png`,
       dateActivation: new Date(),
       isActive: true
     };
@@ -194,7 +191,7 @@ export class LaboratoiresComponent implements OnInit {
       this.isOkLoading = true;
 
       const newRow: LaboratoryData = {
-        id: ${this.i}, // ID unique pour chaque laboratoire
+        id: `${this.i}`, // ID unique pour chaque laboratoire
         name: this.validateForm.value.name,
         nrc: this.validateForm.value.nrc,
         logo: this.validateForm.value.logo,
@@ -202,10 +199,10 @@ export class LaboratoiresComponent implements OnInit {
         isActive: this.validateForm.value.isActive
       };
 
-      // Ajoutez le nouvel élément à listOfData
+      // Ajoutez le nouvel élément à `listOfData`
       this.listOfData = [...this.listOfData, newRow];
 
-      // Mettez à jour filteredData pour refléter les nouvelles données
+      // Mettez à jour `filteredData` pour refléter les nouvelles données
       this.filterData();
 
       setTimeout(() => {
@@ -251,14 +248,6 @@ export class LaboratoiresComponent implements OnInit {
       reader.readAsDataURL(input.files[0]);
     }
   }
-
-  handleUploadChange(event: NzUploadChangeParam): void {
-    if (event.file && event.file.originFileObj) {
-      const input = { target: { files: [event.file.originFileObj] } } as unknown as Event;
-      this.updateLogo(this.editId ? this.listOfData.find(item => item.id === this.editId) : null, input);
-    }
-  }
-
 
 
 
