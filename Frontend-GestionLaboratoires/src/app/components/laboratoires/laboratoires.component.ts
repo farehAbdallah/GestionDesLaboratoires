@@ -22,6 +22,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { LaboratoireService } from '../../services/laboratoires.service'; // Import the service
 
 
 interface LaboratoryData {
@@ -56,7 +57,7 @@ interface LaboratoryData {
     NzModalFooterDirective,
     NzRadioModule,
     NzUploadModule,
-    NzTagModule,
+    NzTagModule
 
   ],
   providers: [NzModalService],
@@ -64,53 +65,93 @@ interface LaboratoryData {
   styleUrls: ['./laboratoires.component.css']
 })
 export class LaboratoiresComponent implements OnInit {
-  i = 0;
   editId: string | null = null;
   listOfData: LaboratoryData[] = [];
   originalData: LaboratoryData | null = null;
-  searchName: string = '';
-  searchNrc: string = '';
-
+  filteredData: LaboratoryData[] = [];
+  validateForm: FormGroup;
   isVisible = false;
   isOkLoading = false;
+  searchName = '';
+  searchNrc = '';
+  logoFileName = '';
 
-  filteredData: LaboratoryData[] = [];
-
-  fileList: NzUploadFile[] = [];  // Liste des fichiers téléchargés
-  logoFileName: string = ''; // Nom du fichier sélectionné
-
-  validateForm: FormGroup;
-
-  constructor(private modalService: NzModalService, private fb: NonNullableFormBuilder, private message: NzMessageService) {
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private laboratoireService: LaboratoireService, // Inject service
+    private message: NzMessageService
+  ) {
     this.validateForm = this.fb.group({
-      name: this.fb.control('', [Validators.required]),
-      nrc: this.fb.control('', [Validators.required]),
-      logo: this.fb.control('', [Validators.required]),
-      dateActivation: this.fb.control(null, [Validators.required]),
-      isActive: this.fb.control(true)
+      name: ['', [Validators.required]],
+      nrc: ['', [Validators.required]],
+      logo: ['', [Validators.required]],
+      dateActivation: [null, [Validators.required]],
+      isActive: [true]
     });
   }
 
   ngOnInit(): void {
-    this.addRow(); // Add some initial rows for demonstration
-    this.filteredData = [...this.listOfData];
+    this.loadLaboratoires();
   }
 
+  // Load laboratoires from backend (db.json)
+  loadLaboratoires(): void {
+    this.laboratoireService.getLaboratoires().subscribe(
+      (data) => {
+        this.listOfData = data;
+        this.filteredData = [...this.listOfData];
+      });
+  }
+
+  filterData(): void {
+    this.filteredData = this.listOfData.filter(
+      (item) =>
+        item.name.toLowerCase().includes(this.searchName.toLowerCase()) &&
+        item.nrc.toLowerCase().includes(this.searchNrc.toLowerCase())
+    );
+  }
+
+  onSearchNameChange(): void {
+    this.filterData();
+  }
+
+  onSearchNrcChange(): void {
+    this.filterData();
+  }
+
+  showModal(): void {
+    this.validateForm.reset();
+    this.logoFileName = '';
+    this.isVisible = true;
+  }
+
+  // Start editing an existing laboratory
   startEdit(id: string): void {
     this.editId = id;
-    const currentData = this.listOfData.find(item => item.id === id);
+    const currentData = this.listOfData.find((item) => item.id === id);
+
     if (currentData) {
       this.originalData = { ...currentData };
     }
   }
 
+  // Save edited laboratory
   saveEdit(): void {
-    this.editId = null;
-    this.originalData = null;
-    this.message.success('Laboratoire modifié avec succès');
+    if (this.editId && this.originalData) {
+      const updatedLaboratoire = this.listOfData.find(item => item.id === this.editId);
+      // Update the user on the server
+      this.laboratoireService.updateLaboratoire(this.editId, updatedLaboratoire).subscribe(() => {
+        this.editId = null;
+        this.originalData = null;
+        this.loadLaboratoires(); // Refresh the list after update
+        this.message.success('Laboratoire modifié avec succès');
+      });
+    }
   }
 
   cancelEdit(): void {
+    // Revert the changes to the original data
+
     if (this.editId && this.originalData) {
       const index = this.listOfData.findIndex(item => item.id === this.editId);
       if (index > -1) {
@@ -119,65 +160,16 @@ export class LaboratoiresComponent implements OnInit {
     }
     this.editId = null;
     this.originalData = null;
-    this.filterData();
+    this.loadLaboratoires(); // Refresh the list after update
   }
 
-  addRow(): void {
-    const newRow = {
-      id: `${this.i}`,
-      name: `Laboratoire ${this.i}`,
-      nrc: `NRC-${this.i}`,
-      logo: `Logo-${this.i}.png`,
-      dateActivation: new Date(),
-      isActive: true
-    };
-    this.listOfData = [...this.listOfData, newRow];
-    this.i++;
-    this.filterData();
-  }
-
+  // Delete laboratory
   deleteRow(id: string): void {
-    this.listOfData = this.listOfData.filter(d => d.id !== id);
-    this.filterData();
-    this.message.success('Laboratoire supprimé avec succès');
-  }
+    this.laboratoireService.deleteLaboratoire(id).subscribe(() => {
+        this.loadLaboratoires();
+        this.message.success('Laboratoire supprimé avec succès');
+      });
 
-  filterData(): void {
-    this.filterDataByName();
-    this.filterDataByNrc();
-  }
-
-  filterDataByName(): void {
-    if (this.searchName) {
-      this.filteredData = this.listOfData.filter(item =>
-        item.name.toLowerCase().includes(this.searchName.toLowerCase())
-      );
-    } else {
-      this.filteredData = [...this.listOfData];
-    }
-  }
-
-  filterDataByNrc(): void {
-    if (this.searchNrc) {
-      this.filteredData = this.listOfData.filter(item =>
-        item.nrc.toLowerCase().includes(this.searchNrc.toLowerCase())
-      );
-    } else {
-      this.filteredData = [...this.listOfData];
-    }
-  }
-
-  onSearchNrcChange(): void {
-    this.filterDataByNrc();
-  }
-
-  onSearchNameChange(): void {
-    this.filterDataByName();
-  }
-
-  showModal(): void {
-    this.validateForm.reset();
-    this.isVisible = true;
   }
 
   handleCancel(): void {
@@ -185,61 +177,48 @@ export class LaboratoiresComponent implements OnInit {
     this.validateForm.reset();
   }
 
-  handleOk(): void {
-    this.submitForm();
-  }
-
   submitForm(): void {
     if (this.validateForm.valid) {
-      this.isOkLoading = true;
-
       const newRow: LaboratoryData = {
-        id: `${this.i}`, // ID unique pour chaque laboratoire
-        name: this.validateForm.value.name,
-        nrc: this.validateForm.value.nrc,
-        logo: this.validateForm.value.logo,
-        dateActivation: this.validateForm.value.dateActivation,
-        isActive: this.validateForm.value.isActive
+        id: `${Date.now()}`,
+        ...this.validateForm.value
       };
-
-      // Ajoutez le nouvel élément à `listOfData`
-      this.listOfData = [...this.listOfData, newRow];
-
-      // Mettez à jour `filteredData` pour refléter les nouvelles données
-      this.filterData();
-
-      setTimeout(() => {
+      this.laboratoireService.addLaboratoire(newRow).subscribe(() => {
         this.isOkLoading = false;
         this.isVisible = false;
+        this.loadLaboratoires(); // Reload users after adding
         this.message.success('Laboratoire ajouté avec succès');
-      }, 2000);
-
-      this.i++; // Incrémentez l'identifiant pour les futurs laboratoires
-      this.validateForm.reset(); // Réinitialisez le formulaire après l'ajout
-      this.logoFileName = ''; // Réinitialisez le nom du fichier
-    } else {
-      // Marquez les champs invalides comme sales pour afficher les erreurs
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
       });
     }
   }
 
+  handleOk(): void {
+    this.submitForm();
+  }
 
-  handleFileInput(event: any): void {
+  // Handle logo file upload
+  handleFileInput(event: NzUploadChangeParam): void {
     const file = event.file.originFileObj;
     if (file) {
-      this.logoFileName = file.name; // Mettre à jour le nom du fichier
       const reader = new FileReader();
       reader.onload = () => {
+        this.logoFileName = file.name;
+
         this.validateForm.patchValue({ logo: reader.result as string });
       };
       reader.readAsDataURL(file);
     }
   }
+
+  // Handle upload change
+  handleUploadChange(event: NzUploadChangeParam): void {
+    if (event.file && event.file.originFileObj) {
+      const input = { target: { files: [event.file.originFileObj] } } as unknown as Event;
+      this.updateLogo(this.editId ? this.listOfData.find(item => item.id === this.editId) : null, input);
+    }
+  }
+
+  // Update logo URL in the form when file is uploaded
 
   updateLogo(data: any, event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -251,17 +230,6 @@ export class LaboratoiresComponent implements OnInit {
       reader.readAsDataURL(input.files[0]);
     }
   }
-
-
-  handleUploadChange(event: NzUploadChangeParam): void {
-    if (event.file && event.file.originFileObj) {
-      const input = { target: { files: [event.file.originFileObj] } } as unknown as Event;
-      this.updateLogo(this.editId ? this.listOfData.find(item => item.id === this.editId) : null, input);
-    }
-  }
-
-
-
 
 
 }

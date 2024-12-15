@@ -3,7 +3,6 @@ package net.chabab.laboratoireservice.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import net.chabab.utilisateurservice.entities.Utilisateur;
 
 import java.util.List;
 

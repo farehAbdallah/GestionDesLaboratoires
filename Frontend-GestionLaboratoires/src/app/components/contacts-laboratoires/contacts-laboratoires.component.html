@@ -1,6 +1,6 @@
 <div class="inner-content-no-dashboard">
-
-  <div nz-row nzJustify="space-between" nzAlign="middle" >
+  <!-- Header with search and add button -->
+  <div nz-row nzJustify="space-between" nzAlign="middle">
     <div nz-col>
       <button nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
         <span nz-icon nzType="plus"></span>
@@ -11,7 +11,7 @@
       <div nz-row>
         <div nz-col>
           <nz-input-group [nzSuffix]="suffixIconSearch">
-            <input type="text" nz-input [(ngModel)]="searchName" (ngModelChange)="onSearchNameChange()" placeholder="Chercher par nom" />
+            <input type="text" nz-input [(ngModel)]="searchLaboratoireId" (ngModelChange)="onSearchLaboratoireIdChange()" placeholder="Chercher par laboratoire" />
           </nz-input-group>
           <ng-template #suffixIconSearch>
             <span nz-icon nzType="search"></span>
@@ -19,47 +19,57 @@
         </div>
         <div nz-col style="margin-left: 10px">
           <nz-input-group [nzSuffix]="suffixIconSearch">
-            <input type="text" nz-input [(ngModel)]="searchDescription" (ngModelChange)="onSearchDescriptionChange()" placeholder="Chercher par description" />
+            <input type="text" nz-input [(ngModel)]="searchAdresseId" (ngModelChange)="onSearchAdresseIdChange()" placeholder="Chercher par ville" />
           </nz-input-group>
           <ng-template #suffixIconSearch>
             <span nz-icon nzType="search"></span>
           </ng-template>
         </div>
-<!--        <div nz-col style="margin-left: 10px">-->
-<!--          <nz-input-group [nzSuffix]="suffixIconSearch">-->
-<!--            <input type="text" nz-input [(ngModel)]="searchLaboratoire" (ngModelChange)="onSearchLaboratoireChange()" placeholder="Chercher par laboratoire" />-->
-<!--          </nz-input-group>-->
-<!--          <ng-template #suffixIconSearch>-->
-<!--            <span nz-icon nzType="search"></span>-->
-<!--          </ng-template>-->
-<!--        </div>-->
       </div>
     </div>
   </div>
 
   <br />
 
-  <!-- Modal pour ajouter une analyse -->
-  <nz-modal [(nzVisible)]="isVisible" nzTitle="Ajouter Analyse" (nzOnCancel)="handleCancel()">
+  <!-- Modal for adding a contact -->
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Ajouter Contact Laboratoire" (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
       <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" class="login-form">
         <nz-form-item class="form-control-margin">
-          <nz-form-label>Nom</nz-form-label>
-          <nz-form-control nzErrorTip="Veuillez entrer un nom valide!">
-            <input type="text" nz-input formControlName="name" placeholder="Nom" />
+          <nz-form-label>Numéro de téléphone</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un numéro de téléphone valide!">
+            <input type="text" nz-input formControlName="numTel" placeholder="Numéro de téléphone" />
           </nz-form-control>
         </nz-form-item>
+
         <nz-form-item class="form-control-margin">
-          <nz-form-label>Description</nz-form-label>
-          <nz-form-control nzErrorTip="Veuillez entrer une description valide!">
-            <input type="text" nz-input formControlName="description" placeholder="Description" />
+          <nz-form-label>Fax</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un fax valide!">
+            <input type="text" nz-input formControlName="fax" placeholder="Fax" />
           </nz-form-control>
         </nz-form-item>
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Email</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un email valide!">
+            <input type="email" nz-input formControlName="email" placeholder="Email" />
+          </nz-form-control>
+        </nz-form-item>
+
         <nz-form-item class="form-control-margin">
           <nz-form-label>Laboratoire</nz-form-label>
           <nz-form-control nzErrorTip="Veuillez sélectionner un laboratoire!">
-            <nz-select nzShowSearch formControlName="laboratoireId" nzPlaceHolder="Sélectionner un laboratoire">
+            <nz-select formControlName="laboratoireId" placeholder="Sélectionner un laboratoire">
               <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Ville</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez sélectionner une ville!">
+            <nz-select formControlName="adresseId" placeholder="Sélectionner une ville">
+              <nz-option *ngFor="let adresse of listOfAdresses" [nzValue]="adresse.id" [nzLabel]="adresse.ville"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
@@ -71,14 +81,15 @@
     </div>
   </nz-modal>
 
-  <!-- Table des analyses -->
-
-  <nz-table #editRowTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60VH' }" nzBordered [nzData]="filteredData">
+  <!-- Table for displaying contacts -->
+  <nz-table #editRowTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60vh' }" nzBordered [nzData]="filteredData">
     <thead>
     <tr>
-      <th nzWidth="15%">Nom</th>
-      <th nzWidth="45%">Description</th>
+      <th nzWidth="15%">Numéro de téléphone</th>
+      <th nzWidth="15%">Fax</th>
+      <th nzWidth="15%">Email</th>
       <th nzWidth="15%">Laboratoire</th>
+      <th nzWidth="15%">Ville</th>
       <th nzWidth="25%">Actions</th>
     </tr>
     </thead>
@@ -86,24 +97,40 @@
     <tr *ngFor="let data of editRowTable.data;">
       <td>
         <div class="editable-cell" [hidden]="editId === data.id">
-          {{ data.name }}
+          {{ data.numTel }}
         </div>
-        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.name" />
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.numTel" />
       </td>
 
       <td>
         <div class="editable-cell" [hidden]="editId === data.id">
-          {{ data.description }}
+          {{ data.fax }}
         </div>
-        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.description" />
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.fax" />
       </td>
 
       <td>
         <div class="editable-cell" [hidden]="editId === data.id">
-          {{ this.getNomLaboratoire(data.laboratoireId) }}
+          {{ data.email }}
         </div>
-        <nz-select *ngIf="editId === data.id" [(ngModel)]="data.laboratoireId" nzPlaceHolder="Sélectionner laboratoire" style="width: 100%;">
+        <input [hidden]="editId !== data.id" type="email" nz-input [(ngModel)]="data.email" />
+      </td>
+
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ getNomLaboratoire(data.laboratoireId) }}
+        </div>
+        <nz-select *ngIf="editId === data.id" [(ngModel)]="data.laboratoireId" placeholder="Sélectionner un laboratoire" style="width: 100%;">
           <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>
+        </nz-select>
+      </td>
+
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ getVilleAdresse(data.adresseId) }}
+        </div>
+        <nz-select *ngIf="editId === data.id" [(ngModel)]="data.adresseId" placeholder="Sélectionner une ville" style="width: 100%;">
+          <nz-option *ngFor="let adresse of listOfAdresses" [nzValue]="adresse.id" [nzLabel]="adresse.ville"></nz-option>
         </nz-select>
       </td>
 
@@ -140,5 +167,4 @@
     </tr>
     </tbody>
   </nz-table>
-
 </div>
