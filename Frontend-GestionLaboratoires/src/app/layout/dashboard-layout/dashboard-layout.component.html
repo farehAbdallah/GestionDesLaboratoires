@@ -79,6 +79,37 @@
       </li>
 
 
+      <li nz-submenu nzTitle="Gestion des Patients" nzIcon="reconciliation">
+        <ul>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/patients'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/patients')"
+          >
+            <span>Patients</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/dossiers'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/dossiers')"
+          >
+            <span>Dossiers</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/examens'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/examens')"
+          >
+            <span>Examens</span>
+          </li>
+
+        </ul>
+      </li>
+
+
     </ul>
   </nz-sider>
   <nz-layout>
