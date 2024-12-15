@@ -91,9 +91,9 @@ export const routes: Routes = [
         // canActivate: [roleGuard],
       },
       {
-        path: 'examins',
+        path: 'examens',
         component: ExaminsComponent,
-        data: { title: 'Gestion des Examins', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
+        data: { title: 'Gestion des Examens', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],
       },
 
