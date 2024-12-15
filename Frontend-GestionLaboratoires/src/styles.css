@@ -15,3 +15,7 @@
   height: 100%;
 }
 
+
+.ant-descriptions-item-label {
+  color: rgba(0, 0, 0, 0.40);
+}

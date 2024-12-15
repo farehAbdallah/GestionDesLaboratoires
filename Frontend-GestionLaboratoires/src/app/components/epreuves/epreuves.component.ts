@@ -17,7 +17,7 @@ import { AnalyseService } from '../../services/analyses.service';
 interface EpreuveData {
   id: string;
   nom: string;
-  analyseId: string; // Replace laboratoireId with analyseId
+  analyseId: string;
 }
 
 @Component({

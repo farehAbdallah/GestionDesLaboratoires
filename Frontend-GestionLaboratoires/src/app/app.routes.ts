@@ -10,6 +10,9 @@ import {roleGuard} from './guards/role.guard';
 import {AnalysesComponent} from './components/analyses/analyses.component';
 import {EpreuvesComponent} from './components/epreuves/epreuves.component';
 import {TestsComponent} from './components/tests/tests.component';
+import {PatientsComponent} from './components/patients/patients.component';
+import {DossiersComponent} from './components/dossiers/dossiers.component';
+import {ExaminsComponent} from './components/examins/examins.component';
 import {LaboratoiresComponent} from './components/laboratoires/laboratoires.component';
 
 
@@ -58,6 +61,24 @@ export const routes: Routes = [
         path: 'tests',
         component: TestsComponent,
         data: { title: 'Gestion des Tests', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
+        // canActivate: [roleGuard],
+      },
+      {
+        path: 'patients',
+        component: PatientsComponent,
+        data: { title: 'Gestion des Patients', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
+        // canActivate: [roleGuard],
+      },
+      {
+        path: 'dossiers',
+        component: DossiersComponent,
+        data: { title: 'Gestion des Dossiers', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
+        // canActivate: [roleGuard],
+      },
+      {
+        path: 'examins',
+        component: ExaminsComponent,
+        data: { title: 'Gestion des Examins', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],
       },
 

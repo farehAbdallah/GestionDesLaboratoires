@@ -57,7 +57,7 @@ interface LaboratoryData {
     NzRadioModule,
     NzUploadModule,
     NzTagModule,
-    
+
   ],
   providers: [NzModalService],
   templateUrl: './laboratoires.component.html',
@@ -188,11 +188,11 @@ export class LaboratoiresComponent implements OnInit {
   handleOk(): void {
     this.submitForm();
   }
-  
+
   submitForm(): void {
     if (this.validateForm.valid) {
       this.isOkLoading = true;
-  
+
       const newRow: LaboratoryData = {
         id: `${this.i}`, // ID unique pour chaque laboratoire
         name: this.validateForm.value.name,
@@ -201,19 +201,19 @@ export class LaboratoiresComponent implements OnInit {
         dateActivation: this.validateForm.value.dateActivation,
         isActive: this.validateForm.value.isActive
       };
-  
+
       // Ajoutez le nouvel élément à `listOfData`
       this.listOfData = [...this.listOfData, newRow];
-  
+
       // Mettez à jour `filteredData` pour refléter les nouvelles données
       this.filterData();
-  
+
       setTimeout(() => {
         this.isOkLoading = false;
         this.isVisible = false;
         this.message.success('Laboratoire ajouté avec succès');
       }, 2000);
-  
+
       this.i++; // Incrémentez l'identifiant pour les futurs laboratoires
       this.validateForm.reset(); // Réinitialisez le formulaire après l'ajout
       this.logoFileName = ''; // Réinitialisez le nom du fichier
@@ -227,8 +227,8 @@ export class LaboratoiresComponent implements OnInit {
       });
     }
   }
-  
-  
+
+
   handleFileInput(event: any): void {
     const file = event.file.originFileObj;
     if (file) {
@@ -252,14 +252,16 @@ export class LaboratoiresComponent implements OnInit {
     }
   }
 
+
   handleUploadChange(event: NzUploadChangeParam): void {
     if (event.file && event.file.originFileObj) {
       const input = { target: { files: [event.file.originFileObj] } } as unknown as Event;
       this.updateLogo(this.editId ? this.listOfData.find(item => item.id === this.editId) : null, input);
     }
   }
-  
-  
-  
-  
+
+
+
+
+
 }

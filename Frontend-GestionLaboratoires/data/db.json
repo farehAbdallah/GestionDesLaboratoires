@@ -72,6 +72,264 @@
       "laboratoireId": "2"
     }
   ],
+  "dossiers": [
+    {
+      "id": "1",
+      "numDossier": "D12345",
+      "fkEmailUtilisateur": "abdallahfareh0@gmail.com",
+      "fkIdPatient": "1734201252381",
+      "date": "2024-01-15"
+    },
+    {
+      "id": "2",
+      "numDossier": "D12346",
+      "fkEmailUtilisateur": "utilisateur2@example.com",
+      "fkIdPatient": "1",
+      "date": "2024-02-20"
+    },
+    {
+      "id": "3",
+      "numDossier": "D12347",
+      "fkEmailUtilisateur": "utilisateur3@example.com",
+      "fkIdPatient": "2",
+      "date": "2024-03-10"
+    },
+    {
+      "id": "4",
+      "numDossier": "D12348",
+      "fkEmailUtilisateur": "chabab@email.com",
+      "fkIdPatient": "3",
+      "date": "2024-04-05"
+    },
+    {
+      "id": "1734208898573",
+      "numDossier": "d1234",
+      "fkEmailUtilisateur": "abdallahfareh0@gmail.com",
+      "fkIdPatient": "1734201252381",
+      "date": "2002-12-12"
+    },
+    {
+      "id": "1734274565222",
+      "numDossier": "f1111",
+      "fkEmailUtilisateur": "abdallahfareh0@gmail.com",
+      "fkIdPatient": "1",
+      "date": "2002-12-22"
+    }
+  ],
+  "examins": [
+    {
+      "id": "1",
+      "fkNumDossier": "D12345",
+      "fkIdEpreuve": "1734020089052",
+      "fkIdTestAnalyse": "1734026322087",
+      "resultat": "Niveau de glucose normal"
+    },
+    {
+      "id": "2",
+      "fkNumDossier": "D12347",
+      "fkIdEpreuve": "1734020044919",
+      "fkIdTestAnalyse": "1",
+      "resultat": "Présence de légères anomalies pulmonaires"
+    },
+    {
+      "id": "1734212430820",
+      "fkNumDossier": "d1234",
+      "fkIdEpreuve": "1734020089052",
+      "fkIdTestAnalyse": "1734026322087",
+      "resultat": "tetetwegesg"
+    },
+    {
+      "id": "1734212473668",
+      "fkNumDossier": "D12347",
+      "fkIdEpreuve": "1734212457620",
+      "fkIdTestAnalyse": "1734026322087",
+      "resultat": "22222"
+    }
+  ],
+  "patients": [
+    {
+      "id": "1",
+      "nomComplet": "John Doe",
+      "dateNaissance": "1988-04-15",
+      "lieuNaissance": "Springfield",
+      "sexe": "homme",
+      "typePieceIdentite": "Passeport",
+      "numPieceIdentite": "A12345678",
+      "adresse": "123 Elm Street, Springfield",
+      "numTel": "+1-202-555-0143",
+      "email": "john.doe@example.com",
+      "visible_pour": "medecin1"
+    },
+    {
+      "id": "2",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "femme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "3",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "femme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "4",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "homme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "5",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "femme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "6",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "femme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "7",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "homme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "8",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "femme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "9",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "homme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "10",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "femme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "11",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "homme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "12",
+      "nomComplet": "Jane Smith",
+      "dateNaissance": "1994-11-22",
+      "lieuNaissance": "Springfield",
+      "sexe": "homme",
+      "typePieceIdentite": "Carte Nationale d'Identité",
+      "numPieceIdentite": "CNI987654321",
+      "adresse": "456 Oak Avenue, Springfield",
+      "numTel": "+1-202-555-0198",
+      "email": "jane.smith@example.com",
+      "visible_pour": "medecin2"
+    },
+    {
+      "id": "1734201252381",
+      "nomComplet": "patient",
+      "dateNaissance": "2002-12-12",
+      "lieuNaissance": "settat",
+      "sexe": "femme",
+      "typePieceIdentite": "Passeport",
+      "numPieceIdentite": "1234567",
+      "adresse": "QUARTIER EL KAMAL 02 BLOC C NR 848 SETTAT",
+      "numTel": "0762401781",
+      "email": "test@gmail.com",
+      "visible_pour": "medcine1"
+    },
+    {
+      "id": "1734282379194",
+      "nomComplet": "tissir aymane",
+      "dateNaissance": "2003-12-12",
+      "lieuNaissance": "sahra",
+      "sexe": "homme",
+      "typePieceIdentite": "Passeport",
+      "numPieceIdentite": "W12345",
+      "adresse": "QUARTIER EL KAMAL 02 BLOC C NR 848 SETTAT",
+      "numTel": "0762401781",
+      "email": "test@gmail.com",
+      "visible_pour": "aaa"
+    }
+  ],
   "tests": [
     {
       "id": "1",
@@ -103,6 +361,16 @@
     {
       "id": "1734020089052",
       "nom": "epreuve tissir ",
+      "analyseId": "1734018362381"
+    },
+    {
+      "id": "1734212457620",
+      "nom": "epreuve 2",
+      "analyseId": "1734018362381"
+    },
+    {
+      "id": "1734274598966",
+      "nom": "tissir test epreuve",
       "analyseId": "1734018362381"
     }
   ],
