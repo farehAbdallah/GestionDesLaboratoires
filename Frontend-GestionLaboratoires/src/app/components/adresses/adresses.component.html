@@ -1,0 +1,164 @@
+<div class="inner-content-no-dashboard">
+  <!-- Header with search and add button -->
+  <div nz-row nzJustify="space-between" nzAlign="middle">
+    <div nz-col>
+      <button nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
+        <span nz-icon nzType="plus"></span>
+        Ajouter
+      </button>
+    </div>
+    <div nz-col>
+      <div nz-row>
+        <div nz-col>
+          <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input [(ngModel)]="searchVille" (ngModelChange)="onSearchVilleChange()" placeholder="Chercher par ville" />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </div>
+        <div nz-col style="margin-left: 10px">
+          <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input [(ngModel)]="searchCommune" (ngModelChange)="onSearchCommuneChange()" placeholder="Chercher par commune" />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br />
+
+  <!-- Modal for adding an address -->
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Ajouter Adresse" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+      <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" class="login-form">
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Numéro de voie</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un numéro de voie!">
+            <input type="text" nz-input formControlName="numVoie" placeholder="Numéro de voie" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Nom de voie</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un nom de voie!">
+            <input type="text" nz-input formControlName="nomVoie" placeholder="Nom de voie" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Code Postal</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un code postal!">
+            <input type="text" nz-input formControlName="codePostal" placeholder="Code Postal" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Ville</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer une ville!">
+            <input type="text" nz-input formControlName="ville" placeholder="Ville" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Commune</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer une commune!">
+            <input type="text" nz-input formControlName="commune" placeholder="Commune" />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancel()">Annuler</button>
+      <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isOkLoading">Enregistrer</button>
+    </div>
+  </nz-modal>
+
+  <!-- Table for displaying addresses -->
+  <nz-table #editRowTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60vh' }" nzBordered [nzData]="filteredData">
+    <thead>
+    <tr>
+      <th nzWidth="15%">Numéro de voie</th>
+      <th nzWidth="15%">Nom de voie</th>
+      <th nzWidth="15%">Code Postal</th>
+      <th nzWidth="15%">Ville</th>
+      <th nzWidth="15%">Commune</th>
+      <th nzWidth="25%">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of editRowTable.data;">
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.numVoie }}
+        </div>
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.numVoie" />
+      </td>
+
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.nomVoie }}
+        </div>
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.nomVoie" />
+      </td>
+
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.codePostal }}
+        </div>
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.codePostal" />
+      </td>
+
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.ville }}
+        </div>
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.ville" />
+      </td>
+
+      <td>
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.commune }}
+        </div>
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.commune" />
+      </td>
+
+      <td>
+        <div nz-row>
+          <div nz-col style="margin-right: 10px">
+            <button nz-button [hidden]="editId === data.id" (click)="startEdit(data.id)" nzType="primary">
+              <span nz-icon nzType="edit"></span>
+              Modifier
+            </button>
+          </div>
+          <div nz-col>
+            <button nz-button nzDanger nzType="primary" nz-popconfirm nzPopconfirmTitle="Êtes-vous sûr ?" [hidden]="editId === data.id" (nzOnConfirm)="deleteRow(data.id)">
+              <span nz-icon nzType="delete"></span>
+              Supprimer
+            </button>
+          </div>
+        </div>
+        <div nz-row>
+          <div nz-col style="margin-right: 10px">
+            <button nz-button [hidden]="editId !== data.id" (click)="saveEdit()" nzType="default">
+              <span nz-icon nzType="check"></span>
+              Enregistrer
+            </button>
+          </div>
+          <div nz-col>
+            <button nz-button nzDanger [hidden]="editId !== data.id" (click)="cancelEdit()" nzType="default">
+              <span nz-icon nzType="close"></span>
+              Annuler
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+
+</div>

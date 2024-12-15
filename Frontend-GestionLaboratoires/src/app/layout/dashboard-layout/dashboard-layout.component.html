@@ -21,6 +21,33 @@
         <span nz-icon nzType="team"></span>
         <span>Utilisateurs</span>
       </li>
+      <li nz-submenu nzTitle="Gestion des laboratoires" nzIcon="experiment">
+        <ul>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/laboratoires'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/laboratoires')"
+          >
+            <span>Laboratoires</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/contacts-laboratoires'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/contacts-laboratoires')"
+          >
+            <span>Contacts Laboratoires</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/adresses'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/adresses')"
+          >
+            <span>Adresses</span>
+          </li>
+        </ul>
       <li nz-submenu nzTitle="Gestion des analyses" nzIcon="reconciliation">
       <ul>
           <li
@@ -50,7 +77,6 @@
 
         </ul>
       </li>
-
 
     </ul>
   </nz-sider>
