@@ -58,7 +58,7 @@
         <nz-form-item class="form-control-margin">
           <nz-form-label>Laboratoire</nz-form-label>
           <nz-form-control nzErrorTip="Veuillez sélectionner un laboratoire!">
-            <nz-select formControlName="laboratoireId" placeholder="Sélectionner un laboratoire">
+            <nz-select nzShowSearch formControlName="laboratoireId" nzPlaceHolder="Sélectionner un laboratoire">
               <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>
             </nz-select>
           </nz-form-control>
@@ -72,7 +72,8 @@
   </nz-modal>
 
   <!-- Table des analyses -->
-  <nz-table #editRowTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60vh' }" nzBordered [nzData]="filteredData">
+
+  <nz-table #editRowTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60VH' }" nzBordered [nzData]="filteredData">
     <thead>
     <tr>
       <th nzWidth="15%">Nom</th>
@@ -101,7 +102,7 @@
         <div class="editable-cell" [hidden]="editId === data.id">
           {{ this.getNomLaboratoire(data.laboratoireId) }}
         </div>
-        <nz-select *ngIf="editId === data.id" [(ngModel)]="data.laboratoireId" placeholder="Sélectionner laboratoire" style="width: 100%;">
+        <nz-select *ngIf="editId === data.id" [(ngModel)]="data.laboratoireId" nzPlaceHolder="Sélectionner laboratoire" style="width: 100%;">
           <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>
         </nz-select>
       </td>

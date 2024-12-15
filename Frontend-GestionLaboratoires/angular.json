@@ -21,6 +21,8 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
+              "src/assets",
+              "src/public",
               {
                 "glob": "**/*",
                 "input": "public"
@@ -35,6 +37,7 @@
               "src/theme.less",
               "src/styles.css"
             ],
+
             "scripts": []
           },
           "configurations": {

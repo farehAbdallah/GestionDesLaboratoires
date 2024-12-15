@@ -70,7 +70,7 @@ export class UtilisateursComponent implements OnInit {
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
-      role: ['employee', [Validators.required]] // Default value set to "employee"
+      role: ['', [Validators.required]] // Default value set to "employee"
     });
 
   }

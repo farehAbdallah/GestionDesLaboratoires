@@ -52,7 +52,7 @@
         <nz-form-item class="form-control-margin">
           <nz-form-label>Analyse</nz-form-label>
           <nz-form-control nzErrorTip="Veuillez sélectionner une analyse!">
-            <nz-select formControlName="analyseId" placeholder="Sélectionner une analyse">
+            <nz-select nzShowSearch formControlName="analyseId" nzPlaceHolder="Sélectionner une analyse">
               <nz-option *ngFor="let analyse of listOfAnalyses" [nzValue]="analyse.id" [nzLabel]="analyse.name"></nz-option>
             </nz-select>
           </nz-form-control>
@@ -116,6 +116,7 @@
 
   <!-- Table to Display Tests -->
   <nz-table #editRowTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60vh' }" nzBordered [nzData]="filteredData">
+
     <thead>
     <tr>
       <th nzWidth="20%">Nom Test</th>

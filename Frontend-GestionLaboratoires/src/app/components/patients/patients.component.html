@@ -1,0 +1,345 @@
+<div class="inner-content-no-dashboard">
+  <div nz-row nzJustify="space-between" nzAlign="middle">
+    <div nz-col>
+      <button nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
+        <span nz-icon nzType="plus"></span>
+        Ajouter
+      </button>
+    </div>
+    <div nz-col>
+      <div nz-row>
+        <div nz-col>
+          <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input [(ngModel)]="searchName" (ngModelChange)="onSearchNameChange()" placeholder="Chercher par nom" />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br />
+
+  <!-- Edit Patient Modal -->
+  <nz-modal [(nzVisible)]="isModalVisible" nzTitle="Modifier Patient" (nzOnCancel)="handleModalCancel()">
+    <ng-container *nzModalContent>
+      <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" class="login-form">
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Nom Complet</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un nom valide!">
+            <input type="text" nz-input formControlName="nomComplet" placeholder="Nom Complet" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <div nz-row nzJustify="space-between">
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Date de Naissance</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer une date valide!">
+                <input type="date" nz-input formControlName="dateNaissance" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Lieu de Naissance</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer un lieu valide!">
+                <input type="text" nz-input formControlName="lieuNaissance" placeholder="Lieu de Naissance" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+
+
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Sexe</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez sélectionner le sexe!">
+            <nz-select formControlName="sexe" placeholder="Sélectionner le sexe">
+              <nz-option nzValue="homme" nzLabel="Homme"></nz-option>
+              <nz-option nzValue="femme" nzLabel="Femme"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <div nz-row nzJustify="space-between">
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Type de Pièce d'Identité</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez sélectionner un type valide!">
+                <nz-select formControlName="typePieceIdentite" placeholder="Sélectionner le type">
+                  <nz-option nzValue="Passeport" nzLabel="Passeport"></nz-option>
+                  <nz-option nzValue="Carte Nationale d'Identité" nzLabel="Carte Nationale d'Identité"></nz-option>
+                  <nz-option nzValue="Permis de Conduire" nzLabel="Permis de Conduire"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Numéro de Pièce d'Identité</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer un numéro valide!">
+                <input type="text" nz-input formControlName="numPieceIdentite" placeholder="Numéro de Pièce d'Identité" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+
+
+
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Adresse</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer une adresse valide!">
+            <input type="text" nz-input formControlName="adresse" placeholder="Adresse" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <div nz-row nzJustify="space-between">
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Numéro de Téléphone</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer un numéro valide!">
+                <input type="text" nz-input formControlName="numTel" placeholder="Numéro de Téléphone" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Email</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer une adresse email valide!">
+                <input type="email" nz-input formControlName="email" placeholder="Email" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+
+
+
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Visible Pour</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer une valeur valide!">
+            <input type="text" nz-input formControlName="visible_pour" placeholder="Visible Pour" />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleModalCancel()">Annuler</button>
+      <button nz-button nzType="primary" (click)="handleModalOk()" [nzLoading]="isOkLoading">Enregistrer</button>
+    </div>
+  </nz-modal>
+
+
+  <!-- Modal pour ajouter un patient -->
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Ajouter Patient" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+      <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" class="login-form">
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Nom Complet</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un nom valide!">
+            <input type="text" nz-input formControlName="nomComplet" placeholder="Nom Complet" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <div nz-row nzJustify="space-between">
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Date de Naissance</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer une date valide!">
+                <input type="date" nz-input formControlName="dateNaissance" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Lieu de Naissance</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer un lieu valide!">
+                <input type="text" nz-input formControlName="lieuNaissance" placeholder="Lieu de Naissance" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+
+
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Sexe</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez sélectionner le sexe!">
+            <nz-select formControlName="sexe" nzPlaceHolder="Sélectionner le sexe">
+              <nz-option nzValue="homme" nzLabel="Homme"></nz-option>
+              <nz-option nzValue="femme" nzLabel="Femme"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <div nz-row nzJustify="space-between">
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Type de Pièce d'Identité</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez sélectionner un type valide!">
+                <nz-select formControlName="typePieceIdentite" nzPlaceHolder="Sélectionner le type">
+                  <nz-option nzValue="Passeport" nzLabel="Passeport"></nz-option>
+                  <nz-option nzValue="Carte Nationale d'Identité" nzLabel="Carte Nationale d'Identité"></nz-option>
+                  <nz-option nzValue="Permis de Conduire" nzLabel="Permis de Conduire"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Numéro de Pièce d'Identité</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer un numéro valide!">
+                <input type="text" nz-input formControlName="numPieceIdentite" placeholder="Numéro de Pièce d'Identité" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+
+
+
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Adresse</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer une adresse valide!">
+            <input type="text" nz-input formControlName="adresse" placeholder="Adresse" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <div nz-row nzJustify="space-between">
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Numéro de Téléphone</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer un numéro valide!">
+                <input type="text" nz-input formControlName="numTel" placeholder="Numéro de Téléphone" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col style="width: 48%">
+            <nz-form-item class="form-control-margin">
+              <nz-form-label>Email</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez entrer une adresse email valide!">
+                <input type="email" nz-input formControlName="email" placeholder="Email" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+
+
+
+
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Visible Pour</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer une valeur valide!">
+            <input type="text" nz-input formControlName="visible_pour" placeholder="Visible Pour" />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancel()">Annuler</button>
+      <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isOkLoading">Enregistrer</button>
+    </div>
+  </nz-modal>
+
+
+
+  <div class="list-container">
+    <!-- List of Patients -->
+    <nz-list [nzDataSource]="filteredData" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+      <ng-template #item let-item>
+        <nz-list-item [nzActions]="[viewAction]">
+          <ng-template #viewAction>
+            <a nz-button nzType="link" (click)="openDrawer(item)">Details</a>
+            <button nz-button nzType="link" (click)="showEditModal(item)">Modifier</button>
+            <button nz-button nzDanger nzType="link" nz-popconfirm nzPopconfirmTitle="Êtes-vous sûr ?"  (nzOnConfirm)="deleteRow(item.id)">Supprimer</button>
+          </ng-template>
+          <nz-list-item-meta
+            [nzTitle]="nzTitle"
+            [nzAvatar]="avatarTemplate"
+            nzDescription='{{ item.adresse }}'
+          >
+            <ng-template #nzTitle>
+              {{ item.nomComplet }}
+            </ng-template>
+            <ng-template #avatarTemplate>
+              <div class="avatar">
+                <img *ngIf="item.sexe === 'homme'" src="assets/man.png" alt="Man Avatar" height="50" width="50">
+                <img *ngIf="item.sexe === 'femme'" src="assets/woman.png" alt="Woman Avatar" height="50" width="50">
+              </div>
+            </ng-template>
+
+
+
+          </nz-list-item-meta>
+          {{ item.numTel }}
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+  </div>
+
+
+  <!-- Drawer to show detailed information of the selected patient -->
+  <nz-drawer [nzVisible]="visible" [nzWidth]="640" [nzClosable]="false" (nzOnClose)="closeDrawer()">
+    <ng-container *nzDrawerContent>
+      <p class="title">Profil Patient</p>
+      <nz-descriptions [nzColumn]="1" nzTitle="Informations Personnelles">
+        <nz-descriptions-item nzTitle="Nom Complet" [nzSpan]="1">
+          {{ selectedPatient?.nomComplet }}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Date de Naissance" [nzSpan]="1">
+          {{ selectedPatient?.dateNaissance }}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Lieu de Naissance" [nzSpan]="1">
+          {{ selectedPatient?.lieuNaissance }}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Sexe" [nzSpan]="1">
+          {{ selectedPatient?.sexe }}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Type de Pièce d'Identité" [nzSpan]="1">
+          {{ selectedPatient?.typePieceIdentite }}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Numéro de Pièce d'Identité" [nzSpan]="1">
+          {{ selectedPatient?.numPieceIdentite }}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Adresse" [nzSpan]="1">
+          {{ selectedPatient?.adresse }}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Visible Pour" [nzSpan]="1">
+          {{ selectedPatient?.visible_pour }}
+        </nz-descriptions-item>
+      </nz-descriptions>
+      <nz-divider></nz-divider>
+      <nz-descriptions [nzColumn]="1" nzTitle="Contact">
+
+        <nz-descriptions-item nzTitle="Numéro de Téléphone" [nzSpan]="1">
+          {{ selectedPatient?.numTel }}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Email" [nzSpan]="1">
+          {{ selectedPatient?.email }}
+        </nz-descriptions-item>
+      </nz-descriptions>
+
+      <nz-divider></nz-divider>
+
+      <nz-descriptions [nzColumn]="1" nzTitle="Laboratoire">
+        <nz-descriptions-item nzTitle="Visible Pour" [nzSpan]="1">
+          {{ selectedPatient?.visible_pour }}
+        </nz-descriptions-item>
+      </nz-descriptions>
+    </ng-container>
+  </nz-drawer>
+
+
+
+
+</div>

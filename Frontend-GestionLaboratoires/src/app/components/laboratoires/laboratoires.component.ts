@@ -24,6 +24,7 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { LaboratoireService } from '../../services/laboratoires.service'; // Import the service
 
+
 interface LaboratoryData {
   id: string;
   name: string;
@@ -57,6 +58,7 @@ interface LaboratoryData {
     NzRadioModule,
     NzUploadModule,
     NzTagModule
+
   ],
   providers: [NzModalService],
   templateUrl: './laboratoires.component.html',
@@ -127,6 +129,7 @@ export class LaboratoiresComponent implements OnInit {
   startEdit(id: string): void {
     this.editId = id;
     const currentData = this.listOfData.find((item) => item.id === id);
+
     if (currentData) {
       this.originalData = { ...currentData };
     }
@@ -148,6 +151,7 @@ export class LaboratoiresComponent implements OnInit {
 
   cancelEdit(): void {
     // Revert the changes to the original data
+
     if (this.editId && this.originalData) {
       const index = this.listOfData.findIndex(item => item.id === this.editId);
       if (index > -1) {
@@ -165,6 +169,7 @@ export class LaboratoiresComponent implements OnInit {
         this.loadLaboratoires();
         this.message.success('Laboratoire supprimé avec succès');
       });
+
   }
 
   handleCancel(): void {
@@ -198,6 +203,7 @@ export class LaboratoiresComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         this.logoFileName = file.name;
+
         this.validateForm.patchValue({ logo: reader.result as string });
       };
       reader.readAsDataURL(file);
@@ -213,6 +219,7 @@ export class LaboratoiresComponent implements OnInit {
   }
 
   // Update logo URL in the form when file is uploaded
+
   updateLogo(data: any, event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
@@ -223,5 +230,6 @@ export class LaboratoiresComponent implements OnInit {
       reader.readAsDataURL(input.files[0]);
     }
   }
+
 
 }
