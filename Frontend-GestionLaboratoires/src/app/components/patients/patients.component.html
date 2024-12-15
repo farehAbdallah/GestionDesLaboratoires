@@ -59,8 +59,8 @@
           <nz-form-label>Sexe</nz-form-label>
           <nz-form-control nzErrorTip="Veuillez sélectionner le sexe!">
             <nz-select formControlName="sexe" placeholder="Sélectionner le sexe">
-              <nz-option nzValue="Masculin" nzLabel="Masculin"></nz-option>
-              <nz-option nzValue="Féminin" nzLabel="Féminin"></nz-option>
+              <nz-option nzValue="homme" nzLabel="Homme"></nz-option>
+              <nz-option nzValue="femme" nzLabel="Femme"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
@@ -174,8 +174,8 @@
           <nz-form-label>Sexe</nz-form-label>
           <nz-form-control nzErrorTip="Veuillez sélectionner le sexe!">
             <nz-select formControlName="sexe" nzPlaceHolder="Sélectionner le sexe">
-              <nz-option nzValue="Masculin" nzLabel="Masculin"></nz-option>
-              <nz-option nzValue="Féminin" nzLabel="Féminin"></nz-option>
+              <nz-option nzValue="homme" nzLabel="Homme"></nz-option>
+              <nz-option nzValue="femme" nzLabel="Femme"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
@@ -265,12 +265,21 @@
           </ng-template>
           <nz-list-item-meta
             [nzTitle]="nzTitle"
-            nzAvatar="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
+            [nzAvatar]="avatarTemplate"
             nzDescription='{{ item.adresse }}'
           >
             <ng-template #nzTitle>
               {{ item.nomComplet }}
             </ng-template>
+            <ng-template #avatarTemplate>
+              <div class="avatar">
+                <img *ngIf="item.sexe === 'homme'" src="assets/man.png" alt="Man Avatar" height="50" width="50">
+                <img *ngIf="item.sexe === 'femme'" src="assets/woman.png" alt="Woman Avatar" height="50" width="50">
+              </div>
+            </ng-template>
+
+
+
           </nz-list-item-meta>
           {{ item.numTel }}
         </nz-list-item>

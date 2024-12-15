@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import {NzModalComponent, NzModalContentDirective, NzModalFooterDirective, NzModalService} from 'ng-zorro-antd/modal';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
@@ -17,6 +17,8 @@ import {NzDividerComponent} from 'ng-zorro-antd/divider';
 import {NzDescriptionsComponent, NzDescriptionsItemComponent} from 'ng-zorro-antd/descriptions';
 import {NzDrawerComponent, NzDrawerContentDirective} from 'ng-zorro-antd/drawer';
 import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from 'ng-zorro-antd/list';
+import {MatIcon, MatIconModule} from '@angular/material/icon';
+
 
 
 interface PatientData {
@@ -71,7 +73,9 @@ interface PatientData {
     NzListComponent,
     NzListItemComponent,
     NzListItemMetaComponent,
-    NzDrawerContentDirective
+    NzDrawerContentDirective,
+    MatIcon,
+    NgOptimizedImage
   ],
   providers: [NzModalService],
   templateUrl: './patients.component.html',
@@ -112,9 +116,12 @@ export class PatientsComponent implements OnInit {
     });
   }
 
+
+
   ngOnInit(): void {
     this.loadPatients();
   }
+
 
   loadPatients(): void {
     this.patientService.getPatients().subscribe(patients => {

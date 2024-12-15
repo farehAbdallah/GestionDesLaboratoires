@@ -3,16 +3,18 @@ import { provideHttpClient } from '@angular/common/http';
 import { AccueilComponent } from './components/accueil/accueil.component';
 import { UtilisateursComponent } from './components/utilisateurs/utilisateurs.component';
 import { LoginComponent } from './components/login/login.component';
+
 import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
 import { loginGuard } from './guards/login.guard';
 import {roleGuard} from './guards/role.guard';
 import {AnalysesComponent} from './components/analyses/analyses.component';
 import {EpreuvesComponent} from './components/epreuves/epreuves.component';
 import {TestsComponent} from './components/tests/tests.component';
-import {LaboratoiresComponent} from './components/laboratoires/laboratoires.component';
 import {PatientsComponent} from './components/patients/patients.component';
 import {DossiersComponent} from './components/dossiers/dossiers.component';
 import {ExaminsComponent} from './components/examins/examins.component';
+import {LaboratoiresComponent} from './components/laboratoires/laboratoires.component';
+
 
 
 export const routes: Routes = [
