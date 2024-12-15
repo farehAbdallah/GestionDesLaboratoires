@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+.inner-content {
+  flex: 1;
+  /*overflow: auto;*/
+}
+.inner-content-no-dashboard{
+  padding: 24px;
+  background: #fff;
+  height: 100%;
+}
+
+.inner-content-dashboard{
+  padding: 0;
+  /*background: red;*/
+  height: 100%;
+}
+

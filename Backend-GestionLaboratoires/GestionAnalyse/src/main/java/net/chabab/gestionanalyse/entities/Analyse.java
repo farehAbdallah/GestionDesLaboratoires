@@ -22,6 +22,7 @@ public class Analyse {
     private String nom;
 
     private String description;
+    private Long fkIdLaboratoire;
 
     @OneToMany(mappedBy = "analyse", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Epreuve> epreuves; // Relation avec Epreuve

@@ -11,6 +11,8 @@ public class AnalyseDTO {
     private Long id;
     private String nom;
     private String description;
-    private List<EpreuveDTO> epreuves; // Liste des Epreuves associées
+    private List<EpreuveDTO> epreuves;
+
+    private Long fkIdLaboratoire;
 
 }

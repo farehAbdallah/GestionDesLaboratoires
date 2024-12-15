@@ -42,6 +42,16 @@ pipeline{
                 }
             }
         }
-
+        stage('Apply Kubernetes Configuration') {
+            steps{
+                dir('Backend-GestionLaboratoires/LaboratoireService') {
+                    // Apply Kubernetes files using kubectl
+                    bat 'kubectl apply -f ../../k8s/GestionLaboratoire/mysql-pvc.yaml'
+                    bat 'kubectl apply -f ../../k8s/GestionLaboratoire/mysql-secret.yaml'
+                    bat 'kubectl apply -f ../../k8s/GestionLaboratoire/mysql-gestionlaboratoire.yaml'
+                    bat 'kubectl apply -f ../../k8s/GestionLaboratoire/gestionlaboratoire.yaml'
+                }
+            }
+        }
     }
 }

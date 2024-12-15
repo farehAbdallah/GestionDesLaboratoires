@@ -11,11 +11,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class AdresseDTO {
+
     private Long id;
     private String numVoie;
     private String nomVoie;
     private String codePostal;
     private String ville;
     private String commune;
-    private List<ContactLaboratoireDTO> contacts;
 }

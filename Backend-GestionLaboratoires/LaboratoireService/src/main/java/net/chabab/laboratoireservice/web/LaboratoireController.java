@@ -8,39 +8,35 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/laboratoires")
+@RequestMapping("/api/laboratoires")
 public class LaboratoireController {
 
     @Autowired
     private LaboratoireService laboratoireService;
 
-    // Créer un nouveau laboratoire
     @PostMapping
-    public LaboratoireDTO create(@RequestBody LaboratoireDTO laboratoireDTO) {
+    public LaboratoireDTO createLaboratoire(@RequestBody LaboratoireDTO laboratoireDTO) {
         return laboratoireService.createLaboratoire(laboratoireDTO);
     }
 
-    // Récupérer un laboratoire par son ID
-    @GetMapping("/{id}")
-    public LaboratoireDTO getById(@PathVariable Long id) {
-        return laboratoireService.getLaboratoireById(id);
-    }
-
-    // Récupérer tous les laboratoires
     @GetMapping
-    public List<LaboratoireDTO> getAll() {
+    public List<LaboratoireDTO> getAllLaboratoires() {
         return laboratoireService.getAllLaboratoires();
     }
 
-    // Mettre à jour un laboratoire
+    @GetMapping("/{id}")
+    public LaboratoireDTO getLaboratoireById(@PathVariable Long id) {
+        return laboratoireService.getLaboratoireById(id);
+    }
+
     @PutMapping("/{id}")
-    public LaboratoireDTO update(@PathVariable Long id, @RequestBody LaboratoireDTO laboratoireDTO) {
+    public LaboratoireDTO updateLaboratoire(@PathVariable Long id, @RequestBody LaboratoireDTO laboratoireDTO) {
         return laboratoireService.updateLaboratoire(id, laboratoireDTO);
     }
 
-    // Supprimer un laboratoire
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        laboratoireService.deleteLaboratoire(id);
+    public boolean deleteLaboratoire(@PathVariable Long id) {
+        return laboratoireService.deleteLaboratoire(id);
     }
+
 }

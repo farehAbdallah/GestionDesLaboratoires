@@ -9,8 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ContactLaboratoireDTO {
+
     private Long id;
     private String numTel;
     private String fax;
     private String email;
+    private Long laboratoireId;
+    private Long adresseId;
 }

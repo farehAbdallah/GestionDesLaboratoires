@@ -1,0 +1,162 @@
+<div class="inner-content-dashboard" *ngIf="!isDataLoaded">
+  <nz-spin style="position: absolute; top: 45%; left: 55%" nzSimple nzSize="large"></nz-spin>
+  <div class="grid-container">
+    <div class="grid-item item1 center">
+      <nz-empty [nzNotFoundContent]="null" nzNotFoundImage=""></nz-empty>
+    </div>
+    <div class="grid-item item2 center">
+      <nz-empty [nzNotFoundContent]="null" nzNotFoundImage=""></nz-empty>
+    </div>
+    <div class="grid-item item3 center">
+      <nz-empty [nzNotFoundContent]="null" nzNotFoundImage=""></nz-empty>
+    </div>
+    <div class="grid-item item4 center">
+      <nz-empty [nzNotFoundContent]="null" nzNotFoundImage=""></nz-empty>
+    </div>
+    <div class="grid-item item5 center">
+      <nz-empty [nzNotFoundContent]="null" nzNotFoundImage=""></nz-empty>
+    </div>
+    <div class="grid-item item6 center">
+      <nz-empty [nzNotFoundContent]="null" nzNotFoundImage=""></nz-empty>
+    </div>
+    <div class="grid-item item7 center">
+      <nz-empty [nzNotFoundContent]="null" nzNotFoundImage=""></nz-empty>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="inner-content-dashboard" *ngIf="isDataLoaded">
+  <div class="grid-container">
+    <div class="grid-item item1">
+      <div class="card-left">
+        <div class="card-title">Patients</div>
+        <div class="card-body">{{lisOfPatients.length}}</div>
+        <div class="card-footer">Nombes totales</div>
+      </div>
+      <div class="card-right">
+        <div class="card-icon">
+          <span nz-icon nzType="user" nzTheme="outline"></span>
+        </div>
+      </div>
+    </div>
+    <div class="grid-item item2">
+      <div class="card-left">
+        <div class="card-title">Analyses</div>
+        <div class="card-body">324</div>
+        <div class="card-footer"><span nz-icon nzType="rise" nzTheme="outline"></span><span>+50%</span> vs last month</div>
+      </div>
+      <div class="card-right">
+        <div class="card-icon">
+          <span nz-icon nzType="file" nzTheme="outline"></span>
+        </div>
+      </div>
+    </div>
+    <div class="grid-item item3">
+      <div class="card-left">
+        <div class="card-title">Analyses</div>
+        <div class="card-body">324</div>
+        <div class="card-footer"><span nz-icon nzType="rise" nzTheme="outline"></span><span>+50%</span> vs last month</div>
+      </div>
+      <div class="card-right">
+        <div class="card-icon">
+          <span nz-icon nzType="file" nzTheme="outline"></span>
+        </div>
+      </div>
+    </div>
+    <div class="grid-item item4">
+      <div class="item-top" nz-row>Patients</div>
+      <div class="item-bottom" nz-row>
+        <app-bar-chart style="width: 100%; height: 100%"></app-bar-chart>
+      </div>
+    </div>
+    <div class="grid-item item5">
+      <div class="item-top" nz-row>
+        <div class="item-top-left">Analyses summary</div>
+        <div class="item-top-right">
+          <nz-select ngModel="lucy" nzAllowClear nzPlaceHolder="Choose">
+            <nz-option nzValue="Value1" nzLabel="Value1"></nz-option>
+            <nz-option nzValue="Value2" nzLabel="Value2"></nz-option>
+            <nz-option nzValue="Value3" nzLabel="Value3"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div class="item-bottom" nz-row>
+        <app-area-chart style="width: 100%; height: 100%"></app-area-chart>
+      </div>
+    </div>
+    <div class="grid-item item6">
+      <div class="item-top" nz-row>
+        <div class="item-top-left">Dossier Growth</div>
+        <div class="item-top-right">
+          <nz-select ngModel="lucy" nzAllowClear nzPlaceHolder="Choose">
+            <nz-option nzValue="Value1" nzLabel="Value1"></nz-option>
+            <nz-option nzValue="Value2" nzLabel="Value2"></nz-option>
+            <nz-option nzValue="Value3" nzLabel="Value3"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div class="item6-bottom" nz-row>
+        <div class="item-bottom-left">
+          <nz-progress
+            nzType="circle"
+            [nzPercent]="90"
+            [nzStrokeColor]="{ '0%': '#108ee9', '50%': '#2db7f5', '100%': '#87d068' }"
+          ></nz-progress>
+        </div>
+        <div class="item-bottom-right">
+          <nz-descriptions [nzColumn]="1">
+            <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">Lily</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Account" [nzSpan]="1">AntDesign&#64;example.com</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="City" [nzSpan]="1">HangZhou</nz-descriptions-item>
+          </nz-descriptions>
+        </div>
+      </div>
+    </div>
+    <div class="grid-item item7">
+      <div class="item-top" nz-row>
+        <div class="item-top-left">Analyses history</div>
+        <div class="item-top-right">
+          <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" [nzPlacement]="'bottomRight'">
+            <span nz-icon nzType="more" nzTheme="outline"></span>
+          </a>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item>menu4 1st menu item</li>
+              <li nz-menu-item>menu4 2nd menu item</li>
+              <li nz-menu-item>menu4 3rd menu item</li>
+            </ul>
+          </nz-dropdown-menu>
+        </div>
+      </div>
+      <div class="item-bottom" nz-row>
+        <nz-carousel nzAutoPlay style="max-height: 90%; ">
+          @for (index of array; track index) {
+            <div nz-carousel-content>
+              <nz-table #middleTable  [nzData]="listOfData" [nzShowPagination]="false" >
+                <thead>
+                <tr>
+                  <th>Patient</th>
+                  <th>Dossier</th>
+                  <th>Analyse</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (data of middleTable.data; track data) {
+                    <tr>
+                      <td>{{ data.patientNom }}</td>
+                      <td>{{ data.dossierNum }}</td>
+                      <td>{{ data.analyseNom }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </nz-table>
+            </div>
+          }
+        </nz-carousel>
+      </div>
+    </div>
+
+  </div>
+</div>
