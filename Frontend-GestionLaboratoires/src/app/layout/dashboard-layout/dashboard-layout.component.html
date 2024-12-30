@@ -1,27 +1,49 @@
 <nz-layout style="height: 100vh;">
-  <nz-sider [nzWidth]="300" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+  <nz-sider *ngIf="isTechnicien()" [nzWidth]="300" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
     <div [hidden]="isCollapsed" class="logo">Laboratoire-Chabab</div>
     <div [hidden]="!isCollapsed" class="logo">LB</div>
     <ul nz-menu nzTheme="dark" nzMode="inline" >
+<!--      <li-->
+<!--        nz-menu-item-->
+<!--        [routerLink]="'/labo/accueil'"-->
+<!--        routerLinkActive="active-menu-item"-->
+<!--        [nzSelected]="isRouteActive('/labo/accueil')"-->
+<!--      >-->
+<!--        <span nz-icon nzType="home"></span>-->
+<!--        <span>Accueil</span>-->
+<!--      </li>-->
       <li
+        *ngIf="!isRouteActive('/labo/laboratoires') && !isRouteActive('/labo/adresses') && !isRouteActive('/labo/contacts-laboratoires')"
         nz-menu-item
-        [routerLink]="'/labo/accueil'"
+        [routerLink]="'/labo/laboratoires'"
         routerLinkActive="active-menu-item"
-        [nzSelected]="isRouteActive('/labo/accueil')"
+        [nzSelected]="isRouteActive('/labo/laboratoires')"
+        (click)="releaseLabo()"
       >
-        <span nz-icon nzType="home"></span>
-        <span>Accueil</span>
+        <span nz-icon nzType="experiment"></span>
+        <span>Gestion des laboratoires</span>
       </li>
       <li
+        *ngIf="getSelectedLaboNavigation()"
         nz-menu-item
-        [routerLink]="'/labo/utilisateurs'"
+        [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/profilelabo'"
         routerLinkActive="active-menu-item"
-        [nzSelected]="isRouteActive('/labo/utilisateurs')"
+        [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/profilelabo')"
+      >
+        <span nz-icon nzType="team"></span>
+        <span>Laboratoire</span>
+      </li>
+      <li
+        *ngIf="getSelectedLaboNavigation()"
+        nz-menu-item
+        [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/utilisateurs'"
+        routerLinkActive="active-menu-item"
+        [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/utilisateurs')"
       >
         <span nz-icon nzType="team"></span>
         <span>Utilisateurs</span>
       </li>
-      <li nz-submenu nzTitle="Gestion des laboratoires" nzIcon="experiment">
+      <li *ngIf="!getSelectedLaboNavigation()" nz-submenu nzTitle="Gestion des laboratoires" nzIcon="experiment">
         <ul>
           <li
             nz-menu-item
@@ -48,29 +70,29 @@
             <span>Adresses</span>
           </li>
         </ul>
-      <li nz-submenu nzTitle="Gestion des analyses" nzIcon="reconciliation">
-      <ul>
+      <li *ngIf="getSelectedLaboNavigation()" nz-submenu nzTitle="Gestion des analyses" nzIcon="reconciliation">
+        <ul>
           <li
             nz-menu-item
-            [routerLink]="'/labo/analyses'"
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/analyses'"
             routerLinkActive="active-menu-item"
-            [nzSelected]="isRouteActive('/labo/analyses')"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/analyses')"
           >
             <span>Analyses</span>
           </li>
           <li
             nz-menu-item
-            [routerLink]="'/labo/epreuves'"
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/epreuves'"
             routerLinkActive="active-menu-item"
-            [nzSelected]="isRouteActive('/labo/epreuves')"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/epreuves')"
           >
             <span>Epreuves</span>
           </li>
           <li
             nz-menu-item
-            [routerLink]="'/labo/tests'"
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/tests'"
             routerLinkActive="active-menu-item"
-            [nzSelected]="isRouteActive('/labo/tests')"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/tests')"
           >
             <span>Tests</span>
           </li>
@@ -79,29 +101,213 @@
       </li>
 
 
-      <li nz-submenu nzTitle="Gestion des Patients" nzIcon="reconciliation">
+      <li *ngIf="getSelectedLaboNavigation()" nz-submenu nzTitle="Gestion des patients" nzIcon="reconciliation">
         <ul>
           <li
             nz-menu-item
-            [routerLink]="'/labo/patients'"
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/patients'"
             routerLinkActive="active-menu-item"
-            [nzSelected]="isRouteActive('/labo/patients')"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/patients')"
           >
             <span>Patients</span>
           </li>
           <li
             nz-menu-item
-            [routerLink]="'/labo/dossiers'"
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/dossiers'"
             routerLinkActive="active-menu-item"
-            [nzSelected]="isRouteActive('/labo/dossiers')"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/dossiers')"
           >
             <span>Dossiers</span>
           </li>
           <li
             nz-menu-item
-            [routerLink]="'/labo/examens'"
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/examens'"
             routerLinkActive="active-menu-item"
-            [nzSelected]="isRouteActive('/labo/examens')"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/examens')"
+          >
+            <span>Examens</span>
+          </li>
+
+        </ul>
+      </li>
+
+
+    </ul>
+  </nz-sider>
+  <nz-sider *ngIf="isAdmin()" [nzWidth]="300" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <div [hidden]="isCollapsed" class="logo">Laboratoire-Chabab</div>
+    <div [hidden]="!isCollapsed" class="logo">LB</div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" >
+      <!--      <li-->
+      <!--        nz-menu-item-->
+      <!--        [routerLink]="'/labo/accueil'"-->
+      <!--        routerLinkActive="active-menu-item"-->
+      <!--        [nzSelected]="isRouteActive('/labo/accueil')"-->
+      <!--      >-->
+      <!--        <span nz-icon nzType="home"></span>-->
+      <!--        <span>Accueil</span>-->
+      <!--      </li>-->
+      <li
+        *ngIf="getSelectedLaboNavigation()"
+        nz-menu-item
+        [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/profilelabo'"
+        routerLinkActive="active-menu-item"
+        [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/profilelabo')"
+      >
+        <span nz-icon nzType="team"></span>
+        <span>Laboratoire</span>
+      </li>
+      <li
+        *ngIf="getSelectedLaboNavigation()"
+        nz-menu-item
+        [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/utilisateurs'"
+        routerLinkActive="active-menu-item"
+        [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/utilisateurs')"
+      >
+        <span nz-icon nzType="team"></span>
+        <span>Utilisateurs</span>
+      </li>
+      <li *ngIf="getSelectedLaboNavigation()" nz-submenu nzTitle="Gestion des analyses" nzIcon="reconciliation">
+        <ul>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/analyses'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/analyses')"
+          >
+            <span>Analyses</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/epreuves'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/epreuves')"
+          >
+            <span>Epreuves</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/tests'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/tests')"
+          >
+            <span>Tests</span>
+          </li>
+
+        </ul>
+      </li>
+
+
+      <li *ngIf="getSelectedLaboNavigation()" nz-submenu nzTitle="Gestion des patients" nzIcon="reconciliation">
+        <ul>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/patients'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/patients')"
+          >
+            <span>Patients</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/dossiers'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/dossiers')"
+          >
+            <span>Dossiers</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/examens'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/examens')"
+          >
+            <span>Examens</span>
+          </li>
+
+        </ul>
+      </li>
+
+
+    </ul>
+  </nz-sider>
+  <nz-sider *ngIf="isEmploye()" [nzWidth]="300" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <div [hidden]="isCollapsed" class="logo">Laboratoire-Chabab</div>
+    <div [hidden]="!isCollapsed" class="logo">LB</div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" >
+      <!--      <li-->
+      <!--        nz-menu-item-->
+      <!--        [routerLink]="'/labo/accueil'"-->
+      <!--        routerLinkActive="active-menu-item"-->
+      <!--        [nzSelected]="isRouteActive('/labo/accueil')"-->
+      <!--      >-->
+      <!--        <span nz-icon nzType="home"></span>-->
+      <!--        <span>Accueil</span>-->
+      <!--      </li>-->
+      <li
+        *ngIf="getSelectedLaboNavigation()"
+        nz-menu-item
+        [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/profilelabo'"
+        routerLinkActive="active-menu-item"
+        [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/profilelabo')"
+      >
+        <span nz-icon nzType="team"></span>
+        <span>Laboratoire</span>
+      </li>
+      <li *ngIf="getSelectedLaboNavigation()" nz-submenu nzTitle="Gestion des analyses" nzIcon="reconciliation">
+        <ul>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/analyses'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/analyses')"
+          >
+            <span>Analyses</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/epreuves'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/epreuves')"
+          >
+            <span>Epreuves</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/tests'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/tests')"
+          >
+            <span>Tests</span>
+          </li>
+
+        </ul>
+      </li>
+
+
+      <li *ngIf="getSelectedLaboNavigation()" nz-submenu nzTitle="Gestion des patients" nzIcon="reconciliation">
+        <ul>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/patients'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/patients')"
+          >
+            <span>Patients</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/dossiers'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/dossiers')"
+          >
+            <span>Dossiers</span>
+          </li>
+          <li
+            nz-menu-item
+            [routerLink]="'/labo/' + getSelectedLaboNavigation() + '/examens'"
+            routerLinkActive="active-menu-item"
+            [nzSelected]="isRouteActive('/labo/' + getSelectedLaboNavigation() + '/examens')"
           >
             <span>Examens</span>
           </li>
@@ -124,7 +330,7 @@
         <span class="trigger-title" style="font-weight: bolder;">{{ pageTitle }}</span>
       </div>
       <div nz-col class="avatar">
-        <span class="avatar-user-name">{{username}}</span>
+        <span class="avatar-user-name">{{logguedUser.name}}</span>
         <button nz-button nzShape="circle" nz-dropdown [nzDropdownMenu]="menu2">
           <span nz-icon nzType="user"></span>
         </button>

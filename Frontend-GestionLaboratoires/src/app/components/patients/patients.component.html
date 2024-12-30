@@ -1,10 +1,11 @@
 <div class="inner-content-no-dashboard">
   <div nz-row nzJustify="space-between" nzAlign="middle">
     <div nz-col>
-      <button nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
+      <button *ngIf="actionPermission" nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
         <span nz-icon nzType="plus"></span>
         Ajouter
       </button>
+      <div *ngIf="!actionPermission"  style="color: #1890ff; font-weight: bold; font-size: large">Listes des Patients</div>
     </div>
     <div nz-col>
       <div nz-row>
@@ -260,8 +261,8 @@
         <nz-list-item [nzActions]="[viewAction]">
           <ng-template #viewAction>
             <a nz-button nzType="link" (click)="openDrawer(item)">Details</a>
-            <button nz-button nzType="link" (click)="showEditModal(item)">Modifier</button>
-            <button nz-button nzDanger nzType="link" nz-popconfirm nzPopconfirmTitle="Êtes-vous sûr ?"  (nzOnConfirm)="deleteRow(item.id)">Supprimer</button>
+            <button *ngIf="actionPermission" nz-button nzType="link" (click)="showEditModal(item)">Modifier</button>
+            <button *ngIf="actionPermission" nz-button nzDanger nzType="link" nz-popconfirm nzPopconfirmTitle="Êtes-vous sûr ?"  (nzOnConfirm)="deleteRow(item.id)">Supprimer</button>
           </ng-template>
           <nz-list-item-meta
             [nzTitle]="nzTitle"

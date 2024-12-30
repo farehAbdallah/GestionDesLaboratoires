@@ -69,7 +69,7 @@
           <nz-form-label>Ville</nz-form-label>
           <nz-form-control nzErrorTip="Veuillez sélectionner une ville!">
             <nz-select formControlName="adresseId" placeholder="Sélectionner une ville">
-              <nz-option *ngFor="let adresse of listOfAdresses" [nzValue]="adresse.id" [nzLabel]="adresse.ville"></nz-option>
+              <nz-option *ngFor="let adresse of listOfAdresses" [nzValue]="adresse.id" [nzLabel]="adresse.nomVoie + ', ' + adresse.ville">></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>

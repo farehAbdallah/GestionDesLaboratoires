@@ -10,6 +10,7 @@ import {UserService} from '../../services/user.service';
 import {Router} from '@angular/router';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {LoginService} from '../../services/login.service';
+import {LaboratoireService} from '../../services/laboratoires.service';
 
 
 interface ItemData {
@@ -18,6 +19,9 @@ interface ItemData {
   password: string;
   name: string;
   role: string;
+  fkIdLaboratoire: string;
+  profession: string;
+  signature: string;
 }
 @Component({
   selector: 'app-login',
@@ -41,9 +45,10 @@ interface ItemData {
 export class LoginComponent implements OnInit{
   loginForm!: FormGroup;
   listOfUsers: ItemData[] = [];
+  logguedUser: any;
 
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router:Router, private message: NzMessageService, private loginService: LoginService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private router:Router, private message: NzMessageService, private loginService: LoginService, private laboService: LaboratoireService) {
 
   }
 
@@ -58,7 +63,8 @@ export class LoginComponent implements OnInit{
     })
     this.loginService.getLoged().subscribe(item => {
       this.loginService.loggedUser = item; // Adjust this assignment based on the structure
-      console.log('Loged User response:', this.loginService.loggedUser);
+      this.logguedUser = item;
+      console.log('Loged User response:', this.logguedUser);
     });
   }
 
@@ -71,9 +77,15 @@ export class LoginComponent implements OnInit{
     if (user) {
       console.log(user);
       this.message.success('Connecter avec succes');
+      this.loginService.loggedUser = user;
       this.loginService.updateLoggedUser(user).subscribe({
         next: () => {
-          this.router.navigate(['labo']); // Navigate to a new page if needed
+          if(user.role === 'technicien'){
+            this.router.navigate(['labo']); // Navigate to a new page if needed
+          } else {
+            this.laboService.setSelectedLabo(user.fkIdLaboratoire);
+            this.router.navigate(['labo', user.fkIdLaboratoire, 'profilelabo']);
+          }
         },
         error: (err) => {
           this.message.error("Erreur lors de l'enregistrement de l'utilisateur connecté.");

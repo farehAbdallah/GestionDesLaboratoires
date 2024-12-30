@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {LaboratoireService} from './laboratoires.service';
 
 interface ItemData {
   id: string;
@@ -19,7 +20,30 @@ export class LoginService {
 
   private baseUrl = 'http://localhost:3000/logedUser'; // URL to json-server
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private laboService: LaboratoireService) {}
+
+
+
+  isTechnicien() {
+    return this.hasRole('technicien');
+  }
+
+  isAdmin() {
+    return this.hasRole('administrateur');
+  }
+
+  isEmploye() {
+    return this.hasRole('employee');
+  }
+
+  hasRole(role: string): boolean {
+
+    this.getLoged().subscribe(user => {
+      return user &&  user.role === role;
+    })
+    return false;
+
+  }
 
   // Fetch all users
   getLoged(): Observable<any> {
@@ -34,6 +58,8 @@ export class LoginService {
 
   logOut(): void {
     this.isAuthenticated = false;
+    this.laboService.setSelectedLabo('');
+    this.loggedUser = null;
 
     this.updateLoggedUser({
       id: "",
@@ -51,10 +77,12 @@ export class LoginService {
     });
   }
 
-  hasRole(role: string): boolean {
-    this.loggedUser = this.getLoged().subscribe(user => { return user })
-    return this.loggedUser && this.loggedUser.role === role;
-  }
+  // hasRole(role: string): boolean {
+  //   this.loggedUser = this.getLoged().subscribe(user => { return user })
+  //   return this.loggedUser && this.loggedUser.role === role;
+  // }
+
+
 
 
 

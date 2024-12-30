@@ -13,6 +13,9 @@ import { NzFormControlComponent, NzFormDirective, NzFormLabelComponent } from 'n
 import { NzTagComponent } from 'ng-zorro-antd/tag';
 import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
 import { AnalyseService } from '../../services/analyses.service';
+import {ActivatedRoute} from '@angular/router';
+import {LaboratoireService} from '../../services/laboratoires.service';
+import {LoginService} from '../../services/login.service';
 
 interface TestData {
   id: string;
@@ -65,8 +68,19 @@ export class TestsComponent implements OnInit {
   searchName: string = '';  // Property for search text
   searchAnalyse: string = '';  // Property for search text
   listOfAnalyses: any[] = []; // List of analyses for filtering
+  laboratoireId: string | null = null;
 
-  constructor(private fb: NonNullableFormBuilder, private message: NzMessageService, private analyseService: AnalyseService) {
+  actionPermission: boolean = false;
+  allowedRoles: string[] = ['administrateur', 'employee']
+
+
+  constructor(private fb: NonNullableFormBuilder,
+              private message: NzMessageService,
+              private analyseService: AnalyseService,
+              private laboratoireService: LaboratoireService,
+              private loginService: LoginService,
+              private route: ActivatedRoute
+  ) {
     this.validateForm = this.fb.group({
       nomTest: ['', [Validators.required]],
       analyseId: ['', [Validators.required]],  // ID of the associated analysis
@@ -79,22 +93,58 @@ export class TestsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadTests();
+    this.loginService.getLoged().subscribe(user => {
+      if (user && ( this.allowedRoles.includes(user.role) ) ) {
+        this.actionPermission = true;
+      }
+      else {
+        this.actionPermission = false;
+      }
+    })
+    this.laboratoireId = this.route.snapshot.paramMap.get('id');
+
+    // Optionally, save the id in the laboratoireService
+    if (this.laboratoireId) {
+      this.laboratoireService.setSelectedLabo(this.laboratoireId);
+    }
     this.loadAnalyses();  // Load the available analyses
+    this.loadTests();
+
   }
 
   loadAnalyses(): void {
     this.analyseService.getAnalyses().subscribe((analyses: any) => {
       this.listOfAnalyses = analyses; // Load the list of analyses for filtering
+      this.filterAnalyseByLaboratoire(); // Filter analyses by laboratoireId
     });
   }
 
   loadTests(): void {
     this.analyseService.getTests().subscribe(tests => {
-      this.listOfData = tests;
+      // Filter epreuves based on the filtered analyses
+      if (this.laboratoireId) {
+        this.listOfData = tests.filter(test =>
+          this.listOfAnalyses.some(analyse => analyse.id === test.analyseId && analyse.laboratoireId === this.laboratoireId)
+        );
+      } else {
+        this.listOfData = tests; // No filtering if no laboratoireId
+      }
       this.filteredData = [...this.listOfData]; // Initialize filtered data
+      console.log("les test o kda", this.filteredData)
     });
   }
+
+  filterAnalyseByLaboratoire(): void {
+    if (this.laboratoireId) {
+      this.listOfAnalyses = this.listOfAnalyses.filter(item =>
+        item.laboratoireId === this.laboratoireId
+      );
+    }
+  }
+
+
+
+
 
   startEdit(id: string): void {
     this.editId = id;

@@ -177,7 +177,7 @@
               <span nz-icon nzType="edit"></span> Modifier
             </button>
           </div>
-          <div nz-col>
+          <div nz-col style="margin-right: 10px">
             <button
               nz-button
               nzDanger
@@ -188,6 +188,17 @@
               (nzOnConfirm)="deleteRow(data.id)"
             >
               <span nz-icon nzType="delete"></span> Supprimer
+            </button>
+          </div>
+          <div nz-col>
+            <button
+              nz-button
+              nzType="primary"
+              [hidden]="editId === data.id"
+              (click)="navigateToLabo(data.id)"
+              style="background-color: lightseagreen; border-color: lightseagreen"
+            >
+              <span nz-icon nzType="eye"></span> view
             </button>
           </div>
         </div>
