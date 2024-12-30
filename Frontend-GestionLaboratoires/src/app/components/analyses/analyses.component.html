@@ -2,10 +2,11 @@
 
   <div nz-row nzJustify="space-between" nzAlign="middle" >
     <div nz-col>
-      <button nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
+      <button *ngIf="actionPermission" nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
         <span nz-icon nzType="plus"></span>
         Ajouter
       </button>
+      <div *ngIf="!actionPermission"  style="color: #1890ff; font-weight: bold; font-size: large">Listes des analyses</div>
     </div>
     <div nz-col>
       <div nz-row>
@@ -55,14 +56,14 @@
             <input type="text" nz-input formControlName="description" placeholder="Description" />
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item class="form-control-margin">
-          <nz-form-label>Laboratoire</nz-form-label>
-          <nz-form-control nzErrorTip="Veuillez sélectionner un laboratoire!">
-            <nz-select nzShowSearch formControlName="laboratoireId" nzPlaceHolder="Sélectionner un laboratoire">
-              <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
+<!--        <nz-form-item  class="form-control-margin">-->
+<!--          <nz-form-label>Laboratoire</nz-form-label>-->
+<!--          <nz-form-control nzErrorTip="Veuillez sélectionner un laboratoire!">-->
+<!--            <nz-select nzShowSearch formControlName="laboratoireId" nzPlaceHolder="Sélectionner un laboratoire">-->
+<!--              <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoireId" [nzLabel]="laboratoire.name"></nz-option>-->
+<!--            </nz-select>-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
       </form>
     </ng-container>
     <div *nzModalFooter>
@@ -78,8 +79,8 @@
     <tr>
       <th nzWidth="15%">Nom</th>
       <th nzWidth="45%">Description</th>
-      <th nzWidth="15%">Laboratoire</th>
-      <th nzWidth="25%">Actions</th>
+<!--      <th nzWidth="15%">Laboratoire</th>-->
+      <th *ngIf="actionPermission" nzWidth="25%">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -98,16 +99,16 @@
         <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.description" />
       </td>
 
-      <td>
-        <div class="editable-cell" [hidden]="editId === data.id">
-          {{ this.getNomLaboratoire(data.laboratoireId) }}
-        </div>
-        <nz-select *ngIf="editId === data.id" [(ngModel)]="data.laboratoireId" nzPlaceHolder="Sélectionner laboratoire" style="width: 100%;">
-          <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>
-        </nz-select>
-      </td>
+<!--      <td>-->
+<!--        <div class="editable-cell" [hidden]="editId === data.id">-->
+<!--          {{ this.getNomLaboratoire(data.laboratoireId) }}-->
+<!--        </div>-->
+<!--        <nz-select *ngIf="editId === data.id" [(ngModel)]="data.laboratoireId" nzPlaceHolder="Sélectionner laboratoire" style="width: 100%;">-->
+<!--          <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>-->
+<!--        </nz-select>-->
+<!--      </td>-->
 
-      <td>
+      <td *ngIf="actionPermission">
         <div nz-row>
           <div nz-col style="margin-right: 10px">
             <button nz-button [hidden]="editId === data.id" (click)="startEdit(data.id)" nzType="primary">

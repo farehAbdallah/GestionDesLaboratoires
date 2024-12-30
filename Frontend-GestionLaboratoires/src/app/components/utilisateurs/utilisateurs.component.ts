@@ -13,6 +13,10 @@ import {NzFormControlComponent, NzFormDirective, NzFormLabelComponent} from 'ng-
 import {NzTagComponent} from 'ng-zorro-antd/tag';
 import {NzOptionComponent, NzSelectComponent} from 'ng-zorro-antd/select';
 import {UserService} from '../../services/user.service';
+import {AnalyseService} from '../../services/analyses.service';
+import {LaboratoireService} from '../../services/laboratoires.service';
+import {ActivatedRoute} from '@angular/router';
+import {LoginService} from '../../services/login.service';
 
 interface ItemData {
   id: string;
@@ -20,6 +24,9 @@ interface ItemData {
   password: string;
   name: string;
   role: string;
+  fkIdLaboratoire: string;
+  profession: string;
+  signature: string;
 }
 
 @Component({
@@ -55,6 +62,7 @@ export class UtilisateursComponent implements OnInit {
   i = 0;
   editId: string | null = null;
   listOfData: ItemData[] = [];
+  listOfEmployees: ItemData[] = [];
   originalData: ItemData | null = null;
   isVisible = false;
   isOkLoading = false;
@@ -63,27 +71,73 @@ export class UtilisateursComponent implements OnInit {
   searchName: string = '';  // Property for search text
   searchEmail: string = '';  // Property for search text
   searchRole: string = ''; // Selected role for filtering
+  listOfLaboratoires: any[] = [];
+  laboratoireId: string | null = null;
 
 
-  constructor(private fb: NonNullableFormBuilder, private message: NzMessageService, private userService: UserService) {
+
+  constructor(private fb: NonNullableFormBuilder,
+              private message: NzMessageService,
+              private userService: UserService,
+              private authService: LoginService,
+              private analyseService: AnalyseService,
+              private laboratoireService: LaboratoireService,
+              private route: ActivatedRoute
+  ) {
     this.validateForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
-      role: ['', [Validators.required]] // Default value set to "employee"
+      role: ['', [Validators.required]],
+      // fkIdLaboratoire: ['', [Validators.required]],
+      profession: ['', [Validators.required]],
+      signature: ['', [Validators.required]]
     });
 
   }
 
   ngOnInit(): void {
+    this.laboratoireId = this.route.snapshot.paramMap.get('id');
+
+    // Optionally, save the id in the laboratoireService
+    if (this.laboratoireId) {
+      this.laboratoireService.setSelectedLabo(this.laboratoireId);
+    }
+    // this.laboratoireId = this.laboratoireService.getSelectedLabo();
     this.loadUsers();
+    this.loadLaboratoires();
+
+
+  }
+
+  loadLaboratoires(): void {
+    this.analyseService.getLaboratoires().subscribe((laboratoires: any) => {
+      this.listOfLaboratoires = laboratoires; // Charger la liste des laboratoires
+      // console.log("list labo",this.listOfLaboratoires)
+    });
+  }
+
+  getNomLaboratoire(id: string): string | undefined {
+    const laboratoire = this.listOfLaboratoires.find(labo => labo.id === id);
+    return laboratoire ? laboratoire.name : undefined;
   }
 
   loadUsers(): void {
     this.userService.getUsers().subscribe(users => {
       this.listOfData = users;
       this.filteredData = [...this.listOfData]; // Initialize filtered data
+      this.filterDataByLaboratoire();
+
     });
+    this.authService.getLoged().subscribe(user => {
+      const loguedUser = user;
+      if (loguedUser.role === 'administrateur'){
+        this.loadEmploye();
+      }
+    })
+  }
+  loadEmploye(): void {
+    this.filteredData = this.filteredData.filter(employe=> employe.role === 'employee' )
   }
 
   startEdit(id: string): void {
@@ -143,7 +197,8 @@ export class UtilisateursComponent implements OnInit {
     if (this.validateForm.valid) {
       const newRow: ItemData = {
         id: `${Date.now()}`,
-        ...this.validateForm.value
+        ...this.validateForm.value,
+        fkIdLaboratoire : this.laboratoireId
       };
       this.userService.addUser(newRow).subscribe(() => {
         this.isOkLoading = false;
@@ -163,13 +218,23 @@ export class UtilisateursComponent implements OnInit {
   getRoleColor(role: string): string {
     switch (role) {
       case 'administrateur':
-        return 'red'; // Color for "admin"
+        return 'green'; // Color for "admin"
       case 'employee':
         return 'cyan'; // Color for "employee"
-      case 'patient':
-        return 'green'; // Color for "patient"
+      case 'technicien':
+        return 'red'; // Color for "patient"
       default:
         return 'gray'; // Default color for undefined roles
+    }
+  }
+
+  filterDataByLaboratoire(): void {
+    if (this.laboratoireId) {
+      this.filteredData = this.listOfData.filter(item =>
+        item.fkIdLaboratoire === this.laboratoireId
+      );
+    } else {
+      this.filteredData = [...this.listOfData]; // Show all data if no search text
     }
   }
 

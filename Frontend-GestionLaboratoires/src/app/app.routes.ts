@@ -16,6 +16,7 @@ import {ExaminsComponent} from './components/examins/examins.component';
 import {LaboratoiresComponent} from './components/laboratoires/laboratoires.component';
 import {AdressesComponent} from './components/adresses/adresses.component';
 import {ContactsLaboratoiresComponent} from './components/contacts-laboratoires/contacts-laboratoires.component';
+import {LaboprofileComponent} from './components/laboprofile/laboprofile.component';
 
 
 
@@ -23,23 +24,32 @@ import {ContactsLaboratoiresComponent} from './components/contacts-laboratoires/
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, data: { title: 'Log In' } },
+
   {
     path: 'labo',
     component: DashboardLayoutComponent,
     canActivate: [loginGuard],  // Ensure user is logged in
     children: [
 
-      { path: '', redirectTo: 'accueil', pathMatch: 'full' },
+      // { path: '', redirectTo: 'accueil', pathMatch: 'full' },
+      { path: '', redirectTo: 'laboratoires', pathMatch: 'full' },
+      // { path: ':id', redirectTo: ':id/profilelabo', pathMatch: 'full' },
       {
-        path: 'accueil',
-        component: AccueilComponent,
-        data: { title: 'Accueil', requiredRole: ['administrateur'] },  // Only accessible to 'administrateur'
+        path: ':id/profilelabo',
+        component: LaboprofileComponent,
+        data: { title: 'Profile Laboratoire', requiredRole: ['technicien'] },  // Only accessible to 'administrateur'
         // canActivate: [roleGuard],
       },
       {
-        path: 'utilisateurs',
+        path: 'accueil',
+        component: AccueilComponent,
+        data: { title: 'Accueil', requiredRole: ['technicien'] },  // Only accessible to 'administrateur'
+        // canActivate: [roleGuard],
+      },
+      {
+        path: ':id/utilisateurs',
         component: UtilisateursComponent,
-        data: { title: 'Gestion des Utilisateurs', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
+        data: { title: 'Gestion des Utilisateurs', requiredRole: ['administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],
       },
       {
@@ -61,37 +71,37 @@ export const routes: Routes = [
         // canActivate: [roleGuard],
       },
       {
-        path: 'analyses',
+        path: ':id/analyses',
         component: AnalysesComponent,
         data: { title: 'Gestion des Analyses', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],
       },
       {
-        path: 'epreuves',
+        path: ':id/epreuves',
         component: EpreuvesComponent,
         data: { title: 'Gestion des Epreuves', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],
       },
       {
-        path: 'tests',
+        path: ':id/tests',
         component: TestsComponent,
         data: { title: 'Gestion des Tests', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],
       },
       {
-        path: 'patients',
+        path: ':id/patients',
         component: PatientsComponent,
         data: { title: 'Gestion des Patients', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],
       },
       {
-        path: 'dossiers',
+        path: ':id/dossiers',
         component: DossiersComponent,
         data: { title: 'Gestion des Dossiers', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],
       },
       {
-        path: 'examens',
+        path: ':id/examens',
         component: ExaminsComponent,
         data: { title: 'Gestion des Examens', requiredRole: ['employee', 'administrateur'] },  // Accessible to 'employee' and 'administrateur'
         // canActivate: [roleGuard],

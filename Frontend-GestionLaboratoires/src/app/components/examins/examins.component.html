@@ -1,10 +1,11 @@
 <div class="inner-content-no-dashboard">
   <div nz-row nzJustify="space-between" nzAlign="middle">
     <div nz-col>
-      <button nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
+      <button *ngIf="actionPermission" nz-button style="background-color: lightseagreen; border-color: lightseagreen" (click)="showModal()" nzType="primary">
         <span nz-icon nzType="plus"></span>
         Ajouter
       </button>
+      <div *ngIf="!actionPermission"  style="color: #1890ff; font-weight: bold; font-size: large">Listes des Examens</div>
     </div>
     <div nz-col>
       <div nz-row>
@@ -95,7 +96,7 @@
       <th nzWidth="20%">Épreuve</th>
       <th nzWidth="20%">Test Analyse</th>
       <th nzWidth="20%">Résultat</th>
-      <th nzWidth="20%">Actions</th>
+      <th *ngIf="actionPermission" nzWidth="20%">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -168,7 +169,7 @@
       </td>
 
       <!-- Actions -->
-      <td>
+      <td *ngIf="actionPermission">
         <div nz-row>
           <div nz-col style="margin-right: 10px">
             <button

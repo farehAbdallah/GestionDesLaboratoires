@@ -18,6 +18,9 @@ import {NzDescriptionsComponent, NzDescriptionsItemComponent} from 'ng-zorro-ant
 import {NzDrawerComponent, NzDrawerContentDirective} from 'ng-zorro-antd/drawer';
 import {NzListComponent, NzListItemComponent, NzListItemMetaComponent} from 'ng-zorro-antd/list';
 import {MatIcon, MatIconModule} from '@angular/material/icon';
+import {LoginService} from '../../services/login.service';
+import {ActivatedRoute} from '@angular/router';
+import {LaboratoireService} from '../../services/laboratoires.service';
 
 
 
@@ -93,6 +96,12 @@ export class PatientsComponent implements OnInit {
   visible = false;
   selectedPatient: any = null;
 
+  actionPermission: boolean = false;
+  allowedRoles: string[] = ['administrateur', 'employee']
+  laboratoireId: string | null = null;
+
+
+
   isModalVisible = false; //for edit
 
 
@@ -100,7 +109,12 @@ export class PatientsComponent implements OnInit {
   constructor(
     private fb: NonNullableFormBuilder,
     private message: NzMessageService,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private loginService: LoginService,
+    private route: ActivatedRoute,
+    private laboratoireService: LaboratoireService,
+
+
   ) {
     this.validateForm = this.fb.group({
       nomComplet: ['', [Validators.required]],
@@ -119,7 +133,22 @@ export class PatientsComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.loginService.getLoged().subscribe(user => {
+      if (user && ( this.allowedRoles.includes(user.role) ) ) {
+        this.actionPermission = true;
+      }
+      else {
+        this.actionPermission = false;
+      }
+    })
+    this.laboratoireId = this.route.snapshot.paramMap.get('id');
     this.loadPatients();
+
+    this.laboratoireId = this.route.snapshot.paramMap.get('id');
+    // Optionally, save the id in the laboratoireService
+    if (this.laboratoireId) {
+      this.laboratoireService.setSelectedLabo(this.laboratoireId);
+    }
   }
 
 

@@ -12,7 +12,10 @@ import {NzColDirective, NzRowDirective} from 'ng-zorro-antd/grid';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {NzFormControlComponent, NzFormDirective, NzFormLabelComponent} from 'ng-zorro-antd/form';
 import {NzTagComponent} from 'ng-zorro-antd/tag';
-import {NzOptionComponent, NzSelectComponent} from 'ng-zorro-antd/select'; // Assuming you have a service for dossiers
+import {NzOptionComponent, NzSelectComponent} from 'ng-zorro-antd/select';
+import {ActivatedRoute} from '@angular/router';
+import {LaboratoireService} from '../../services/laboratoires.service';
+import {LoginService} from '../../services/login.service'; // Assuming you have a service for dossiers
 
 interface DossierData {
   id: string;
@@ -63,6 +66,11 @@ export class DossiersComponent implements OnInit {
   filteredData: DossierData[] = [];
   listOfUtilisateurs: any[] = [];
   listOfPatients: any[] = [];
+  laboratoireId: string | null = null;
+  loguedUser: any;
+  actionPermission: boolean = false;
+  allowedRoles: string[] = ['administrateur', 'employee']
+
 
 
   // Filtering properties
@@ -70,7 +78,14 @@ export class DossiersComponent implements OnInit {
   searchPatientId: string = '';
   searchDate: string = '';
 
-  constructor(private fb: NonNullableFormBuilder, private message: NzMessageService, private dossierService: PatientService) {
+
+  constructor(private fb: NonNullableFormBuilder,
+              private message: NzMessageService,
+              private dossierService: PatientService,
+              private route: ActivatedRoute,
+              private laboratoireService: LaboratoireService,
+              private loginService: LoginService
+              ) {
     this.validateForm = this.fb.group({
       numDossier: ['', [Validators.required]],
       fkEmailUtilisateur: ['', [Validators.required]],
@@ -80,23 +95,80 @@ export class DossiersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadDossiers();
+
+
+    this.loginService.getLoged().subscribe(user => {
+      if (user && ( this.allowedRoles.includes(user.role) ) ) {
+        this.actionPermission = true;
+      }
+      else {
+        this.actionPermission = false;
+      }
+    })
+    this.laboratoireId = this.route.snapshot.paramMap.get('id');
+
+    console.log("actionPermission : ", this.loginService.isAdmin())
+    if (this.laboratoireId) {
+      this.laboratoireService.setSelectedLabo(this.laboratoireId);
+    }
     this.loadUtilisateurs();
+    this.loadDossiers();
     this.loadPatients();
+
   }
 
+
+
   loadDossiers(): void {
-    this.dossierService.getDossiers().subscribe(dossiers => {
-      this.listOfData = dossiers;
-      this.filteredData = [...this.listOfData];
+
+    this.loginService.getLoged().subscribe(user => {
+      if (user.role === 'employee'){
+        this.dossierService.getDossiers().subscribe(dossiers => {
+          if (this.laboratoireId) {
+            this.listOfData = dossiers.filter(dossier =>
+              this.listOfUtilisateurs.some(utilisateur => utilisateur.id === user.id && utilisateur.email === dossier.fkEmailUtilisateur && utilisateur.fkIdLaboratoire === this.laboratoireId)
+            );
+          } else {
+            this.listOfData = dossiers; // No filtering if no laboratoireId
+          }
+          this.filteredData = [...this.listOfData]; // Initialize filtered data
+        });
+      }
+      else {
+        this.dossierService.getDossiers().subscribe(dossiers => {
+          if (this.laboratoireId) {
+            this.listOfData = dossiers.filter(dossier =>
+              this.listOfUtilisateurs.some(utilisateur => utilisateur.email === dossier.fkEmailUtilisateur && utilisateur.fkIdLaboratoire === this.laboratoireId)
+            );
+          } else {
+            this.listOfData = dossiers; // No filtering if no laboratoireId
+          }
+          this.filteredData = [...this.listOfData]; // Initialize filtered data
+        });
+      }
+
+
     });
+
+
+
+
   }
 
   loadUtilisateurs(): void {
     this.dossierService.getUtilisateurs().subscribe((utilisateurs: any) => {
-      this.listOfUtilisateurs = utilisateurs; // Charger la liste des laboratoires
+      this.listOfUtilisateurs = utilisateurs;
+      this.filterUtilisateurByLaboratoire();
       // console.log("list utilisateurs",this.listOfUtilisateurs)
     });
+  }
+
+  filterUtilisateurByLaboratoire(): void {
+    if (this.laboratoireId) {
+      this.listOfUtilisateurs = this.listOfUtilisateurs.filter(item =>
+        item.fkIdLaboratoire === this.laboratoireId
+      );
+    }
   }
 
   loadPatients(): void {

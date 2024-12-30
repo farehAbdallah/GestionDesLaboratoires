@@ -22,7 +22,8 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzTagModule } from 'ng-zorro-antd/tag';
-import { LaboratoireService } from '../../services/laboratoires.service'; // Import the service
+import { LaboratoireService } from '../../services/laboratoires.service';
+import {Router, RouterLink} from '@angular/router'; // Import the service
 
 
 interface LaboratoryData {
@@ -57,7 +58,8 @@ interface LaboratoryData {
     NzModalFooterDirective,
     NzRadioModule,
     NzUploadModule,
-    NzTagModule
+    NzTagModule,
+    RouterLink
 
   ],
   providers: [NzModalService],
@@ -79,7 +81,8 @@ export class LaboratoiresComponent implements OnInit {
   constructor(
     private fb: NonNullableFormBuilder,
     private laboratoireService: LaboratoireService, // Inject service
-    private message: NzMessageService
+    private message: NzMessageService,
+    private router: Router
   ) {
     this.validateForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -229,6 +232,14 @@ export class LaboratoiresComponent implements OnInit {
       };
       reader.readAsDataURL(input.files[0]);
     }
+  }
+
+  navigateToLabo(id: string) {
+    this.laboratoireService.setSelectedLabo(id);
+    this.router.navigate(['labo', id, 'profilelabo']);
+  }
+  getSelectedLabo() {
+    return this.laboratoireService.getSelectedLabo();
   }
 
 

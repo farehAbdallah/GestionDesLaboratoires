@@ -14,6 +14,9 @@ import {NzFormControlComponent, NzFormDirective, NzFormLabelComponent} from 'ng-
 import {NzTagComponent} from 'ng-zorro-antd/tag';
 import {NzOptionComponent, NzSelectComponent} from 'ng-zorro-antd/select';
 import {AnalyseService} from '../../services/analyses.service';
+import {LoginService} from '../../services/login.service';
+import {ActivatedRoute} from '@angular/router';
+import {LaboratoireService} from '../../services/laboratoires.service';
 
 interface ExaminData {
   id: string;
@@ -65,13 +68,27 @@ export class ExaminsComponent implements OnInit {
   listOfEpreuves: any[] = [];
   listOfTests: any[] = [];
   listofDossiers: any[] = [];
+  actionPermission: boolean = false;
+  allowedRoles: string[] = ['administrateur', 'employee']
+  laboratoireId: string | null = null;
+
+
 
   // Filtering properties
   searchNumDossier: string = '';
   searchEpreuve: string = '';
   searchTestAnalyse: string = '';
 
-  constructor(private fb: NonNullableFormBuilder, private message: NzMessageService, private examinsService: PatientService, private analyseService: AnalyseService) {
+  constructor(private fb: NonNullableFormBuilder,
+              private message: NzMessageService,
+              private examinsService: PatientService,
+              private analyseService: AnalyseService,
+              private loginService: LoginService,
+              private route: ActivatedRoute,
+              private laboratoireService: LaboratoireService,
+
+
+  ) {
     this.validateForm = this.fb.group({
       fkNumDossier: ['', [Validators.required]],
       fkIdEpreuve: ['', [Validators.required]],
@@ -81,6 +98,19 @@ export class ExaminsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loginService.getLoged().subscribe(user => {
+      if (user && ( this.allowedRoles.includes(user.role) ) ) {
+        this.actionPermission = true;
+      }
+      else {
+        this.actionPermission = false;
+      }
+    })
+    this.laboratoireId = this.route.snapshot.paramMap.get('id');
+    // Optionally, save the id in the laboratoireService
+    if (this.laboratoireId) {
+      this.laboratoireService.setSelectedLabo(this.laboratoireId);
+    }
     this.loadExamins();
     this.loadEpreuves();
     this.loadTests();

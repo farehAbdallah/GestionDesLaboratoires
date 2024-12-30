@@ -13,6 +13,9 @@ import {NzFormControlComponent, NzFormDirective, NzFormLabelComponent} from 'ng-
 import {NzTagComponent} from 'ng-zorro-antd/tag';
 import {NzOptionComponent, NzSelectComponent} from 'ng-zorro-antd/select';
 import {AnalyseService} from '../../services/analyses.service';
+import {LaboratoireService} from '../../services/laboratoires.service';
+import {ActivatedRoute} from '@angular/router';
+import {LoginService} from '../../services/login.service';
 
 interface AnalyseData {
   id: string;
@@ -63,18 +66,56 @@ export class AnalysesComponent implements OnInit {
   searchDescription: string = '';  // Property for search text
   searchLaboratoire: string = ''; // Selected type for filtering
   listOfLaboratoires: any[] = [];
+  laboratoireId: string | null = null;
 
-  constructor(private fb: NonNullableFormBuilder, private message: NzMessageService, private analyseService: AnalyseService) {
+  actionPermission: boolean = false;
+  allowedRoles: string[] = ['administrateur', 'employee']
+
+
+  constructor(private fb: NonNullableFormBuilder,
+              private message: NzMessageService,
+              private analyseService: AnalyseService,
+              private laboratoireService: LaboratoireService,
+              private route: ActivatedRoute,
+              private loginService: LoginService
+  ) {
     this.validateForm = this.fb.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      laboratoireId: ['', [Validators.required]] // Default value set to "biologique"
+      // laboratoireId: [this.laboratoireId, [Validators.required]] // Default value set to "biologique"
     });
   }
 
   ngOnInit(): void {
+    this.loginService.getLoged().subscribe(user => {
+      if (user && ( this.allowedRoles.includes(user.role) ) ) {
+        this.actionPermission = true;
+      }
+      else {
+        this.actionPermission = false;
+      }
+    })
+    this.laboratoireId = this.route.snapshot.paramMap.get('id');
+
+    // Optionally, save the id in the laboratoireService
+    if (this.laboratoireId) {
+      this.laboratoireService.setSelectedLabo(this.laboratoireId);
+    }
     this.loadAnalyses();
     this.loadLaboratoires();
+
+  }
+
+  isTechnicien() {
+    return this.loginService.isTechnicien();
+  }
+
+  isAdmin() {
+    return this.loginService.isAdmin();
+  }
+
+  isEmploye() {
+    return this.loginService.isEmploye();
   }
 
   loadLaboratoires(): void {
@@ -88,7 +129,9 @@ export class AnalysesComponent implements OnInit {
     this.analyseService.getAnalyses().subscribe(analyses => {
       this.listOfData = analyses;
       this.filteredData = [...this.listOfData]; // Initialize filtered data
+      this.filterDataByLaboratoire();
     });
+
   }
 
   startEdit(id: string): void {
@@ -147,7 +190,8 @@ export class AnalysesComponent implements OnInit {
     if (this.validateForm.valid) {
       const newAnalyse: AnalyseData = {
         id: `${Date.now()}`,
-        ...this.validateForm.value
+        ...this.validateForm.value,
+        laboratoireId: this.laboratoireId
       };
       this.analyseService.addAnalyse(newAnalyse).subscribe(() => {
         this.isOkLoading = false;
@@ -167,6 +211,16 @@ export class AnalysesComponent implements OnInit {
     if (this.searchName) {
       this.filteredData = this.listOfData.filter(item =>
         item.name.toLowerCase().includes(this.searchName.toLowerCase())
+      );
+    } else {
+      this.filteredData = [...this.listOfData]; // Show all data if no search text
+    }
+  }
+
+  filterDataByLaboratoire(): void {
+    if (this.laboratoireId) {
+      this.filteredData = this.listOfData.filter(item =>
+        item.laboratoireId === this.laboratoireId
       );
     } else {
       this.filteredData = [...this.listOfData]; // Show all data if no search text

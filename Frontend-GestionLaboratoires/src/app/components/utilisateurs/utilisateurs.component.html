@@ -68,9 +68,29 @@
           <nz-form-control nzErrorTip="Veuillez sélectionner un rôle!">
             <nz-select formControlName="role" nzPlaceHolder="Sélectionner un rôle">
               <nz-option nzValue="employee" nzLabel="Employé"></nz-option>
+<!--              <nz-option nzValue="technicien" nzLabel="Technicien"></nz-option>-->
               <nz-option nzValue="administrateur" nzLabel="Administrateur"></nz-option>
-              <nz-option nzValue="patient" nzLabel="Patient"></nz-option>
             </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+<!--        <nz-form-item class="form-control-margin">-->
+<!--          <nz-form-label>Laboratoire</nz-form-label>-->
+<!--          <nz-form-control nzErrorTip="Veuillez sélectionner un laboratoire!">-->
+<!--            <nz-select nzShowSearch formControlName="fkIdLaboratoire" nzPlaceHolder="Sélectionner un laboratoire">-->
+<!--              <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>-->
+<!--            </nz-select>-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Profession</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer une profession valide!">
+            <input type="text" nz-input formControlName="profession" placeholder="profession..." />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Signature</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer une signature valide!">
+            <input type="text" nz-input formControlName="signature" placeholder="signature..." />
           </nz-form-control>
         </nz-form-item>
       </form>
@@ -85,29 +105,55 @@
   <nz-table #editRowTable [nzShowPagination]="false" [nzPageSize]="10000000" [nzScroll]="{ y: '60VH' }" nzBordered [nzData]="filteredData">
     <thead>
     <tr>
-      <th nzWidth="25%">Nom</th>
-      <th nzWidth="25%">Email</th>
-      <th nzWidth="25%">Rôle</th>
+      <th nzWidth="10%">Nom</th>
+      <th nzWidth="15%">Email</th>
+      <th nzWidth="10%">Profession</th>
+      <th nzWidth="10%">Signature</th>
+<!--      <th *ngIf="laboratoireId" nzWidth="15%">Laboratoire</th>-->
+      <th nzWidth="15%">Rôle</th>
       <th nzWidth="25%">Actions</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let data of editRowTable.data;">
-      <td>
+    <tr  *ngFor="let data of editRowTable.data;" >
+      <td *ngIf="data.role !== 'technicien'">
         <div class="editable-cell" [hidden]="editId === data.id">
           {{ data.name }}
         </div>
         <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.name" />
       </td>
 
-      <td>
+      <td *ngIf="data.role !== 'technicien'">
         <div class="editable-cell" [hidden]="editId === data.id">
           {{ data.email }}
         </div>
-        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.email" />
+        <input [hidden]="editId !== data.id" type="email" nz-input [(ngModel)]="data.email" />
       </td>
 
-      <td>
+      <td *ngIf="data.role !== 'technicien'">
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.profession }}
+        </div>
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.profession" />
+      </td>
+
+      <td *ngIf="data.role !== 'technicien'">
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.signature }}
+        </div>
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.signature" />
+      </td>
+
+<!--      <td *ngIf="data.role !== 'technicien' && laboratoireId">-->
+<!--        <div class="editable-cell" [hidden]="editId === data.id">-->
+<!--          {{ this.getNomLaboratoire(data.fkIdLaboratoire) }}-->
+<!--        </div>-->
+<!--        <nz-select *ngIf="editId === data.id" [(ngModel)]="data.fkIdLaboratoire" nzPlaceHolder="Sélectionner laboratoire" style="width: 100%;">-->
+<!--          <nz-option *ngFor="let laboratoire of listOfLaboratoires" [nzValue]="laboratoire.id" [nzLabel]="laboratoire.name"></nz-option>-->
+<!--        </nz-select>-->
+<!--      </td>-->
+
+      <td *ngIf="data.role !== 'technicien'">
         <div class="editable-cell" [hidden]="editId === data.id">
           <nz-tag [nzColor]="getRoleColor(data.role)">{{ data.role }}</nz-tag>
         </div>
@@ -117,13 +163,13 @@
           placeholder="Sélectionner un rôle"
           style="width: 100%;">
           <nz-option nzValue="employee" nzLabel="Employé"></nz-option>
+<!--          <nz-option nzValue="technicien" nzLabel="Technicien"></nz-option>-->
           <nz-option nzValue="administrateur" nzLabel="Administrateur"></nz-option>
-          <nz-option nzValue="patient" nzLabel="Patient"></nz-option>
         </nz-select>
       </td>
 
 
-      <td>
+      <td *ngIf="data.role !== 'technicien'">
         <div nz-row>
           <div nz-col style="margin-right: 10px">
             <button nz-button [hidden]="editId === data.id" (click)="startEdit(data.id)" nzType="primary">

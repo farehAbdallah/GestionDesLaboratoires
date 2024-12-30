@@ -1,0 +1,195 @@
+<div class="inner-content-no-dashboard">
+  <div nz-row nzJustify="space-between" >
+    <div class="left" nz-col >
+      <div class="image-container">
+        <img src="{{ laboratoire.logo }}" alt="labo-picture">
+      </div>
+      <h1 style="text-align: center" >{{ laboratoire.name }}</h1>
+    </div>
+    <div class="right" nz-col>
+      <h1>Laboratoire</h1>
+
+
+
+      <ng-template #General>
+        <nz-row nzJustify="space-between">
+          <nz-col style="margin-right: 10px" >General</nz-col>
+          <nz-col ><button nz-button nzType="default" (click)="showGeneralModal()">Modifier<span nz-icon nzType="edit"></span></button></nz-col>
+        </nz-row>
+      </ng-template>
+
+      <ng-template #Contact>
+        <nz-row nzJustify="space-between">
+          <nz-col >Contact</nz-col>
+          <nz-col ><button nz-button nzType="default" (click)="showContactModal()">Modifier<span nz-icon nzType="edit"></span></button></nz-col>
+        </nz-row>
+      </ng-template>
+
+      <ng-template #Adresse>
+        <nz-row nzJustify="space-between">
+          <nz-col >Adresse</nz-col>
+          <nz-col ><button nz-button nzType="default" (click)="showAddressModal()">Modifier<span nz-icon nzType="edit"></span></button></nz-col>
+        </nz-row>
+      </ng-template>
+
+      <div class="card">
+        <nz-descriptions [nzColumn]="2" [nzTitle]="General">
+          <nz-descriptions-item nzTitle="Nom" [nzSpan]="1">{{ laboratoire.name || 'N/A' }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Actif" [nzSpan]="1">
+            <nz-tag [nzColor]="laboratoire.isActive ? 'success' : 'error'">
+              {{ laboratoire.isActive ? 'Laboratoire actif' : 'Laboratoire non Actif' }}
+            </nz-tag>
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="NRC" [nzSpan]="1">{{ laboratoire.nrc || 'N/A' }}</nz-descriptions-item>
+          <nz-descriptions-item *ngIf="laboratoire.isActive" nzTitle="Date d'activiation" [nzSpan]="1">{{ laboratoire.dateActivation || 'N/A' }}</nz-descriptions-item>
+        </nz-descriptions>
+      </div>
+
+      <div class="card" style="margin-bottom: 30px; margin-top: 30px">
+        <nz-descriptions [nzColumn]="2" [nzTitle]="Contact">
+          <nz-descriptions-item nzTitle="Numero de telephone" [nzSpan]="1">{{contactLaboratoire.numTel}}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Fax" [nzSpan]="1">{{contactLaboratoire.fax}}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Email" [nzSpan]="1">{{contactLaboratoire.email}}</nz-descriptions-item>
+        </nz-descriptions>
+      </div>
+      <div class="card">
+        <nz-descriptions [nzColumn]="2" [nzTitle]="Adresse">
+          <nz-descriptions-item nzTitle="Numéro de voie	" [nzSpan]="1">{{adresseLaboratoire.numVoie}}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Nom de voie	" [nzSpan]="1">{{adresseLaboratoire.nomVoie}}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Code Postal	" [nzSpan]="1">{{adresseLaboratoire.codePostal}}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Ville" [nzSpan]="1">{{adresseLaboratoire.ville}}🇨🇳</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Commune" [nzSpan]="1">{{adresseLaboratoire.commune}}</nz-descriptions-item>
+        </nz-descriptions>
+      </div>
+
+
+      <!-- General Modal -->
+      <nz-modal [(nzVisible)]="isGeneralModalVisible" nzTitle="Modifier les informations générales"
+                (nzOnCancel)="handleGeneralCancel()" (nzOnOk)="handleGeneralSubmit()">
+        <ng-container *nzModalContent>
+          <form nz-form [formGroup]="generalForm">
+            <nz-form-item>
+              <nz-form-label>Nom</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="name" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label>NRC</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="nrc" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label>Logo</nz-form-label>
+              <nz-form-control nzErrorTip="Veuillez sélectionner un logo!">
+                <div style="width: 100%;">
+                  <nz-upload
+                    [nzShowUploadList]="false"
+                    [nzMultiple]="false"
+                    (nzChange)="handleFileInput($event)"
+                    style="width: 100%;"
+                  >
+                    <button nz-button style="width: 100%;">
+                      <span nz-icon nzType="upload"></span> Télécharger le logo
+                    </button>
+                  </nz-upload>
+                  <div *ngIf="logoFileName" style="margin-top: 10px;">
+                    <strong>Logo sélectionné :</strong> {{ logoFileName }}
+                  </div>
+                </div>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label>Statut</nz-form-label>
+              <nz-form-control>
+                <nz-radio-group formControlName="isActive">
+                  <label nz-radio [nzValue]="true">Actif</label>
+                  <label nz-radio [nzValue]="false">Non actif</label>
+                </nz-radio-group>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </ng-container>
+      </nz-modal>
+
+      <!-- Contact Modal -->
+      <nz-modal [(nzVisible)]="isContactModalVisible" nzTitle="Modifier les informations de contact"
+                (nzOnCancel)="handleContactCancel()" (nzOnOk)="handleContactSubmit()">
+        <ng-container *nzModalContent>
+          <form nz-form [formGroup]="contactForm">
+            <!-- existing form content -->
+            <nz-form-item>
+              <nz-form-label>Numéro de téléphone</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="numTel" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label>Fax</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="fax" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label>Email</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="email" type="email" />
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </ng-container>
+      </nz-modal>
+
+      <!-- Address Modal -->
+      <nz-modal [(nzVisible)]="isAddressModalVisible" nzTitle="Modifier l'adresse"
+                (nzOnCancel)="handleAddressCancel()" (nzOnOk)="handleAddressSubmit()">
+        <ng-container *nzModalContent>
+          <form nz-form [formGroup]="addressForm">
+            <!-- existing form content -->
+            <nz-form-item>
+              <nz-form-label>Numéro de voie</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="numVoie" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label>Nom de voie</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="nomVoie" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label>Code Postal</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="codePostal" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label>Ville</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="ville" />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label>Commune</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="commune" />
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </ng-container>
+      </nz-modal>
+
+
+
+
+
+
+
+    </div>
+  </div>
+</div>
