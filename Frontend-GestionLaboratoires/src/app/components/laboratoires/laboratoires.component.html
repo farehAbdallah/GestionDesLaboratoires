@@ -100,7 +100,7 @@
   </nz-modal>
 
   <!-- Table des Laboratoires -->
-  <nz-table #editRowTable [nzData]="filteredData" [nzBordered]="true" [nzScroll]="{ y: '60vh' }" [nzShowPagination]="false">
+  <nz-table #editRowTable [nzData]="filteredData" [nzBordered]="true" [nzPageSize]="10000000" [nzScroll]="{ y: '60vh' }" [nzShowPagination]="false">
     <thead>
     <tr>
       <th nzWidth="10%">Logo</th>

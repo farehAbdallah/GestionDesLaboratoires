@@ -207,7 +207,8 @@ export class LaboratoiresComponent implements OnInit {
       reader.onload = () => {
         this.logoFileName = file.name;
 
-        this.validateForm.patchValue({ logo: reader.result as string });
+        this.validateForm.patchValue({ logo: file.name });
+        // this.validateForm.patchValue({ logo: reader.result as string });
       };
       reader.readAsDataURL(file);
     }
@@ -225,14 +226,25 @@ export class LaboratoiresComponent implements OnInit {
 
   updateLogo(data: any, event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
+
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0]; // Safely access the first file
       const reader = new FileReader();
+
       reader.onload = () => {
-        data.logo = reader.result as string; // Update logo URL
+        if (file) {
+          data.logo = file.name; // Update logo URL with file name
+          // Optionally use Base64 content:
+          // data.logo = reader.result as string;
+        }
       };
-      reader.readAsDataURL(input.files[0]);
+
+      reader.readAsDataURL(file); // Read the file as Base64
+    } else {
+      console.error("No file selected or input.files is null.");
     }
   }
+
 
   navigateToLabo(id: string) {
     this.laboratoireService.setSelectedLabo(id);

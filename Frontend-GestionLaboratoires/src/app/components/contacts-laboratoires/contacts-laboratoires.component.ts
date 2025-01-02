@@ -76,9 +76,9 @@ export class ContactsLaboratoiresComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadContactsLaboratoires();
     this.loadLaboratoires();
     this.loadAdresses();
+    this.loadContactsLaboratoires();
   }
 
   loadContactsLaboratoires(): void {
@@ -114,6 +114,7 @@ export class ContactsLaboratoiresComponent implements OnInit {
   saveEdit(): void {
     if (this.editId && this.originalData) {
       const updatedContactLaboratoire = this.listOfData.find(item => item.id === this.editId);
+    // console.log("original data testiiiiiing : ",updatedContactLaboratoire)
       // Update the epreuve on the server
       this.contactLaboratoireService.updateContactLaboratoire(this.editId, updatedContactLaboratoire).subscribe(() => {
         this.editId = null;
@@ -206,6 +207,8 @@ export class ContactsLaboratoiresComponent implements OnInit {
   getNomLaboratoire(id: string): string | undefined {
     const laboratoire = this.listOfLaboratoires.find(laboratoire => laboratoire.id === id);
     return laboratoire ? laboratoire.name : undefined;
+
+
   }
 
   getVilleAdresse(id: string): string | undefined {
