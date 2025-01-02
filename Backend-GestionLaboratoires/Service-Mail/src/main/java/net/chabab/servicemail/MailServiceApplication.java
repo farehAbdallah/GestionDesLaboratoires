@@ -1,13 +1,12 @@
-package net.chabab.messagingservice;
+package net.chabab.servicemail;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-
-public class MessagingServiceApplication {
+public class MailServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MessagingServiceApplication.class, args);
+        SpringApplication.run(MailServiceApplication.class, args);
     }
 }

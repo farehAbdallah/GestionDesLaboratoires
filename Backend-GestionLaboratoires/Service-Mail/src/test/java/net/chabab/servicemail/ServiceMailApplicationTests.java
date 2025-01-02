@@ -1,10 +1,10 @@
-package net.chabab.messagingservice;
+package net.chabab.servicemail;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MessagingServiceApplicationTests {
+class ServiceMailApplicationTests {
 
     @Test
     void contextLoads() {

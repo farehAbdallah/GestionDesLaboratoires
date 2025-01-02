@@ -3,6 +3,8 @@ package net.chabab.gestionanalyse.service;
 import net.chabab.gestionanalyse.dtos.AnalyseDTO;
 import net.chabab.gestionanalyse.dtos.LaboratoireDTO;
 import net.chabab.gestionanalyse.entities.Analyse;
+import net.chabab.gestionanalyse.entities.Epreuve;
+import net.chabab.gestionanalyse.entities.TestAnalyse;
 import net.chabab.gestionanalyse.mapper.AnalyseMapper;
 import net.chabab.gestionanalyse.repository.AnalyseRepository;
 import net.chabab.gestionanalyse.feign.LaboratoireClient;
@@ -20,6 +22,8 @@ public class AnalyseServiceImpl implements AnalyseService {
 
     @Autowired
     private LaboratoireClient laboratoireClient;
+    @Autowired
+    private AnalyseKafkaProducer analyseKafkaProducer;
 
     @Override
     public AnalyseDTO createAnalyse(AnalyseDTO analyseDTO) {
@@ -80,5 +84,16 @@ public class AnalyseServiceImpl implements AnalyseService {
             throw new RuntimeException("Analyse not found with id: " + id);
         }
         analyseRepository.deleteById(id);
+    }
+    // Méthode pour envoyer les données concernant l'analyse, le test, et l'épreuve
+    public void sendAnalyseDetails(Analyse analyse, TestAnalyse testAnalyse, Epreuve epreuve) {
+        // Formater les informations à envoyer
+        String analyseData = "Analyse : " + analyse.getNom() +
+                "\nTest d'Analyse : " + testAnalyse.getNomTest() +
+                "\nEpreuve : " + epreuve.getNom() +
+                "\nPlage de Valeurs : Min = " + testAnalyse.getIntervalMinDeReference() + ", Max = " + testAnalyse.getIntervalMaxDeReference();
+
+        // Envoi des données via Kafka
+        analyseKafkaProducer.sendAnalyseData(analyseData);
     }
 }

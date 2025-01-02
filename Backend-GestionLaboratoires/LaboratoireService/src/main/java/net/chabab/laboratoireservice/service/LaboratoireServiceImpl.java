@@ -1,6 +1,8 @@
 package net.chabab.laboratoireservice.service;
 
 import net.chabab.laboratoireservice.dtos.LaboratoireDTO;
+import net.chabab.laboratoireservice.entities.Adresse;
+import net.chabab.laboratoireservice.entities.ContactLaboratoire;
 import net.chabab.laboratoireservice.entities.Laboratoire;
 import net.chabab.laboratoireservice.mapper.LaboratoireMapper;
 import net.chabab.laboratoireservice.repository.LaboratoireRepository;
@@ -15,6 +17,10 @@ public class LaboratoireServiceImpl implements LaboratoireService {
 
     @Autowired
     private LaboratoireRepository laboratoireRepository;
+    @Autowired
+    private LaboratoireKafkaProducer laboratoireKafkaProducer;
+
+
 
     @Override
     public LaboratoireDTO createLaboratoire(LaboratoireDTO laboratoireDTO) {
@@ -59,6 +65,16 @@ public class LaboratoireServiceImpl implements LaboratoireService {
         }
         laboratoireRepository.deleteById(id);
         return true;
+    }
+    // Méthode pour envoyer les données du laboratoire
+    public void sendLaboratoireDetails(Laboratoire laboratoire, Adresse adresse, ContactLaboratoire contactLaboratoire) {
+        // Créer un message JSON ou une chaîne de caractères avec les informations nécessaires
+        String laboratoireData = "Laboratoire : " + laboratoire.getNom() +
+                "\nAdresse : " + adresse.getNomVoie() + " " + adresse.getNumVoie() + ", " + adresse.getVille() +
+                "\nContact : " + contactLaboratoire.getNumTel() + " / " + contactLaboratoire.getEmail();
+
+        // Envoie des données au Producer Kafka
+        laboratoireKafkaProducer.sendLaboratoireData(laboratoireData);
     }
 
 }
