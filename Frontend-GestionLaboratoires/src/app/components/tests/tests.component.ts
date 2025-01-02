@@ -134,6 +134,7 @@ export class TestsComponent implements OnInit {
     });
   }
 
+
   filterAnalyseByLaboratoire(): void {
     if (this.laboratoireId) {
       this.listOfAnalyses = this.listOfAnalyses.filter(item =>

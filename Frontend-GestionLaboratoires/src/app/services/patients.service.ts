@@ -1,23 +1,52 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {map, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientService {
-  private baseUrl = 'http://localhost:3000'; // URL pour accéder aux patients dans json-server
+  private baseUrl = 'http://localhost:8081/api'; // URL pour accéder aux patients dans json-server
 
   constructor(private http: HttpClient) {}
 
   // Récupérer tous les patients
   getPatients(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/patients`);
+    return this.http.get<any[]>(`${this.baseUrl}/patients`).pipe(
+      map(patients =>
+        patients.map(patient => ({
+          id: patient.id.toString(),
+          nomComplet: patient.nomComplet,
+          dateNaissance: patient.dateNaissance,
+          lieuNaissance: patient.lieuDeNaissance,
+          sexe: patient.sexe,
+          typePieceIdentite: patient.typePieceIdentite,
+          numPieceIdentite: patient.numPieceIdentite,
+          adresse: patient.adresse,
+          numTel: patient.numTel,
+          email: patient.email,
+          visible_pour: patient.visiblePour,
+        }))
+      )
+    );
   }
 
   // Ajouter un nouveau patient
   addPatient(patient: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/patients`, patient);
+    const payload = {
+      // id: patient.id.toString(),
+      nomComplet: patient.nomComplet,
+      dateNaissance: patient.dateNaissance,
+      lieuDeNaissance: patient.lieuNaissance,
+      sexe: patient.sexe,
+      typePieceIdentite: patient.typePieceIdentite,
+      numPieceIdentite: patient.numPieceIdentite,
+      adresse: patient.adresse,
+      numTel: patient.numTel,
+      email: patient.email,
+      visiblePour: patient.visible_pour,
+    };
+    return this.http.post<any>(`${this.baseUrl}/patients`, payload);
   }
 
   // Mettre à jour un patient existant
