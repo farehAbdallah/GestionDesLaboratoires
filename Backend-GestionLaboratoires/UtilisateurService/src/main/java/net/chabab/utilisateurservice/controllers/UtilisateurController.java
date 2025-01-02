@@ -39,10 +39,10 @@ public class UtilisateurController {
         utilisateurService.deleteUtilisateur(id);
     }
 
-    @GetMapping("/validate-email")
-    public boolean isEmailValid(@RequestParam String email) {
-        return utilisateurService.isEmailValid(email); // Delegate to the service layer
-    }
+//    @GetMapping("/validate-email")
+//    public boolean isEmailValid(@RequestParam String email) {
+//        return utilisateurService.isEmailValid(email); // Delegate to the service layer
+//    }
 
     // Nouveau endpoint pour récupérer un utilisateur par email
     @GetMapping("/email/{email}")

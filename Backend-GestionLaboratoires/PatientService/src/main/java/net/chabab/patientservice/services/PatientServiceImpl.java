@@ -1,6 +1,8 @@
 package net.chabab.patientservice.services;
 
 import net.chabab.patientservice.dtos.PatientDTO;
+import net.chabab.patientservice.entities.Dossier;
+import net.chabab.patientservice.entities.Examin;
 import net.chabab.patientservice.feign.UtilisateurFeignClient;
 import net.chabab.patientservice.entities.Patient;
 import net.chabab.patientservice.mappers.PatientMapper;
@@ -20,13 +22,15 @@ public class PatientServiceImpl implements PatientService {
 
     @Autowired
     private UtilisateurFeignClient utilisateurFeignClient;
+    @Autowired
+    private PatientKafkaProducer patientKafkaProducer;
 
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
         // Valider l'email utilisateur avant d'ajouter un patient
-        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
-            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
-        }
+//        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
+//            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
+//        }
 
         // Ajouter le patient
         Patient patient = PatientMapper.INSTANCE.toEntity(patientDTO);
@@ -52,9 +56,9 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDTO updatePatient(Long id, PatientDTO patientDTO) {
         // Valider l'email utilisateur avant de mettre à jour un patient
-        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
-            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
-        }
+//        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
+//            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
+//        }
 
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient non trouvé avec l'ID : " + id));
@@ -81,5 +85,22 @@ public class PatientServiceImpl implements PatientService {
             throw new RuntimeException("Patient non trouvé avec l'ID : " + id);
         }
         patientRepository.deleteById(id);
+    }
+
+    // Méthode pour envoyer les données concernant le patient, le dossier et l'examen
+    public void sendPatientDetails(Patient patient, Dossier dossier, Examin examin) {
+        // Formater les informations à envoyer
+        String patientData = "Patient : " + patient.getNomComplet() +
+                "\nDate de naissance : " + patient.getDateNaissance() +
+                "\nSexe : " + patient.getSexe() +
+                "\nAdresse : " + patient.getAdresse() +
+                "\n\nDossier Médical : " +
+                "\nNuméro de dossier : " + dossier.getNumDossier() +
+                "\nEmail : " + patient.getEmail() +
+                "\n\nExamen Médical : " +
+                "\nRésultat : " + examin.getResultat();
+
+        // Envoi des données via Kafka
+        patientKafkaProducer.sendPatientData(patientData);
     }
 }

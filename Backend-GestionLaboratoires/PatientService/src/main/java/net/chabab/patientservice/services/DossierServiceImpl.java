@@ -29,7 +29,7 @@ public class DossierServiceImpl implements DossierService {
     @Override
     public DossierDTO createDossier(DossierDTO dossierDTO) {
         // Valider que l'email utilisateur correspond au patient
-        validatePatientAndEmail(dossierDTO.getPatientId(), dossierDTO.getFkEmailUtilisateur());
+//        validatePatientAndEmail(dossierDTO.getPatientId(), dossierDTO.getFkEmailUtilisateur());
 
         // Valider que le patient existe
         Dossier dossier = DossierMapper.INSTANCE.toEntity(dossierDTO);
@@ -62,7 +62,7 @@ public class DossierServiceImpl implements DossierService {
                 .orElseThrow(() -> new RuntimeException("Dossier avec ID " + id + " non trouvé"));
 
         // Valider que l'email utilisateur correspond au patient
-        validatePatientAndEmail(dossierDTO.getPatientId(), dossierDTO.getFkEmailUtilisateur());
+//        validatePatientAndEmail(dossierDTO.getPatientId(), dossierDTO.getFkEmailUtilisateur());
 
         dossier.setFkEmailUtilisateur(dossierDTO.getFkEmailUtilisateur());
         dossier.setDate(dossierDTO.getDate());
@@ -86,9 +86,9 @@ public class DossierServiceImpl implements DossierService {
                 .orElseThrow(() -> new RuntimeException("Patient avec ID " + patientId + " non trouvé"));
 
         // Vérifier si l'email utilisateur correspond à l'email du patient
-        if (!patient.getEmail().equals(email)) {
-            throw new RuntimeException("L'email utilisateur " + email + " ne correspond pas au patient avec ID " + patientId);
-        }
+//        if (!patient.getEmail().equals(email)) {
+//            throw new RuntimeException("L'email utilisateur " + email + " ne correspond pas au patient avec ID " + patientId);
+//        }
 
         // Vérifier si l'email utilisateur est valide dans UtilisateurService
         if (!utilisateurFeignClient.isEmailValid(email)) {
