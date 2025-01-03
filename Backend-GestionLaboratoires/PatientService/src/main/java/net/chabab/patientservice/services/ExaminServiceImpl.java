@@ -36,8 +36,8 @@ public class ExaminServiceImpl implements ExaminService {
         // Récupérer les informations de l'Epreuve via Feign
         EpreuveDTO epreuveDTO = epreuveFeignClient.getEpreuveById(examinDTO.getFkIdEpreuve());
 
-        // Ajouter l'Epreuve dans le DTO Examin
-        examinDTO.setEpreuve(epreuveDTO);
+//        // Ajouter l'Epreuve dans le DTO Examin
+//        examinDTO.setEpreuve(epreuveDTO);
 
         // Mapper ExaminDTO vers Examin et enregistrer en base
         Examin examin = ExaminMapper.INSTANCE.toEntity(examinDTO);
