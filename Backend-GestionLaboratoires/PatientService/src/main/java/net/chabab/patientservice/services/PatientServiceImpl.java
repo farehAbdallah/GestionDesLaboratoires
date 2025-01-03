@@ -29,16 +29,19 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
-        // Valider l'email utilisateur avant d'ajouter un patient
-//        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
-//            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
-//        }
+        if (patientDTO == null) {
+            throw new IllegalArgumentException("PatientDTO cannot be null");
+        }
 
-        // Ajouter le patient
+        if (patientDTO.getEmail() == null || patientDTO.getEmail().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+
         Patient patient = PatientMapper.INSTANCE.toEntity(patientDTO);
         Patient savedPatient = patientRepository.save(patient);
         return PatientMapper.INSTANCE.toDto(savedPatient);
     }
+
 
     @Override
     public PatientDTO getPatientById(Long id) {
