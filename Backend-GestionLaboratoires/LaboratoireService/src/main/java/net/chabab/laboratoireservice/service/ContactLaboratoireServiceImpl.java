@@ -8,30 +8,27 @@ import net.chabab.laboratoireservice.mapper.ContactLaboratoireMapper;
 import net.chabab.laboratoireservice.repository.AdresseRepository;
 import net.chabab.laboratoireservice.repository.ContactLaboratoireRepository;
 import net.chabab.laboratoireservice.repository.LaboratoireRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ContactLaboratoireServiceImpl implements ContactLaboratoireService {
 
-    @Autowired
-    private ContactLaboratoireRepository contactRepository;
-
-    private final ContactLaboratoireRepository contactLaboratoireRepository;
+    private final ContactLaboratoireRepository contactRepository;
     private final LaboratoireRepository laboratoireRepository;
     private final AdresseRepository adresseRepository;
 
-    public ContactLaboratoireServiceImpl(ContactLaboratoireRepository contactLaboratoireRepository,
+    // Utilisation d'un constructeur unique pour injecter les dépendances
+    public ContactLaboratoireServiceImpl(ContactLaboratoireRepository contactRepository,
                                          LaboratoireRepository laboratoireRepository,
                                          AdresseRepository adresseRepository) {
-        this.contactLaboratoireRepository = contactLaboratoireRepository;
+        this.contactRepository = contactRepository;
         this.laboratoireRepository = laboratoireRepository;
         this.adresseRepository = adresseRepository;
     }
+
     @Override
     public ContactLaboratoireDTO createContact(ContactLaboratoireDTO contactDTO) {
         if (contactDTO == null) {
@@ -52,10 +49,9 @@ public class ContactLaboratoireServiceImpl implements ContactLaboratoireService 
         contact.setLaboratoire(laboratoire);
         contact.setAdresse(adresse);
 
-        ContactLaboratoire savedContact = contactLaboratoireRepository.save(contact);
+        ContactLaboratoire savedContact = contactRepository.save(contact);
         return ContactLaboratoireMapper.INSTANCE.toDto(savedContact);
     }
-
 
     @Override
     public ContactLaboratoireDTO getContactById(Long id) {

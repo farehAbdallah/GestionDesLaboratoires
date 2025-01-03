@@ -1,7 +1,7 @@
 package net.chabab.gestionanalyse.dtos;
 
 import lombok.*;
-
+@Builder
 @Data
 public class LaboratoireDTO {
 
