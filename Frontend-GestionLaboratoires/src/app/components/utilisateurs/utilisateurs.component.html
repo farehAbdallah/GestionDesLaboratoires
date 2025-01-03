@@ -58,9 +58,9 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item class="form-control-margin">
-          <nz-form-label>Mot de passe</nz-form-label>
-          <nz-form-control nzErrorTip="Veuillez entrer un mot de passe valide!">
-            <input type="password" nz-input formControlName="password" placeholder="Mot de passe" />
+          <nz-form-label>Password</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un password valide!">
+            <input type="text" nz-input formControlName="password" placeholder="Password" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item class="form-control-margin">
@@ -81,6 +81,12 @@
 <!--            </nz-select>-->
 <!--          </nz-form-control>-->
 <!--        </nz-form-item>-->
+        <nz-form-item class="form-control-margin">
+          <nz-form-label>Numéro de Téléphone</nz-form-label>
+          <nz-form-control nzErrorTip="Veuillez entrer un numéro valide!">
+            <input type="text" nz-input formControlName="numTel" placeholder="Numéro de Téléphone" />
+          </nz-form-control>
+        </nz-form-item>
         <nz-form-item class="form-control-margin">
           <nz-form-label>Profession</nz-form-label>
           <nz-form-control nzErrorTip="Veuillez entrer une profession valide!">
@@ -106,11 +112,13 @@
     <thead>
     <tr>
       <th nzWidth="10%">Nom</th>
-      <th nzWidth="15%">Email</th>
+      <th nzWidth="10%">Email</th>
+      <th nzWidth="10%">Password</th>
+      <th nzWidth="10%">Telephone</th>
       <th nzWidth="10%">Profession</th>
       <th nzWidth="10%">Signature</th>
 <!--      <th *ngIf="laboratoireId" nzWidth="15%">Laboratoire</th>-->
-      <th nzWidth="15%">Rôle</th>
+      <th nzWidth="10%">Rôle</th>
       <th nzWidth="25%">Actions</th>
     </tr>
     </thead>
@@ -128,6 +136,22 @@
           {{ data.email }}
         </div>
         <input [hidden]="editId !== data.id" type="email" nz-input [(ngModel)]="data.email" />
+      </td>
+
+
+      <td *ngIf="data.role !== 'technicien'">
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.password }}
+        </div>
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.password" />
+      </td>
+
+
+      <td *ngIf="data.role !== 'technicien'">
+        <div class="editable-cell" [hidden]="editId === data.id">
+          {{ data.numTel }}
+        </div>
+        <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.numTel" />
       </td>
 
       <td *ngIf="data.role !== 'technicien'">

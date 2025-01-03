@@ -9,6 +9,10 @@ interface ItemData {
   password: string;
   name: string;
   role: string;
+  fkIdLaboratoire: string;
+  profession: string;
+  signature: string;
+  numTel: string;
 }
 @Injectable({
   providedIn: 'root'
@@ -63,10 +67,14 @@ export class LoginService {
 
     this.updateLoggedUser({
       id: "",
-      name: "",
       email: "",
+      fkIdLaboratoire: "",
+      name: "",
+      profession: "",
+      role: "",
+      signature: "",
       password: "",
-      role: ""
+      numTel: ""
     }).subscribe({
       next: () => {
         console.log('User successfully logged out and cleared in db.json');

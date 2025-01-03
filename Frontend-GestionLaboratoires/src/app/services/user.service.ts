@@ -24,6 +24,7 @@ export class UserService {
           fkIdLaboratoire: utilisateur.fkIdLaboratoire.toString(),
           profession: utilisateur.profession,
           signature: utilisateur.signature,
+          numTel: utilisateur.numTel,
         }))
       )
     );
@@ -40,13 +41,25 @@ export class UserService {
       fkIdLaboratoire: parseInt(utilisateur.fkIdLaboratoire, 10),
       profession: utilisateur.profession,
       signature: utilisateur.signature,
+      numTel: utilisateur.numTel
     };
     return this.http.post<any>(this.baseUrl, payload);
   }
 
   // Update an existing user
-  updateUser(id: string, user: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${id}`, user);
+  updateUser(id: string, utilisateur: any): Observable<any> {
+    const payload = {
+      id: parseInt(utilisateur.id, 10),
+      email: utilisateur.email,
+      password: utilisateur.password,
+      nomComplet: utilisateur.name,
+      role: utilisateur.role,
+      fkIdLaboratoire: parseInt(utilisateur.fkIdLaboratoire, 10),
+      profession: utilisateur.profession,
+      signature: utilisateur.signature,
+      numTel: utilisateur.numTel
+    };
+    return this.http.put<any>(`${this.baseUrl}/${id}`, payload);
   }
 
   // Delete a user

@@ -1,10 +1,14 @@
 {
   "logedUser": {
     "id": "",
-    "name": "",
     "email": "",
+    "fkIdLaboratoire": "",
+    "name": "",
+    "profession": "",
+    "role": "",
+    "signature": "",
     "password": "",
-    "role": ""
+    "numTel": ""
   },
   "laboratoires": [
     {
