@@ -20,8 +20,8 @@ public class AnalyseServiceImpl implements AnalyseService {
     @Autowired
     private AnalyseRepository analyseRepository;
 
-    @Autowired
-    private LaboratoireClient laboratoireClient;
+//    @Autowired
+//    private LaboratoireClient laboratoireClient;
     @Autowired
     private AnalyseKafkaProducer analyseKafkaProducer;
 
@@ -32,10 +32,10 @@ public class AnalyseServiceImpl implements AnalyseService {
         }
 
         // Vérification de l'existence du laboratoire via Feign Client
-        LaboratoireDTO laboratoire = laboratoireClient.getLaboratoireById(analyseDTO.getFkIdLaboratoire());
-        if (laboratoire == null) {
-            throw new RuntimeException("Laboratory with ID " + analyseDTO.getFkIdLaboratoire() + " does not exist");
-        }
+//        LaboratoireDTO laboratoire = laboratoireClient.getLaboratoireById(analyseDTO.getFkIdLaboratoire());
+//        if (laboratoire == null) {
+//            throw new RuntimeException("Laboratory with ID " + analyseDTO.getFkIdLaboratoire() + " does not exist");
+//        }
 
         Analyse analyse = AnalyseMapper.INSTANCE.toEntity(analyseDTO);
         Analyse savedAnalyse = analyseRepository.save(analyse);
@@ -64,10 +64,10 @@ public class AnalyseServiceImpl implements AnalyseService {
 
         if (analyseDTO.getFkIdLaboratoire() != null) {
             // Vérification de l'existence du laboratoire
-            LaboratoireDTO laboratoire = laboratoireClient.getLaboratoireById(analyseDTO.getFkIdLaboratoire());
-            if (laboratoire == null) {
-                throw new RuntimeException("Laboratory with ID " + analyseDTO.getFkIdLaboratoire() + " does not exist");
-            }
+//            LaboratoireDTO laboratoire = laboratoireClient.getLaboratoireById(analyseDTO.getFkIdLaboratoire());
+//            if (laboratoire == null) {
+//                throw new RuntimeException("Laboratory with ID " + analyseDTO.getFkIdLaboratoire() + " does not exist");
+//            }
         }
 
         analyse.setNom(analyseDTO.getNom());

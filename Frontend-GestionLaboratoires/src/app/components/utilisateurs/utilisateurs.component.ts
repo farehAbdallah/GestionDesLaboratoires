@@ -27,6 +27,7 @@ interface ItemData {
   fkIdLaboratoire: string;
   profession: string;
   signature: string;
+  numTel: string;
 }
 
 @Component({
@@ -91,7 +92,8 @@ export class UtilisateursComponent implements OnInit {
       role: ['', [Validators.required]],
       // fkIdLaboratoire: ['', [Validators.required]],
       profession: ['', [Validators.required]],
-      signature: ['', [Validators.required]]
+      signature: ['', [Validators.required]],
+      numTel: ['', [Validators.required]]
     });
 
   }
@@ -196,7 +198,7 @@ export class UtilisateursComponent implements OnInit {
   submitForm(): void {
     if (this.validateForm.valid) {
       const newRow: ItemData = {
-        id: `${Date.now()}`,
+        // id: `${Date.now()}`,
         ...this.validateForm.value,
         fkIdLaboratoire : this.laboratoireId
       };

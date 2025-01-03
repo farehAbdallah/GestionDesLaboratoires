@@ -22,6 +22,7 @@ interface ItemData {
   fkIdLaboratoire: string;
   profession: string;
   signature: string;
+  numTel: string;
 }
 @Component({
   selector: 'app-login',
@@ -70,6 +71,7 @@ export class LoginComponent implements OnInit{
 
 
   logIn(): void {
+    console.log(this.listOfUsers)
     const user = this.listOfUsers.find((findUser:any) =>{
       return findUser.email === this.loginForm.value.email && findUser.password === this.loginForm.value.password;
     })

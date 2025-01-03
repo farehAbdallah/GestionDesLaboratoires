@@ -22,8 +22,8 @@ public class PatientServiceImpl implements PatientService {
     private PatientRepository patientRepository;
 
 
-    @Autowired
-    private UtilisateurFeignClient utilisateurFeignClient;
+//    @Autowired
+//    private UtilisateurFeignClient utilisateurFeignClient;
     @Autowired
     private PatientKafkaProducer patientKafkaProducer;
 

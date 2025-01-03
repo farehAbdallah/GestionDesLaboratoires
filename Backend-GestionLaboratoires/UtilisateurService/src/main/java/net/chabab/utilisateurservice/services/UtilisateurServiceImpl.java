@@ -18,8 +18,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
-    @Autowired
-    private LaboratoireClient laboratoireClient; // Déclaration du Feign Client
+//    @Autowired
+//    private LaboratoireClient laboratoireClient; // Déclaration du Feign Client
 
     @Override
     public UtilisateurDTO createUtilisateur(UtilisateurDTO utilisateurDTO) {
@@ -40,10 +40,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         }
 
         // Vérifier si le laboratoire existe via Feign Client
-        LaboratoireDTO laboratoire = laboratoireClient.getLaboratoireById(utilisateurDTO.getFkIdLaboratoire());
-        if (laboratoire == null) {
-            throw new RuntimeException("Laboratory with ID " + utilisateurDTO.getFkIdLaboratoire() + " does not exist");
-        }
+//        LaboratoireDTO laboratoire = laboratoireClient.getLaboratoireById(utilisateurDTO.getFkIdLaboratoire());
+//        if (laboratoire == null) {
+//            throw new RuntimeException("Laboratory with ID " + utilisateurDTO.getFkIdLaboratoire() + " does not exist");
+//        }
 
         // Mapper DTO vers l'entité
         Utilisateur utilisateur = UtilisateurMapper.INSTANCE.toEntity(utilisateurDTO);
@@ -87,10 +87,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
         if (utilisateurDTO.getFkIdLaboratoire() != null) {
             // Vérification de l'existence du laboratoire
-            LaboratoireDTO laboratoire = laboratoireClient.getLaboratoireById(utilisateurDTO.getFkIdLaboratoire());
-            if (laboratoire == null) {
-                throw new RuntimeException("Laboratory with ID " + utilisateurDTO.getFkIdLaboratoire() + " does not exist");
-            }
+//            LaboratoireDTO laboratoire = laboratoireClient.getLaboratoireById(utilisateurDTO.getFkIdLaboratoire());
+//            if (laboratoire == null) {
+//                throw new RuntimeException("Laboratory with ID " + utilisateurDTO.getFkIdLaboratoire() + " does not exist");
+//            }
         }
 
         utilisateur.setEmail(utilisateurDTO.getEmail());
@@ -100,6 +100,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setNumTel(utilisateurDTO.getNumTel());
         utilisateur.setSignature(utilisateurDTO.getSignature());
         utilisateur.setRole(utilisateurDTO.getRole());
+        utilisateur.setPassword(utilisateurDTO.getPassword());
+
 
         Utilisateur updatedUtilisateur = utilisateurRepository.save(utilisateur);
         return UtilisateurMapper.INSTANCE.toDto(updatedUtilisateur);

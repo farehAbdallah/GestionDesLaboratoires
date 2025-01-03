@@ -24,8 +24,8 @@ public class ExaminServiceImpl implements ExaminService {
     @Autowired
     private DossierRepository dossierRepository;
 
-    @Autowired
-    private EpreuveFeignClient epreuveFeignClient;  // Inject Feign Client for Epreuve
+//    @Autowired
+//    private EpreuveFeignClient epreuveFeignClient;  // Inject Feign Client for Epreuve
 
     @Override
     public ExaminDTO createExamin(ExaminDTO examinDTO) {
@@ -34,7 +34,7 @@ public class ExaminServiceImpl implements ExaminService {
                 .orElseThrow(() -> new RuntimeException("Dossier not found"));
 
         // Récupérer les informations de l'Epreuve via Feign
-        EpreuveDTO epreuveDTO = epreuveFeignClient.getEpreuveById(examinDTO.getFkIdEpreuve());
+//        EpreuveDTO epreuveDTO = epreuveFeignClient.getEpreuveById(examinDTO.getFkIdEpreuve());
 
 //        // Ajouter l'Epreuve dans le DTO Examin
 //        examinDTO.setEpreuve(epreuveDTO);
