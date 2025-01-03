@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {map, Observable, tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientService {
-  private baseUrl = 'http://localhost:8081/api'; // URL pour accéder aux patients dans json-server
+  private baseUrl = 'http://localhost:8086/api'; // URL pour accéder aux patients dans json-server
+  private springUrl = 'http://localhost:8081/api'; // URL pour accéder aux patients dans json-server
 
   constructor(private http: HttpClient) {}
 
@@ -51,7 +52,20 @@ export class PatientService {
 
   // Mettre à jour un patient existant
   updatePatient(id: string, patient: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/patients/${id}`, patient);
+    const payload = {
+      id: parseInt(patient.id, 10),
+      nomComplet: patient.nomComplet,
+      dateNaissance: patient.dateNaissance,
+      lieuDeNaissance: patient.lieuNaissance,
+      sexe: patient.sexe,
+      typePieceIdentite: patient.typePieceIdentite,
+      numPieceIdentite: patient.numPieceIdentite,
+      adresse: patient.adresse,
+      numTel: patient.numTel,
+      email: patient.email,
+      visiblePour: patient.visible_pour,
+    };
+    return this.http.put<any>(`${this.baseUrl}/patients/${id}`, payload);
   }
 
   // Supprimer un patient
@@ -61,17 +75,39 @@ export class PatientService {
 
   // Get all dossiers
   getDossiers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/dossiers`); // Assuming the API is structured to support dossiers
+    return this.http.get<any[]>(`${this.baseUrl}/dossiers`).pipe(
+      map(dossiers =>
+        dossiers.map(dossier => ({
+          id: dossier.numDossier.toString(),
+          numDossier: dossier.numDossier.toString(),
+          fkEmailUtilisateur: dossier.fkEmailUtilisateur,
+          fkIdPatient: dossier.patientId.toString(),
+          date: dossier.date,
+        }))
+       )
+    ); // Assuming the API is structured to support dossiers
   }
 
   // Add a new dossier
   addDossier(dossier: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/dossiers`, dossier); // Assuming POST method is used for adding a dossier
+    const payload = {
+      // numDossier: parseInt(dossier.numDossier, 10),
+      fkEmailUtilisateur: dossier.fkEmailUtilisateur,
+      patientId: parseInt(dossier.fkIdPatient, 10),
+      date: dossier.date,
+    };
+    return this.http.post<any>(`${this.baseUrl}/dossiers`, payload); // Assuming POST method is used for adding a dossier
   }
 
   // Update an existing dossier
   updateDossier(id: string, dossier: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/dossiers/${id}`, dossier); // Assuming PUT method for updating a dossier
+    const payload = {
+      numDossier: parseInt(id, 10),
+      fkEmailUtilisateur: dossier.fkEmailUtilisateur,
+      patientId: parseInt(dossier.fkIdPatient, 10),
+      date: dossier.date,
+    };
+    return this.http.put<any>(`${this.baseUrl}/dossiers/${id}`, payload); // Assuming PUT method for updating a dossier
   }
 
   // Delete a dossier
@@ -81,8 +117,21 @@ export class PatientService {
 
   // Récupérer tous les examens
   getExamins(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/examins`);
+    return this.http.get<any[]>(`${this.baseUrl}/examins`).pipe(
+      tap(examins => console.log('Données reçues:', examins)),
+      map(examins =>
+        examins.map(examin => ({
+          id: examin.id ? examin.id.toString() : null,
+          fkNumDossier: examin.fkNumDossier ? examin.fkNumDossier.toString() : null,
+          fkIdEpreuve: examin.fkIdEpreuve ? examin.fkIdEpreuve.toString() : null,
+          fkIdTestAnalyse: examin.fkIdTestAnalyse ? examin.fkIdTestAnalyse.toString() : null,
+          resultat: examin.resultat || null
+        }))
+      )
+    );
   }
+
+
 
   // Ajouter un nouvel examen
   addExamin(examen: any): Observable<any> {
@@ -100,7 +149,7 @@ export class PatientService {
   }
 
   getUtilisateurs(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/users`);
+    return this.http.get<any[]>(`${this.springUrl}/utilisateurs`);
   }
 
 }

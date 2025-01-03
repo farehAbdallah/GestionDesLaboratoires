@@ -1,7 +1,7 @@
 package net.chabab.patientservice.services;
 
 import net.chabab.patientservice.dtos.PatientDTO;
-import net.chabab.patientservice.feign.UtilisateurFeignClient;
+//import net.chabab.patientservice.feign.UtilisateurFeignClient;
 import net.chabab.patientservice.entities.Patient;
 import net.chabab.patientservice.mappers.PatientMapper;
 import net.chabab.patientservice.repositories.PatientRepository;
@@ -18,15 +18,15 @@ public class PatientServiceImpl implements PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    @Autowired
-    private UtilisateurFeignClient utilisateurFeignClient;
+//    @Autowired
+//    private UtilisateurFeignClient utilisateurFeignClient;
 
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
-        // Valider l'email utilisateur avant d'ajouter un patient
-        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
-            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
-        }
+//        // Valider l'email utilisateur avant d'ajouter un patient
+//        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
+//            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
+//        }
 
         // Ajouter le patient
         Patient patient = PatientMapper.INSTANCE.toEntity(patientDTO);
@@ -52,9 +52,9 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDTO updatePatient(Long id, PatientDTO patientDTO) {
         // Valider l'email utilisateur avant de mettre à jour un patient
-        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
-            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
-        }
+//        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
+//            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
+//        }
 
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient non trouvé avec l'ID : " + id));
