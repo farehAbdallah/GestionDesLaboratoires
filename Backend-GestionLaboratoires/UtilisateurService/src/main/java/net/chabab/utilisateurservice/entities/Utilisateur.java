@@ -18,7 +18,7 @@ public class Utilisateur {
 
     @Column(nullable = false, unique = true)
     private String email;
-
+    private String password;
     private Long fkIdLaboratoire;
 
     private String nomComplet;
@@ -26,6 +26,7 @@ public class Utilisateur {
     private String numTel;
     private String signature;
     private String role;
+
 }
 
 
