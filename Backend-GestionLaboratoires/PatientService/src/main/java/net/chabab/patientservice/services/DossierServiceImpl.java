@@ -92,8 +92,8 @@ public class DossierServiceImpl implements DossierService {
 //        }
 
         // Vérifier si l'email utilisateur est valide dans UtilisateurService
-        if (!utilisateurFeignClient.isEmailValid(email)) {
-            throw new RuntimeException("L'email utilisateur fourni n'existe pas dans UtilisateurService : " + email);
-        }
+//        if (!utilisateurFeignClient.isEmailValid(email)) {
+//            throw new RuntimeException("L'email utilisateur fourni n'existe pas dans UtilisateurService : " + email);
+//        }
     }
 }

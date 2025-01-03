@@ -7,7 +7,7 @@ import {map, Observable, tap} from 'rxjs';
 })
 export class PatientService {
   private baseUrl = 'http://localhost:8086/api'; // URL pour accéder aux patients dans json-server
-  private springUrl = 'http://localhost:8081/api'; // URL pour accéder aux patients dans json-server
+  private springUrl = 'http://localhost:8088/api'; // URL pour accéder aux patients dans json-server
 
   constructor(private http: HttpClient) {}
 
