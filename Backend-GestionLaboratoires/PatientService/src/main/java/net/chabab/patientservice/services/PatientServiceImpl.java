@@ -1,7 +1,10 @@
 package net.chabab.patientservice.services;
 
 import net.chabab.patientservice.dtos.PatientDTO;
-//import net.chabab.patientservice.feign.UtilisateurFeignClient;
+
+import net.chabab.patientservice.entities.Dossier;
+import net.chabab.patientservice.entities.Examin;
+import net.chabab.patientservice.feign.UtilisateurFeignClient;
 import net.chabab.patientservice.entities.Patient;
 import net.chabab.patientservice.mappers.PatientMapper;
 import net.chabab.patientservice.repositories.PatientRepository;
@@ -18,12 +21,15 @@ public class PatientServiceImpl implements PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-//    @Autowired
-//    private UtilisateurFeignClient utilisateurFeignClient;
+
+    @Autowired
+    private UtilisateurFeignClient utilisateurFeignClient;
+    @Autowired
+    private PatientKafkaProducer patientKafkaProducer;
 
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
-//        // Valider l'email utilisateur avant d'ajouter un patient
+        // Valider l'email utilisateur avant d'ajouter un patient
 //        if (!utilisateurFeignClient.isEmailValid(patientDTO.getEmail())) {
 //            throw new RuntimeException("L'email utilisateur fourni n'existe pas : " + patientDTO.getEmail());
 //        }
@@ -81,5 +87,22 @@ public class PatientServiceImpl implements PatientService {
             throw new RuntimeException("Patient non trouvé avec l'ID : " + id);
         }
         patientRepository.deleteById(id);
+    }
+
+    // Méthode pour envoyer les données concernant le patient, le dossier et l'examen
+    public void sendPatientDetails(Patient patient, Dossier dossier, Examin examin) {
+        // Formater les informations à envoyer
+        String patientData = "Patient : " + patient.getNomComplet() +
+                "\nDate de naissance : " + patient.getDateNaissance() +
+                "\nSexe : " + patient.getSexe() +
+                "\nAdresse : " + patient.getAdresse() +
+                "\n\nDossier Médical : " +
+                "\nNuméro de dossier : " + dossier.getNumDossier() +
+                "\nEmail : " + patient.getEmail() +
+                "\n\nExamen Médical : " +
+                "\nRésultat : " + examin.getResultat();
+
+        // Envoi des données via Kafka
+        patientKafkaProducer.sendPatientData(patientData);
     }
 }

@@ -1,9 +1,13 @@
 package net.chabab.laboratoireservice.web;
 
 import net.chabab.laboratoireservice.dtos.LaboratoireDTO;
+import net.chabab.laboratoireservice.entities.Adresse;
+import net.chabab.laboratoireservice.entities.ContactLaboratoire;
+import net.chabab.laboratoireservice.entities.Laboratoire;
 import net.chabab.laboratoireservice.service.LaboratoireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import net.chabab.laboratoireservice.service.LaboratoireService;  // Assurez-vous que cette importation est présente
 
 import java.util.List;
 
@@ -39,6 +43,15 @@ public class LaboratoireController {
     @DeleteMapping("/{id}")
     public boolean deleteLaboratoire(@PathVariable Long id) {
         return laboratoireService.deleteLaboratoire(id);
+    }
+
+    @PostMapping("/send-data")
+    public String sendLaboratoireData(@RequestBody Laboratoire laboratoire,
+                                      @RequestBody Adresse adresse,
+                                      @RequestBody ContactLaboratoire contactLaboratoire) {
+        // Envoie les informations au Kafka Producer
+        laboratoireService.sendLaboratoireDetails(laboratoire, adresse, contactLaboratoire);
+        return "Données envoyées au Kafka!";
     }
 
 }

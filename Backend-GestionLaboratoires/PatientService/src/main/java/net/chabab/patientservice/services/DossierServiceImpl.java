@@ -81,18 +81,19 @@ public class DossierServiceImpl implements DossierService {
         dossierRepository.deleteById(id);
     }
 
-//    private void validatePatientAndEmail(Long patientId, String email) {
-//        Patient patient = patientRepository.findById(patientId)
-//                .orElseThrow(() -> new RuntimeException("Patient avec ID " + patientId + " non trouvé"));
-//
-//        // Vérifier si l'email utilisateur correspond à l'email du patient
+
+    private void validatePatientAndEmail(Long patientId, String email) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient avec ID " + patientId + " non trouvé"));
+
+        // Vérifier si l'email utilisateur correspond à l'email du patient
 //        if (!patient.getEmail().equals(email)) {
 //            throw new RuntimeException("L'email utilisateur " + email + " ne correspond pas au patient avec ID " + patientId);
 //        }
-//
-//        // Vérifier si l'email utilisateur est valide dans UtilisateurService
-//        if (!utilisateurFeignClient.isEmailValid(email)) {
-//            throw new RuntimeException("L'email utilisateur fourni n'existe pas dans UtilisateurService : " + email);
-//        }
-//    }
+
+        // Vérifier si l'email utilisateur est valide dans UtilisateurService
+        if (!utilisateurFeignClient.isEmailValid(email)) {
+            throw new RuntimeException("L'email utilisateur fourni n'existe pas dans UtilisateurService : " + email);
+        }
+    }
 }

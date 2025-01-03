@@ -11,6 +11,9 @@ import java.util.List;
 @RequestMapping("/contacts")
 @CrossOrigin(origins = "http://localhost:4200") // Autoriser Angular
 
+// =======
+// @RequestMapping("/api/contacts")
+// >>>>>>> main
 public class ContactLaboratoireController {
 
     @Autowired

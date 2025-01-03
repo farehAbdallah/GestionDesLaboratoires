@@ -11,6 +11,9 @@ import java.util.List;
 @RequestMapping("/adresses")
 @CrossOrigin(origins = "http://localhost:4200") // Autoriser Angular
 
+// =======
+// @RequestMapping("/api/adresses")
+// >>>>>>> main
 public class AdresseController {
 
     @Autowired
