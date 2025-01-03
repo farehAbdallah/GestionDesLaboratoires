@@ -7,7 +7,7 @@ import {map} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = 'http://localhost:8081/api/utilisateurs'; // URL to json-server
+  private baseUrl = 'http://localhost:8088/api/utilisateurs'; // URL to json-server
 
   constructor(private http: HttpClient) {}
 
@@ -18,7 +18,7 @@ export class UserService {
         utilisateurs.map((utilisateur) => ({
           id: utilisateur.idUtilisateur.toString(),
           email: utilisateur.email,
-          password: "1",
+          password: utilisateur.password,
           name: utilisateur.nomComplet,
           role: utilisateur.role,
           fkIdLaboratoire: utilisateur.fkIdLaboratoire.toString(),
@@ -34,7 +34,7 @@ export class UserService {
     const payload = {
       // id: utilisateur.idUtilisateur.toString(),
       email: utilisateur.email,
-      // password: utilisateur.password,
+      password: utilisateur.password,
       nomComplet: utilisateur.name,
       role: utilisateur.role,
       fkIdLaboratoire: parseInt(utilisateur.fkIdLaboratoire, 10),

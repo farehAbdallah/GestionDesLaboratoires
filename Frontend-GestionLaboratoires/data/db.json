@@ -1,13 +1,10 @@
 {
   "logedUser": {
-    "id": "1733761795211",
-    "name": "FAREH Abdallah",
-    "email": "fareh@gmail.com",
-    "password": "fareh",
-    "role": "technicien",
-    "profession": "fareh profession",
-    "signature": "fareh",
-    "fkIdLaboratoire": ""
+    "id": "",
+    "name": "",
+    "email": "",
+    "password": "",
+    "role": ""
   },
   "laboratoires": [
     {
