@@ -10,6 +10,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/dossiers")
+@CrossOrigin(origins = "http://localhost:4200") // Autoriser Angular
+
 public class DossierController {
 
     @Autowired

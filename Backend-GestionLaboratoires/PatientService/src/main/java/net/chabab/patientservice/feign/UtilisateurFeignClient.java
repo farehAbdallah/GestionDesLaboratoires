@@ -1,3 +1,4 @@
+
 package net.chabab.patientservice.feign;
 
 import net.chabab.patientservice.dtos.UtilisateurDTO;

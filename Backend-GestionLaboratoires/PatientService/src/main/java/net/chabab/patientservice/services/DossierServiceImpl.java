@@ -1,7 +1,7 @@
 package net.chabab.patientservice.services;
 
 import net.chabab.patientservice.dtos.DossierDTO;
-import net.chabab.patientservice.feign.UtilisateurFeignClient;
+//import net.chabab.patientservice.feign.UtilisateurFeignClient;
 import net.chabab.patientservice.entities.Dossier;
 import net.chabab.patientservice.entities.Patient;
 import net.chabab.patientservice.mappers.DossierMapper;
@@ -23,8 +23,8 @@ public class DossierServiceImpl implements DossierService {
     @Autowired
     private PatientRepository patientRepository;
 
-    @Autowired
-    private UtilisateurFeignClient utilisateurFeignClient;
+//    @Autowired
+//    private UtilisateurFeignClient utilisateurFeignClient;
 
     @Override
     public DossierDTO createDossier(DossierDTO dossierDTO) {
@@ -80,6 +80,7 @@ public class DossierServiceImpl implements DossierService {
         }
         dossierRepository.deleteById(id);
     }
+
 
     private void validatePatientAndEmail(Long patientId, String email) {
         Patient patient = patientRepository.findById(patientId)

@@ -1,6 +1,7 @@
 package net.chabab.patientservice.services;
 
 import net.chabab.patientservice.dtos.PatientDTO;
+
 import net.chabab.patientservice.entities.Dossier;
 import net.chabab.patientservice.entities.Examin;
 import net.chabab.patientservice.feign.UtilisateurFeignClient;
@@ -19,6 +20,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Autowired
     private PatientRepository patientRepository;
+
 
     @Autowired
     private UtilisateurFeignClient utilisateurFeignClient;

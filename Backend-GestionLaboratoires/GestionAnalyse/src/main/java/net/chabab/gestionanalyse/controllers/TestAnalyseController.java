@@ -9,6 +9,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/test-analyses")
+@CrossOrigin(origins = "http://localhost:4200") // Autoriser Angular
+
 public class TestAnalyseController {
 
     @Autowired

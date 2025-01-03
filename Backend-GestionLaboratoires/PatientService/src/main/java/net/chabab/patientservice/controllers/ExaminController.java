@@ -9,6 +9,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/examins")
+@CrossOrigin(origins = "http://localhost:4200") // Autoriser Angular
+
 public class ExaminController {
 
     @Autowired

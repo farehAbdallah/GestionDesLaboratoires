@@ -8,7 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/contacts")
+@RequestMapping("/contacts")
+@CrossOrigin(origins = "http://localhost:4200") // Autoriser Angular
+
+// =======
+// @RequestMapping("/api/contacts")
+// >>>>>>> main
 public class ContactLaboratoireController {
 
     @Autowired

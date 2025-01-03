@@ -12,6 +12,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/analyses")
+@CrossOrigin(origins = "http://localhost:4200") // Autoriser Angular
+
 public class AnalyseController {
 
     @Autowired
